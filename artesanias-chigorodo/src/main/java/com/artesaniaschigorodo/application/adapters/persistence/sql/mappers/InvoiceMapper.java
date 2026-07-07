@@ -1,7 +1,7 @@
 package com.artesaniaschigorodo.application.adapters.persistence.sql.mappers;
 
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.InvoiceEntity;
-import com.artesaniaschigorodo.domain.models.Invoice;
+import com.artesaniaschigorodo.domain.models.order.Invoice;
 
 public class InvoiceMapper {
 
@@ -31,3 +31,4 @@ public class InvoiceMapper {
                 .build();
     }
 }
+

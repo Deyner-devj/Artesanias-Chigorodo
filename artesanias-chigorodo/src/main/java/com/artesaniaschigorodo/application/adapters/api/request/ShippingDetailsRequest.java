@@ -23,3 +23,4 @@ public class ShippingDetailsRequest {
     @NotBlank(message = "El método de envío es obligatorio.")
     private String shippingMethod; // STANDARD, EXPRESS, PICKUP
 }
+

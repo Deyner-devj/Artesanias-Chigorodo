@@ -1,5 +1,6 @@
-package com.artesaniaschigorodo.domain.models;
+package com.artesaniaschigorodo.domain.models.order;
 
+import com.artesaniaschigorodo.domain.models.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,3 +16,4 @@ public class OrderItem {
     private Double unitPrice;
     private Double subtotal;
 }
+

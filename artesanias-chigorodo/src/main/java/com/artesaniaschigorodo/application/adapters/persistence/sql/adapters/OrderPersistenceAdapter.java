@@ -3,7 +3,7 @@ package com.artesaniaschigorodo.application.adapters.persistence.sql.adapters;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.OrderEntity;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.OrderMapper;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.OrderJpaRepository;
-import com.artesaniaschigorodo.domain.models.Order;
+import com.artesaniaschigorodo.domain.models.order.Order;
 import com.artesaniaschigorodo.domain.ports.out.OrderPersistencePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -53,3 +53,4 @@ public class OrderPersistenceAdapter implements OrderPersistencePort {
         return OrderMapper.toDomain(savedEntity);
     }
 }
+

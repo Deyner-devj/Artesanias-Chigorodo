@@ -5,3 +5,4 @@ public class BusinessException extends DomainException {
         super(message);
     }
 }
+

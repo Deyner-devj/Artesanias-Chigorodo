@@ -1,6 +1,6 @@
 package com.artesaniaschigorodo.domain.ports.out;
 
-import com.artesaniaschigorodo.domain.models.User;
+import com.artesaniaschigorodo.domain.models.client.User;
 
 import java.util.Optional;
 
@@ -10,3 +10,4 @@ public interface UserPersistencePort {
     User save(User user);
     boolean existsByEmail(String email);
 }
+

@@ -3,7 +3,7 @@ package com.artesaniaschigorodo.application.adapters.persistence.sql.adapters;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.UserEntity;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.UserMapper;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.UserJpaRepository;
-import com.artesaniaschigorodo.domain.models.User;
+import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -38,3 +38,4 @@ public class UserPersistenceAdapter implements UserPersistencePort {
         return userJpaRepository.existsByEmail(email);
     }
 }
+

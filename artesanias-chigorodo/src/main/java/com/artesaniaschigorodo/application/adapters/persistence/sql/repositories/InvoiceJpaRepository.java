@@ -10,3 +10,4 @@ import java.util.Optional;
 public interface InvoiceJpaRepository extends JpaRepository<InvoiceEntity, Long> {
     Optional<InvoiceEntity> findByOrderNumber(String orderNumber);
 }
+

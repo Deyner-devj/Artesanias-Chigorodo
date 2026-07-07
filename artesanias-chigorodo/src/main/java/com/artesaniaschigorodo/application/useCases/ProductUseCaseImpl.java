@@ -2,8 +2,8 @@ package com.artesaniaschigorodo.application.useCases;
 
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
-import com.artesaniaschigorodo.domain.models.Product;
-import com.artesaniaschigorodo.domain.models.User;
+import com.artesaniaschigorodo.domain.models.product.Product;
+import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.ports.in.ProductUseCase;
 import com.artesaniaschigorodo.domain.ports.out.ProductPersistencePort;
@@ -117,3 +117,4 @@ public class ProductUseCaseImpl implements ProductUseCase {
         }
     }
 }
+

@@ -33,3 +33,4 @@ public class ProductRequest {
     @Min(value = 0, message = "El stock no puede ser negativo.")
     private Integer stock;
 }
+

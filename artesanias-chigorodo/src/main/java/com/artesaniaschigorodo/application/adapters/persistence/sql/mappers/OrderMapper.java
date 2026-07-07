@@ -2,10 +2,11 @@ package com.artesaniaschigorodo.application.adapters.persistence.sql.mappers;
 
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.OrderEntity;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.OrderItemEntity;
-import com.artesaniaschigorodo.domain.models.Order;
-import com.artesaniaschigorodo.domain.models.OrderItem;
-import com.artesaniaschigorodo.domain.models.PaymentDetails;
-import com.artesaniaschigorodo.domain.models.ShippingDetails;
+import com.artesaniaschigorodo.domain.models.order.Order;
+import com.artesaniaschigorodo.domain.models.order.OrderItem;
+import com.artesaniaschigorodo.domain.models.order.PaymentDetails;
+import com.artesaniaschigorodo.domain.models.order.ShippingDetails;
+import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.enums.OrderStatus;
 import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
 import com.artesaniaschigorodo.domain.models.enums.ShippingMethod;
@@ -101,7 +102,10 @@ public class OrderMapper {
     private static OrderItemEntity toItemEntity(OrderItem item) {
         if (item == null) return null;
         return OrderItemEntity.builder()
-                .product(ProductMapper.toEntity(item.getProduct()))
+                .productId(item.getProduct().getId())
+                .productName(item.getProduct().getName())
+                .sellerId(item.getProduct().getSellerId())
+                .sellerName(item.getProduct().getSellerName())
                 .quantity(item.getQuantity())
                 .unitPrice(item.getUnitPrice())
                 .subtotal(item.getSubtotal())
@@ -111,10 +115,17 @@ public class OrderMapper {
     private static OrderItem toItemDomain(OrderItemEntity entity) {
         if (entity == null) return null;
         return OrderItem.builder()
-                .product(ProductMapper.toDomain(entity.getProduct()))
+                .product(Product.builder()
+                        .id(entity.getProductId())
+                        .name(entity.getProductName())
+                        .sellerId(entity.getSellerId())
+                        .sellerName(entity.getSellerName())
+                        .price(entity.getUnitPrice())
+                        .build())
                 .quantity(entity.getQuantity())
                 .unitPrice(entity.getUnitPrice())
                 .subtotal(entity.getSubtotal())
                 .build();
     }
 }
+

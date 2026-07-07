@@ -3,7 +3,7 @@ package com.artesaniaschigorodo.application.useCases;
 import com.artesaniaschigorodo.domain.exceptions.ConflictException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.exceptions.BusinessException;
-import com.artesaniaschigorodo.domain.models.User;
+import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.models.enums.UserStatus;
 import com.artesaniaschigorodo.domain.ports.in.AuthUseCase;
@@ -53,3 +53,4 @@ public class AuthUseCaseImpl implements AuthUseCase {
         return jwtTokenPort.generateToken(user);
     }
 }
+

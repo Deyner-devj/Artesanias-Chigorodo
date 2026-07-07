@@ -38,3 +38,4 @@ public class InvoiceEntity {
     @Column(name = "total_amount", nullable = false)
     private Double totalAmount;
 }
+

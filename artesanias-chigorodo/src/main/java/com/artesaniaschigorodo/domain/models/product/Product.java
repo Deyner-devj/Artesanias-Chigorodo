@@ -1,5 +1,6 @@
-package com.artesaniaschigorodo.application.adapters.api.response;
+package com.artesaniaschigorodo.domain.models.product;
 
+import com.artesaniaschigorodo.domain.models.enums.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponse {
+public class Product {
     private Long id;
     private String name;
     private String description;
@@ -22,7 +23,7 @@ public class ProductResponse {
     private Integer reviewsCount;
     private List<String> imageUrls;
     private List<String> colors;
-    private String category;
+    private Category category;
     private Integer stock;
 }
 

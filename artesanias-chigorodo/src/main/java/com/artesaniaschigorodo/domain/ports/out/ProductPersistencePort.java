@@ -1,6 +1,6 @@
 package com.artesaniaschigorodo.domain.ports.out;
 
-import com.artesaniaschigorodo.domain.models.Product;
+import com.artesaniaschigorodo.domain.models.product.Product;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,3 +12,4 @@ public interface ProductPersistencePort {
     Product save(Product product);
     void deleteById(Long id);
 }
+

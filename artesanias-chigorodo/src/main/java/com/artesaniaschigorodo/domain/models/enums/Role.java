@@ -5,3 +5,4 @@ public enum Role {
     CLIENT,
     VENDOR
 }
+

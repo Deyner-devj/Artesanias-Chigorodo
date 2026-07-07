@@ -1,7 +1,7 @@
 package com.artesaniaschigorodo.infrastructure.invoicing;
 
-import com.artesaniaschigorodo.domain.models.Invoice;
-import com.artesaniaschigorodo.domain.models.Order;
+import com.artesaniaschigorodo.domain.models.order.Invoice;
+import com.artesaniaschigorodo.domain.models.order.Order;
 import com.artesaniaschigorodo.domain.ports.out.ElectronicInvoicingPort;
 import org.springframework.stereotype.Component;
 
@@ -43,3 +43,4 @@ public class SimulatedElectronicInvoicingAdapter implements ElectronicInvoicingP
         }
     }
 }
+

@@ -3,7 +3,7 @@ package com.artesaniaschigorodo.application.adapters.api.controllers;
 import com.artesaniaschigorodo.application.adapters.api.request.LoginRequest;
 import com.artesaniaschigorodo.application.adapters.api.request.RegisterRequest;
 import com.artesaniaschigorodo.application.adapters.api.response.AuthResponse;
-import com.artesaniaschigorodo.domain.models.User;
+import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.ports.in.AuthUseCase;
 import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
@@ -63,3 +63,4 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 }
+

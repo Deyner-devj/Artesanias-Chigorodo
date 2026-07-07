@@ -1,5 +1,6 @@
-package com.artesaniaschigorodo.domain.models;
+package com.artesaniaschigorodo.domain.models.order;
 
+import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.models.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,3 +27,4 @@ public class Order {
     private OrderStatus orderStatus;
     private LocalDateTime createdAt;
 }
+

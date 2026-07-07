@@ -1,4 +1,4 @@
-package com.artesaniaschigorodo.domain.models;
+package com.artesaniaschigorodo.domain.models.order;
 
 import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
 import lombok.AllArgsConstructor;
@@ -15,3 +15,4 @@ public class PaymentDetails {
     private String transactionId;
     private String status;
 }
+

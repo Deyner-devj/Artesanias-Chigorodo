@@ -9,3 +9,4 @@ public class UpdateProfileRequest {
     @NotBlank(message = "El nombre completo es obligatorio.")
     private String fullName;
 }
+

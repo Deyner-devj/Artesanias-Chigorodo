@@ -1,4 +1,4 @@
-package com.artesaniaschigorodo.domain.models;
+package com.artesaniaschigorodo.domain.models.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,9 +14,10 @@ import java.time.LocalDateTime;
 public class Invoice {
     private Long id;
     private String orderNumber;
-    private String cufe; // Código Único de Facturación Electrónica (Colombia)
+    private String cufe;
     private String qrCodeUrl;
     private LocalDateTime issueDate;
-    private String status; // DIAN_APPROVED, REJECTED
+    private String status;
     private Double totalAmount;
 }
+

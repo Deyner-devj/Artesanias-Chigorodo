@@ -3,14 +3,14 @@ package com.artesaniaschigorodo.application.useCases;
 import com.artesaniaschigorodo.domain.exceptions.BusinessException;
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
-import com.artesaniaschigorodo.domain.models.Order;
-import com.artesaniaschigorodo.domain.models.OrderItem;
-import com.artesaniaschigorodo.domain.models.Product;
-import com.artesaniaschigorodo.domain.models.User;
+import com.artesaniaschigorodo.domain.models.order.Order;
+import com.artesaniaschigorodo.domain.models.order.OrderItem;
+import com.artesaniaschigorodo.domain.models.product.Product;
+import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.models.enums.OrderStatus;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.ports.in.OrderUseCase;
-import com.artesaniaschigorodo.domain.models.Invoice;
+import com.artesaniaschigorodo.domain.models.order.Invoice;
 import com.artesaniaschigorodo.domain.ports.out.ElectronicInvoicingPort;
 import com.artesaniaschigorodo.domain.ports.out.InvoicePersistencePort;
 import com.artesaniaschigorodo.domain.ports.out.OrderPersistencePort;
@@ -198,3 +198,4 @@ public class OrderUseCaseImpl implements OrderUseCase {
         return savedOrder;
     }
 }
+

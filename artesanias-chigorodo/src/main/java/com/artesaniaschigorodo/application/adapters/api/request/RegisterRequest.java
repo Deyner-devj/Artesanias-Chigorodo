@@ -22,3 +22,4 @@ public class RegisterRequest {
 
     private String role; // CLIENT, VENDOR, ADMIN
 }
+

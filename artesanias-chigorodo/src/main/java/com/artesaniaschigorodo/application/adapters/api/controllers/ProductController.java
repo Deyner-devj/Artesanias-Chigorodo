@@ -4,8 +4,8 @@ import com.artesaniaschigorodo.application.adapters.api.request.ProductRequest;
 import com.artesaniaschigorodo.application.adapters.api.response.ProductResponse;
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
-import com.artesaniaschigorodo.domain.models.Product;
-import com.artesaniaschigorodo.domain.models.User;
+import com.artesaniaschigorodo.domain.models.product.Product;
+import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.models.enums.Category;
 import com.artesaniaschigorodo.domain.ports.in.ProductUseCase;
 import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
@@ -116,3 +116,4 @@ public class ProductController {
                 .build();
     }
 }
+

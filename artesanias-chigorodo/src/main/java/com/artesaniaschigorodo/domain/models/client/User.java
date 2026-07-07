@@ -1,4 +1,4 @@
-package com.artesaniaschigorodo.domain.models;
+package com.artesaniaschigorodo.domain.models.client;
 
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.models.enums.UserStatus;
@@ -19,3 +19,4 @@ public class User {
     private Role role;
     private UserStatus status;
 }
+

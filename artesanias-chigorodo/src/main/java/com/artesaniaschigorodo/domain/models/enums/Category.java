@@ -8,3 +8,4 @@ public enum Category {
     HOME_DECOR,
     ACCESSORIES
 }
+

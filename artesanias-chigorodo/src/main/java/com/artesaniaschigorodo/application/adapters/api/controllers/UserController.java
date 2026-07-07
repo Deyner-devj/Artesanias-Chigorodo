@@ -4,7 +4,7 @@ import com.artesaniaschigorodo.application.adapters.api.request.UpdateProfileReq
 import com.artesaniaschigorodo.application.adapters.api.response.UserResponse;
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
-import com.artesaniaschigorodo.domain.models.User;
+import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -54,3 +54,4 @@ public class UserController {
                 .build();
     }
 }
+

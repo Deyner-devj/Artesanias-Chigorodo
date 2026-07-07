@@ -14,3 +14,4 @@ public class ErrorResponse {
     private Integer status;
     private Long timestamp;
 }
+

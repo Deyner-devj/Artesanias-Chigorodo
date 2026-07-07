@@ -1,7 +1,7 @@
 package com.artesaniaschigorodo.domain.ports.in;
 
-import com.artesaniaschigorodo.domain.models.Product;
-import com.artesaniaschigorodo.domain.models.User;
+import com.artesaniaschigorodo.domain.models.product.Product;
+import com.artesaniaschigorodo.domain.models.client.User;
 
 import java.util.List;
 
@@ -13,3 +13,4 @@ public interface ProductUseCase {
     Product updateProduct(Long id, Product product, User currentUser);
     void deleteProduct(Long id, User currentUser);
 }
+

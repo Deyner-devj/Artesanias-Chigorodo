@@ -33,7 +33,7 @@ Este documento detalla la implementación de seguridad, control de acceso y miti
 
 ### B. Control de Concurrencia (Race Conditions)
 - **Riesgo:** Dos clientes comprando el mismo último producto a la vez causando stock negativo o sobre-venta.
-- **Solución:** Se implementó bloqueo pesimista de escritura (`LockModeType.PESSIMISTIC_WRITE`) a nivel de base de datos en `ProductJpaRepository.findByIdForUpdate`. Esto fuerza a que el hilo que primero consulte el stock bloquee la fila hasta que termine su checkout, garantizando la consistencia del inventario.
+- **Solución:** En el modelo de persistencia de catálogo (MongoDB), las modificaciones de inventario se gestionan mediante operaciones atómicas de incremento en la persistencia o a nivel de transacción, garantizando la consistencia del catálogo en entornos de alta concurrencia.
 
 ### C. Prevención de Alteración de Inventario (Fuerza Bruta Logica)
 - **Riesgo:** Enviar cantidades o precios negativos para restar saldos o inyectar stock de forma fraudulenta.

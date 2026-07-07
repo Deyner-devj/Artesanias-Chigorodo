@@ -13,3 +13,4 @@ public class PaymentDetailsRequest {
 
     private String status; // APPROVED, PENDING, FAILED
 }
+

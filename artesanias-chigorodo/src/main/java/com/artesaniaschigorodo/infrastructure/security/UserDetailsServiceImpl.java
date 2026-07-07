@@ -1,6 +1,6 @@
 package com.artesaniaschigorodo.infrastructure.security;
 
-import com.artesaniaschigorodo.domain.models.User;
+import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,3 +29,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         );
     }
 }
+

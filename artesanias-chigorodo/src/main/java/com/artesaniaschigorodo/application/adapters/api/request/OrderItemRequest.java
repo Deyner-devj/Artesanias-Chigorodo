@@ -14,3 +14,4 @@ public class OrderItemRequest {
     @Min(value = 1, message = "La cantidad debe ser mayor o igual a 1.")
     private Integer quantity;
 }
+

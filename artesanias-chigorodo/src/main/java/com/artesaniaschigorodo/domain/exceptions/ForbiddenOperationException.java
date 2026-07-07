@@ -5,3 +5,4 @@ public class ForbiddenOperationException extends DomainException {
         super(message);
     }
 }
+

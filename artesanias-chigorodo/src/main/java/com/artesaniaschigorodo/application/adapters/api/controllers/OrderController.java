@@ -4,12 +4,18 @@ import com.artesaniaschigorodo.application.adapters.api.request.OrderRequest;
 import com.artesaniaschigorodo.application.adapters.api.response.OrderResponse;
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
-import com.artesaniaschigorodo.domain.models.*;
+import com.artesaniaschigorodo.domain.models.client.User;
+import com.artesaniaschigorodo.domain.models.order.Order;
+import com.artesaniaschigorodo.domain.models.order.OrderItem;
+import com.artesaniaschigorodo.domain.models.order.PaymentDetails;
+import com.artesaniaschigorodo.domain.models.order.ShippingDetails;
+import com.artesaniaschigorodo.domain.models.order.Invoice;
+import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
 import com.artesaniaschigorodo.domain.models.enums.ShippingMethod;
 import com.artesaniaschigorodo.domain.ports.in.OrderUseCase;
 import com.artesaniaschigorodo.domain.ports.out.InvoicePersistencePort;
-import com.artesaniaschigorodo.domain.models.Invoice;
+import com.artesaniaschigorodo.domain.models.order.Invoice;
 import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -159,3 +165,4 @@ public class OrderController {
                 .build();
     }
 }
+

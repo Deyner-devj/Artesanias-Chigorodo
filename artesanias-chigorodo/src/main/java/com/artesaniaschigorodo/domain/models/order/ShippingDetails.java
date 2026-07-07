@@ -1,4 +1,4 @@
-package com.artesaniaschigorodo.domain.models;
+package com.artesaniaschigorodo.domain.models.order;
 
 import com.artesaniaschigorodo.domain.models.enums.ShippingMethod;
 import lombok.AllArgsConstructor;
@@ -18,3 +18,4 @@ public class ShippingDetails {
     private String postalCode;
     private ShippingMethod shippingMethod;
 }
+

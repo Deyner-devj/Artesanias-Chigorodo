@@ -22,3 +22,4 @@ public class OrderRequest {
     @Valid
     private PaymentDetailsRequest paymentDetails;
 }
+
