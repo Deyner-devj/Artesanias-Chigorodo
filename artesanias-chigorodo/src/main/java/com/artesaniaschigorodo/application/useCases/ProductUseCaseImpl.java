@@ -30,6 +30,18 @@ public class ProductUseCaseImpl implements ProductUseCase {
     }
 
     @Override
+    public List<Product> getFilteredProducts(String category, Double minPrice, Double maxPrice, String search) {
+        List<Product> products = productPersistencePort.findAll();
+        return products.stream()
+                .filter(p -> category == null || p.getCategory().name().equalsIgnoreCase(category))
+                .filter(p -> minPrice == null || p.getPrice() >= minPrice)
+                .filter(p -> maxPrice == null || p.getPrice() <= maxPrice)
+                .filter(p -> search == null || p.getName().toLowerCase().contains(search.toLowerCase())
+                        || p.getDescription().toLowerCase().contains(search.toLowerCase()))
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
     public Product createProduct(Product product, User currentUser) {
         validateWritePermission(currentUser);
 

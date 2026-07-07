@@ -28,8 +28,13 @@ public class ProductController {
     private final UserPersistencePort userPersistencePort;
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProducts() {
-        List<ProductResponse> responses = productUseCase.getAllProducts().stream()
+    public ResponseEntity<List<ProductResponse>> getAllProducts(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) String search
+    ) {
+        List<ProductResponse> responses = productUseCase.getFilteredProducts(category, minPrice, maxPrice, search).stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(responses);

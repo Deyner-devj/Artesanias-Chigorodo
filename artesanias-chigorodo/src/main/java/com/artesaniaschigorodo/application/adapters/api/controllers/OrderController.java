@@ -8,6 +8,8 @@ import com.artesaniaschigorodo.domain.models.*;
 import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
 import com.artesaniaschigorodo.domain.models.enums.ShippingMethod;
 import com.artesaniaschigorodo.domain.ports.in.OrderUseCase;
+import com.artesaniaschigorodo.domain.ports.out.InvoicePersistencePort;
+import com.artesaniaschigorodo.domain.models.Invoice;
 import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class OrderController {
 
     private final OrderUseCase orderUseCase;
     private final UserPersistencePort userPersistencePort;
+    private final InvoicePersistencePort invoicePersistencePort;
 
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody OrderRequest request) {
@@ -61,6 +64,17 @@ public class OrderController {
         String status = body.get("status");
         Order updated = orderUseCase.updateOrderStatus(orderNumber, status, currentUser);
         return ResponseEntity.ok(mapToResponse(updated));
+    }
+
+    @GetMapping("/{orderNumber}/invoice")
+    public ResponseEntity<Invoice> getInvoiceByOrderNumber(@PathVariable String orderNumber) {
+        User currentUser = getCurrentUser();
+        // This will run the ownership validation check automatically
+        orderUseCase.getOrderByOrderNumber(orderNumber, currentUser);
+        
+        Invoice invoice = invoicePersistencePort.findByOrderNumber(orderNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Factura electrónica no encontrada para la orden: " + orderNumber));
+        return ResponseEntity.ok(invoice);
     }
 
     private User getCurrentUser() {

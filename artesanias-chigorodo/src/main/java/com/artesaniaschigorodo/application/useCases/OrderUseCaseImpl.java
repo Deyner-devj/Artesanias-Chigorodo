@@ -10,6 +10,9 @@ import com.artesaniaschigorodo.domain.models.User;
 import com.artesaniaschigorodo.domain.models.enums.OrderStatus;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.ports.in.OrderUseCase;
+import com.artesaniaschigorodo.domain.models.Invoice;
+import com.artesaniaschigorodo.domain.ports.out.ElectronicInvoicingPort;
+import com.artesaniaschigorodo.domain.ports.out.InvoicePersistencePort;
 import com.artesaniaschigorodo.domain.ports.out.OrderPersistencePort;
 import com.artesaniaschigorodo.domain.ports.out.ProductPersistencePort;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,8 @@ public class OrderUseCaseImpl implements OrderUseCase {
 
     private final OrderPersistencePort orderPersistencePort;
     private final ProductPersistencePort productPersistencePort;
+    private final ElectronicInvoicingPort electronicInvoicingPort;
+    private final InvoicePersistencePort invoicePersistencePort;
     private final Random random = new Random();
 
     @Override
@@ -93,7 +98,16 @@ public class OrderUseCaseImpl implements OrderUseCase {
             order.setOrderStatus(OrderStatus.PENDING);
         }
 
-        return orderPersistencePort.save(order);
+        Order savedOrder = orderPersistencePort.save(order);
+        if (savedOrder.getOrderStatus() == OrderStatus.PAID) {
+            try {
+                Invoice invoice = electronicInvoicingPort.submitInvoice(savedOrder);
+                invoicePersistencePort.save(invoice);
+            } catch (Exception e) {
+                System.err.println("Error generating electronic invoice: " + e.getMessage());
+            }
+        }
+        return savedOrder;
     }
 
     @Override
@@ -164,13 +178,23 @@ public class OrderUseCaseImpl implements OrderUseCase {
             }
         }
 
+        OrderStatus newStatus;
         try {
-            OrderStatus newStatus = OrderStatus.valueOf(status.toUpperCase());
+            newStatus = OrderStatus.valueOf(status.toUpperCase());
             order.setOrderStatus(newStatus);
         } catch (IllegalArgumentException e) {
             throw new BusinessException("Estado de orden inválido: " + status);
         }
 
-        return orderPersistencePort.save(order);
+        Order savedOrder = orderPersistencePort.save(order);
+        if (newStatus == OrderStatus.PAID && invoicePersistencePort.findByOrderNumber(order.getOrderNumber()).isEmpty()) {
+            try {
+                Invoice invoice = electronicInvoicingPort.submitInvoice(savedOrder);
+                invoicePersistencePort.save(invoice);
+            } catch (Exception e) {
+                System.err.println("Error generating electronic invoice on status update: " + e.getMessage());
+            }
+        }
+        return savedOrder;
     }
 }
