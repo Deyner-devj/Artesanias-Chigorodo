@@ -1,12 +1,12 @@
 # Build stage
-FROM maven:3.8.5-openjdk-17-slim AS build
+FROM maven:3.9.16-openjdk-25-slim AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn -B -ntp -DskipTests package
 
 # Run stage
-FROM openjdk:17-jdk-slim
+FROM openjdk:25-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
