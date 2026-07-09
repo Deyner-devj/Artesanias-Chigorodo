@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <title>Inicio - Artesanías Chigorodó</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Navbar Header -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main Content -->
+    <div class="app-main-content">
+      <main class="home-page-container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+          <div class="hero-content">
+            <h1 class="hero-title" style="font-size: 3.5rem; font-weight: 800; line-height: 1.1; color: var(--text-dark);">
+              Descubre el arte <br />
+              <span class="accent-text" style="color: var(--primary);">hecho a mano</span>
+            </h1>
+            <p class="hero-description" style="font-size: 1.1rem; color: var(--text-muted); margin: 1.5rem 0 2.5rem; line-height: 1.6;">
+              Apoya a nuestros artesanos locales y lleva a casa piezas únicas cargadas de amor, tradición e identidad cultural.
+            </p>
+            <div class="hero-actions" style="display: flex; gap: 1rem;">
+              <a href="productos.html" class="btn btn-primary" style="padding: 14px 28px;">Comprar ahora</a>
+              <a href="productos.html" class="btn btn-outline-green" style="padding: 14px 28px;">Conocer más</a>
+            </div>
+          </div>
+          <div class="hero-image-container" style="display: flex; justify-content: flex-end;">
+            <div style="background-color: #E6EFEA; padding: 1.5rem; border-radius: 2.5rem; display: inline-block; width: 100%; max-width: 480px;">
+              <img 
+                src="img/hero-mochilas-ceramica.png" 
+                alt="Mochilas Wayuu y cerámica de Artesanías Chigorodó" 
+                class="hero-banner-image" 
+                style="width: 100%; height: auto; max-height: 420px; object-fit: cover; border-radius: 1.75rem; display: block;" 
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- Trust Badges Section -->
+        <section class="trust-badges-bar">
+          <div class="badge-item">
+            <span class="badge-icon" style="background-color: #E0F2FE; color: #0284C7; display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%;">
+              <!-- Sparkles Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="m5 3 1 2.5L8.5 6 6 7 5 9.5 4 7 1.5 6 4 5.5Z"></path><path d="m19 17 1 2.5 2.5.5-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1Z"></path></svg>
+            </span>
+            <div class="badge-text">
+              <h4 style="color: var(--text-dark);">Hecho a mano</h4>
+              <p>Por artesanos colombianos</p>
+            </div>
+          </div>
+          <div class="badge-item">
+            <span class="badge-icon" style="background-color: #FFEDD5; color: #D97706; display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%;">
+              <!-- Truck Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="13" x="2" y="4" rx="2"></rect><path d="M16 7h4l3 3.5v5.5h-7Z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            </span>
+            <div class="badge-text">
+              <h4 style="color: var(--text-dark);">Envíos a todo el país</h4>
+              <p>Colombia y el mundo</p>
+            </div>
+          </div>
+          <div class="badge-item">
+            <span class="badge-icon" style="background-color: #DCFCE7; color: #16A34A; display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%;">
+              <!-- CreditCard Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+            </span>
+            <div class="badge-text">
+              <h4 style="color: var(--text-dark);">Pagos 100% seguros</h4>
+              <p>PSE, tarjetas, otros</p>
+            </div>
+          </div>
+          <div class="badge-item">
+            <span class="badge-icon" style="background-color: #FEF3C7; color: #B45309; display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%;">
+              <!-- Heart Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+            </span>
+            <div class="badge-text">
+              <h4 style="color: var(--text-dark);">Apoyo a comunidades</h4>
+              <p>Comercio justo directo</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories-section">
+          <div class="section-header">
+            <h2>Categorías</h2>
+            <p>Explora nuestras categorías y encuentra piezas únicas.</p>
+          </div>
+
+          <div class="categories-grid">
+            <a href="productos.html?category=Tejidos" class="category-card">
+              <div class="category-image-wrapper">
+                <img src="img/categoria-tejidos.png" alt="Tejidos" class="category-img" />
+              </div>
+              <div class="category-text-box">
+                <h3>Tejidos</h3>
+                <p>Tradición que se entrelaza</p>
+              </div>
+            </a>
+            <a href="productos.html?category=Cer%C3%A1mica" class="category-card">
+              <div class="category-image-wrapper">
+                <img src="img/categoria-ceramica.png" alt="Cerámica" class="category-img" />
+              </div>
+              <div class="category-text-box">
+                <h3>Cerámica</h3>
+                <p>Arte que perdura</p>
+              </div>
+            </a>
+            <a href="productos.html?category=Joyer%C3%ADa" class="category-card">
+              <div class="category-image-wrapper">
+                <img src="img/categoria-joyeria.png" alt="Joyería" class="category-img" />
+              </div>
+              <div class="category-text-box">
+                <h3>Joyería</h3>
+                <p>Belleza artesanal</p>
+              </div>
+            </a>
+            <a href="productos.html?category=Madera" class="category-card">
+              <div class="category-image-wrapper">
+                <img src="img/categoria-madera.png" alt="Madera" class="category-img" />
+              </div>
+              <div class="category-text-box">
+                <h3>Madera</h3>
+                <p>Tallado con historia</p>
+              </div>
+            </a>
+            <a href="productos.html?category=Hogar%20y%20Decoraci%C3%B3n" class="category-card">
+              <div class="category-image-wrapper">
+                <img src="img/categoria-hogar-decoracion.png" alt="Hogar y Decoración" class="category-img" />
+              </div>
+              <div class="category-text-box">
+                <h3>Hogar y Decoración</h3>
+                <p>Dale vida a tus espacios</p>
+              </div>
+            </a>
+            <a href="productos.html?category=Accesorios" class="category-card">
+              <div class="category-image-wrapper">
+                <img src="img/categoria-accesorios.png" alt="Accesorios" class="category-img" />
+              </div>
+              <div class="category-text-box">
+                <h3>Accesorios</h3>
+                <p>Detalles que enamoran</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!-- Featured Banner / Quote -->
+        <section class="featured-quote-banner">
+          <div class="quote-content">
+            <span class="quote-mark">“</span>
+            <h2>Cada pieza artesanal cuenta una historia de tradición, esfuerzo y cultura que perdura en el tiempo.</h2>
+            <p>Comprando en nuestra plataforma apoyas de forma directa la sustentabilidad económica de más de 120 familias artesanas.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Footer Element -->
+    <div id="footer-placeholder"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/productos.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/carrito.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/footer.js"></script>
+</body>
+</html>

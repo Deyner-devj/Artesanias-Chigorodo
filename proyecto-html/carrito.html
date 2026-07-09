@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <title>Mi Carrito - Artesanías Chigorodó</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/carrito.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Navbar Header -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main Content -->
+    <div class="app-main-content">
+      <main class="page cart-page-container" id="cart-main-container">
+        <!-- Loaded dynamically via JS -->
+      </main>
+    </div>
+
+    <!-- Footer Element -->
+    <div id="footer-placeholder"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/productos.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/carrito.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/footer.js"></script>
+
+  <script>
+    let discount = 0;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Clear checkout states if we start fresh in cart
+      sessionStorage.removeItem('checkout_shipping_cost');
+      sessionStorage.removeItem('checkout_shipping_method');
+      sessionStorage.removeItem('checkout_payment_method');
+      
+      // Load saved discount if any
+      const savedDiscount = sessionStorage.getItem('checkout_discount');
+      if (savedDiscount) {
+        discount = parseInt(savedDiscount);
+      }
+      
+      renderCart();
+    });
+
+    function renderCart() {
+      const container = document.getElementById('cart-main-container');
+      const items = getCartItems();
+      const total = getCartTotal();
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <header class="page-header" style="text-align: center; margin-bottom: 2.5rem;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-serif);">Tu carrito de compras</h1>
+          </header>
+          <section class="empty-state" style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding: 3rem;">
+            <div class="empty-cart-icon" style="color: var(--text-muted);">
+              <!-- Shopping Cart Icon Large -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" /><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" /></svg>
+            </div>
+            <p style="font-size: 1.1rem; color: var(--text-muted);">Aún no hay productos en tu carrito.</p>
+            <a href="productos.html" class="btn btn-primary" style="padding: 14px 28px;">Ir al catálogo</a>
+          </section>
+        `;
+        return;
+      }
+
+      // Recalculate discount based on total (if discount is 10%)
+      if (discount > 0) {
+        discount = Math.round(total * 0.1);
+        sessionStorage.setItem('checkout_discount', discount);
+      }
+
+      const subTotalAfterDiscount = Math.max(0, total - discount);
+
+      let itemsHtml = '';
+      items.forEach(item => {
+        itemsHtml += `
+          <div class="cart-item-card">
+            <div style="display: flex; gap: 1rem; align-items: center;">
+              <img src="${item.product.image}" alt="${item.product.name}" class="cart-item-img" onerror="this.src='img/mochila_wayuu.png'" />
+              <div>
+                <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-dark);">${item.product.name}</h3>
+                <p class="cart-item-seller">Vendedor: ${item.product.sellerName}</p>
+              </div>
+            </div>
+            <div style="font-size: 0.95rem; color: var(--text-dark); font-weight: 500;">
+              ${formatCOP(item.product.price)}
+            </div>
+            <div style="display: flex; justify-content: center;">
+              <div class="qty-selector-group">
+                <button onclick="changeItemQty('${item.product.id}', -1)" class="quantity-btn-minus">-</button>
+                <input type="text" value="${item.quantity}" readonly />
+                <button onclick="changeItemQty('${item.product.id}', 1)" class="quantity-btn-plus">+</button>
+              </div>
+            </div>
+            <div style="text-align: right; font-weight: 700; color: var(--text-dark); font-size: 0.95rem;">
+              ${formatCOP(item.product.price * item.quantity)}
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+              <button onclick="removeCartItem('${item.product.id}')" style="border: none; background: none; cursor: pointer; color: var(--primary); opacity: 0.8;" title="Eliminar producto">
+                <!-- X icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></svg>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      const couponInputVal = sessionStorage.getItem('checkout_coupon_code') || '';
+
+      container.innerHTML = `
+        <div class="cart-grid">
+          <!-- List of Products -->
+          <div class="cart-items-panel">
+            <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 2rem; font-family: var(--font-serif);">Mi carrito</h1>
+            
+            <div class="cart-table-headers">
+              <span>Producto</span>
+              <span>Precio unitario</span>
+              <span style="text-align: center;">Cantidad</span>
+              <span style="text-align: right;">Subtotal</span>
+              <span></span>
+            </div>
+
+            <div class="cart-items-list">
+              ${itemsHtml}
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; flex-wrap: wrap; gap: 1rem;">
+              <div style="display: flex; gap: 0.5rem;">
+                <input 
+                  type="text" 
+                  id="coupon-input"
+                  placeholder="Código de descuento" 
+                  value="${couponInputVal}"
+                  style="width: 180px; padding: 0.65rem 1rem; font-size: 0.9rem;" 
+                />
+                <button 
+                  type="button"
+                  onclick="applyCoupon()"
+                  class="btn btn-outline-orange" 
+                  style="padding: 0.65rem 1.25rem; font-size: 0.9rem; border-radius: var(--border-radius-input);"
+                >
+                  Aplicar
+                </button>
+              </div>
+              <a href="productos.html" class="link-secondary" style="display: flex; align-items: center; gap: 0.35rem;">
+                <!-- ArrowLeft Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Seguir comprando
+              </a>
+            </div>
+          </div>
+
+          <!-- Cart Summary -->
+          <div class="cart-summary-panel">
+            <h2 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 1.5rem; font-family: var(--font-serif);">Resumen del pedido</h2>
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span style="font-weight: 600;">${formatCOP(total)}</span>
+            </div>
+            
+            <div id="discount-row-container" style="display: ${discount > 0 ? 'flex' : 'none'}; justify-content: space-between; margin-bottom: 1rem; font-size: 0.95rem; color: var(--primary);">
+              <span>Descuento (10%)</span>
+              <span style="font-weight: 600;" id="discount-display-value">-${formatCOP(discount)}</span>
+            </div>
+
+            <div class="summary-row" style="color: var(--text-muted);">
+              <span>Envío</span>
+              <span>Calculado en pago</span>
+            </div>
+            <div style="height: 1px; background-color: var(--border-color); margin: 1.5rem 0;"></div>
+            <div class="summary-row total-row">
+              <span>Total</span>
+              <span style="color: var(--primary);" id="total-display-value">${formatCOP(subTotalAfterDiscount)}</span>
+            </div>
+
+            <button onclick="goToCheckout()" class="btn btn-secondary btn-block" style="padding: 14px; margin-top: 1rem;">Ir a pagar</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function changeItemQty(productId, delta) {
+      if (delta === 1) {
+        const item = getCartItems().find(i => i.product.id === productId);
+        if (item) addProductToCart(item.product, 1);
+      } else {
+        decreaseProductInCart(productId);
+      }
+      renderCart();
+    }
+
+    function removeCartItem(productId) {
+      removeProductFromCart(productId);
+      renderCart();
+    }
+
+    function applyCoupon() {
+      const couponInput = document.getElementById('coupon-input');
+      const val = couponInput.value.trim().toUpperCase();
+      
+      if (val === 'CHIGORODO10') {
+        const total = getCartTotal();
+        discount = Math.round(total * 0.1);
+        sessionStorage.setItem('checkout_discount', discount);
+        sessionStorage.setItem('checkout_coupon_code', 'CHIGORODO10');
+        alert('¡Código de descuento CHIGORODO10 aplicado! 10% de descuento.');
+        renderCart();
+      } else {
+        alert('Código inválido. Usa el código de prueba "CHIGORODO10".');
+      }
+    }
+
+    function goToCheckout() {
+      const user = getLoggedInUser();
+      if (!user) {
+        alert("Por favor inicia sesión para completar tu compra.");
+        sessionStorage.setItem('redirect_after_login', 'checkout-info.html');
+        window.location.href = 'login.html';
+      } else {
+        window.location.href = 'checkout-info.html';
+      }
+    }
+  </script>
+</body>
+</html>

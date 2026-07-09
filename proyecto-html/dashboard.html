@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <title>Panel de Vendedor - Artesanías Chigorodó</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  <!-- Protect Route -->
+  <script src="js/protected-routes.js"></script>
+
+  <div class="app-shell">
+    <!-- Navbar Header -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main Content -->
+    <div class="app-main-content">
+      <main class="page seller-dashboard-container" style="display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 140px); width: 100%; max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; gap: 2rem;">
+        <!-- Sidebar Navigation -->
+        <aside class="account-sidebar" style="height: fit-content;">
+          <div class="sidebar-header" style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); text-align: center;">
+            <div style="width: 64px; height: 64px; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; fontSize: 1.5rem; font-weight: 800; margin: 0 auto 0.75rem;">
+              ME
+            </div>
+            <h3 style="margin: 0; fontSize: 1.1rem; font-weight: 700; color: var(--text-dark);">María Elena</h3>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Artesana Tejedora</span>
+          </div>
+          <nav style="display: flex; flex-direction: column; padding: 1rem 0;">
+            <button onclick="switchTab('resumen')" class="account-menu-item active" id="tab-btn-resumen">
+              <!-- LayoutDashboard Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="10" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+              Resumen
+            </button>
+            <button onclick="switchTab('productos')" class="account-menu-item" id="tab-btn-productos">
+              <!-- ShoppingBag Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              Mis Productos
+            </button>
+            <button onclick="switchTab('pedidos')" class="account-menu-item" id="tab-btn-pedidos">
+              <!-- ClipboardList Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M9 9h6"></path><path d="M9 13h6"></path><path d="M9 17h6"></path></svg>
+              Pedidos Recibidos
+            </button>
+            <div style="height: 1px; background-color: var(--border-color); margin: 1rem 0;"></div>
+            <button onclick="triggerLogout()" class="account-menu-item" style="color: #c2410c;">
+              <!-- LogOut Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Cerrar Sesión
+            </button>
+          </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <section class="dashboard-content-panel" id="dashboard-tab-panel">
+          <!-- Filled dynamically via JS -->
+        </section>
+      </main>
+    </div>
+
+    <!-- Footer Element -->
+    <div id="footer-placeholder"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/productos.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/carrito.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/footer.js"></script>
+
+  <script>
+    let activeTab = 'resumen';
+    let showAddForm = false;
+
+    // Presets for data
+    const DEFAULT_PRODUCTS = [
+      { id: '1', name: 'Mochila Wayuu Colores del Sol', price: 280000, stock: 15, sales: 8, category: 'Tejidos' },
+      { id: '4', name: 'Hamaca San Jacinto', price: 350000, stock: 5, sales: 3, category: 'Tejidos' }
+    ];
+
+    const DEFAULT_ORDERS = [
+      { id: 'AC-2024-88032', customer: 'Carlos Gómez', product: 'Mochila Wayuu Colores del Sol', date: '2024-07-08', amount: 280000, status: 'Pendiente' },
+      { id: 'AC-2024-77123', customer: 'Lucía Ortiz', product: 'Hamaca San Jacinto', date: '2024-07-05', amount: 350000, status: 'En tránsito' },
+      { id: 'AC-2024-66432', customer: 'Mateo Restrepo', product: 'Mochila Wayuu Colores del Sol', date: '2024-06-28', amount: 280000, status: 'Entregado' }
+    ];
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sync local database
+      if (!localStorage.getItem('seller_products')) {
+        localStorage.setItem('seller_products', JSON.stringify(DEFAULT_PRODUCTS));
+      }
+      if (!localStorage.getItem('seller_orders')) {
+        localStorage.setItem('seller_orders', JSON.stringify(DEFAULT_ORDERS));
+      }
+
+      renderTabContent();
+    });
+
+    function switchTab(tab) {
+      activeTab = tab;
+      showAddForm = false;
+
+      // Toggle active states on side menu
+      const tabs = ['resumen', 'productos', 'pedidos'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (btn) {
+          btn.classList.remove('active');
+          if (t === tab) {
+            btn.classList.add('active');
+          }
+        }
+      });
+
+      renderTabContent();
+    }
+
+    function renderTabContent() {
+      const panel = document.getElementById('dashboard-tab-panel');
+      const products = JSON.parse(localStorage.getItem('seller_products') || '[]');
+      const orders = JSON.parse(localStorage.getItem('seller_orders') || '[]');
+
+      if (activeTab === 'resumen') {
+        renderResumen(panel, products, orders);
+      } else if (activeTab === 'productos') {
+        renderProductos(panel, products);
+      } else if (activeTab === 'pedidos') {
+        renderPedidos(panel, orders);
+      }
+    }
+
+    function renderResumen(panel, products, orders) {
+      const totalSalesAmount = orders.reduce((sum, order) => sum + order.amount, 0);
+      const activeProductsCount = products.length;
+      const pendingOrdersCount = orders.filter(o => o.status === 'Pendiente').length;
+
+      // Table rows for recent orders
+      let rowsHtml = '';
+      orders.slice(0, 5).forEach(o => {
+        const badgeClass = o.status === 'Entregado' ? 'delivered' : o.status === 'En tránsito' ? 'transit' : 'pending';
+        rowsHtml += `
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 1rem 0.5rem; font-weight: 700;">#${o.id}</td>
+            <td style="padding: 1rem 0.5rem;">${o.customer}</td>
+            <td style="padding: 1rem 0.5rem;">${o.product}</td>
+            <td style="padding: 1rem 0.5rem;">${o.date}</td>
+            <td style="padding: 1rem 0.5rem; font-weight: 600;">${formatCOP(o.amount)}</td>
+            <td style="padding: 1rem 0.5rem; text-align: right;">
+              <span class="status-badge ${badgeClass}">${o.status}</span>
+            </td>
+          </tr>
+        `;
+      });
+
+      panel.innerHTML = `
+        <div>
+          <header style="margin-bottom: 2.5rem;">
+            <span class="eyebrow" style="color: var(--primary); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.85rem;">Panel de Control</span>
+            <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--text-dark); font-family: var(--font-serif); margin: 0.25rem 0 0.5rem;">Bienvenida, María Elena</h1>
+            <p style="color: var(--text-muted); margin: 0;">Rastrea el impacto de tus piezas tejidas y administra tus ventas de comercio justo.</p>
+          </header>
+
+          <!-- Metrics Row -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Ventas Totales</span>
+                <!-- Dollar SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-dark);">${formatCOP(totalSalesAmount)}</div>
+              <span style="font-size: 0.75rem; color: var(--secondary); display: flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem;">
+                <!-- TrendingUp SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                +12.5% este mes
+              </span>
+            </div>
+
+            <div class="metric-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Productos Activos</span>
+                <!-- Package SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              </div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-dark);">${activeProductsCount}</div>
+              <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">Listos en el catálogo</span>
+            </div>
+
+            <div class="metric-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Pedidos Pendientes</span>
+                <!-- ClipboardList SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M9 9h6"></path><path d="M9 13h6"></path><path d="M9 17h6"></path></svg>
+              </div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-dark);">${pendingOrdersCount}</div>
+              <span style="font-size: 0.75rem; color: #c2410c; display: flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem;">
+                <!-- ShieldAlert SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Requieren preparación
+              </span>
+            </div>
+
+            <div class="metric-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Calificación Artesana</span>
+                <!-- Star SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="var(--primary)" color="var(--primary)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-dark);">4.9</div>
+              <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">Basada en 52 reseñas</span>
+            </div>
+          </div>
+
+          <!-- Sales Chart Section -->
+          <div style="margin-top: 2.5rem; margin-bottom: 2.5rem; border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; background-color: #FDFCFB;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem; color: var(--text-dark);">Ventas de los últimos 6 meses</h3>
+            <div class="chart-bar-container">
+              ${renderChartBar('Ene', 450000, 1850000)}
+              ${renderChartBar('Feb', 720000, 1850000)}
+              ${renderChartBar('Mar', 600000, 1850000)}
+              ${renderChartBar('Abr', 890000, 1850000)}
+              ${renderChartBar('May', 1100000, 1850000)}
+              ${renderChartBar('Jun', 1850000, 1850000)}
+            </div>
+          </div>
+
+          <!-- Recent Activity Section -->
+          <div style="margin-top: 2rem;">
+            <h3 style="font-size: 1.25rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.25rem; color: var(--text-dark);">Pedidos Recientes</h3>
+            <div style="overflow-x: auto;">
+              <table class="account-orders-table">
+                <thead>
+                  <tr>
+                    <th>ID Pedido</th>
+                    <th>Cliente</th>
+                    <th>Producto</th>
+                    <th>Fecha</th>
+                    <th>Monto</th>
+                    <th style="text-align: right;">Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rowsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderChartBar(month, sales, maxSales) {
+      const heightPercent = `${Math.round((sales / maxSales) * 100)}%`;
+      return `
+        <div style="display: flex; flexDirection: column; align-items: center; flex: 1; min-width: 45px; height: 100%; justify-content: flex-end;">
+          <span style="font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">${formatCOP(sales)}</span>
+          <div style="width: 100%; height: ${heightPercent}; background-color: var(--secondary); border-radius: 6px 6px 0 0; opacity: 0.85; transition: all 0.3s ease;"></div>
+          <span style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; font-weight: 600;">${month}</span>
+        </div>
+      `;
+    }
+
+    function renderProductos(panel, products) {
+      let rowsHtml = '';
+      products.forEach(p => {
+        const badgeClass = p.stock > 0 ? 'delivered' : 'pending';
+        const badgeText = p.stock > 0 ? 'Activo' : 'Agotado';
+        rowsHtml += `
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 1rem 0.5rem; font-weight: 700; color: var(--text-dark);">${p.name}</td>
+            <td style="padding: 1rem 0.5rem;">${p.category}</td>
+            <td style="padding: 1rem 0.5rem; font-weight: 600;">${formatCOP(p.price)}</td>
+            <td style="padding: 1rem 0.5rem;">${p.sales} u</td>
+            <td style="padding: 1rem 0.5rem;">${p.stock} u</td>
+            <td style="padding: 1rem 0.5rem; text-align: right;">
+              <span class="status-badge ${badgeClass}">${badgeText}</span>
+            </td>
+          </tr>
+        `;
+      });
+
+      panel.innerHTML = `
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin: 0;">Mis Productos</h2>
+            <button 
+              onclick="toggleProductForm()"
+              class="btn btn-secondary" 
+              style="display: flex; align-items: center; gap: 0.5rem; padding: 10px 18px; font-size: 0.9rem;"
+            >
+              <!-- PlusCircle SVG -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+              <span id="form-btn-text">${showAddForm ? 'Cerrar Formulario' : 'Agregar Producto'}</span>
+            </button>
+          </div>
+
+          <!-- Add Product Form -->
+          <form id="add-product-form" onsubmit="saveProduct(event)" style="display: ${showAddForm ? 'block' : 'none'}; background-color: var(--bg-secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 2.5rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem;">Agregar artesanía al catálogo</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+              <div class="input-field">
+                <label>Nombre de la artesanía</label>
+                <input 
+                  type="text" 
+                  id="prod-name"
+                  placeholder="Ej. Mochila Wayuu Girasol"
+                  required 
+                />
+              </div>
+              <div class="input-field">
+                <label>Categoría</label>
+                <select id="prod-category" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-primary);">
+                  <option value="Tejidos">Tejidos</option>
+                  <option value="Cerámica">Cerámica</option>
+                  <option value="Joyería">Joyería</option>
+                  <option value="Madera">Madera</option>
+                  <option value="Hogar y Decoración">Hogar y Decoración</option>
+                  <option value="Accesorios">Accesorios</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;">
+              <div class="input-field">
+                <label>Precio (COP)</label>
+                <input 
+                  type="number" 
+                  id="prod-price"
+                  placeholder="Ej. 180000"
+                  required 
+                />
+              </div>
+              <div class="input-field">
+                <label>Unidades en Stock</label>
+                <input 
+                  type="number" 
+                  id="prod-stock"
+                  placeholder="Ej. 10"
+                  required 
+                />
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+              <button type="button" onclick="toggleProductForm()" class="btn btn-outline-orange" style="padding: 10px 20px;">Cancelar</button>
+              <button type="submit" class="btn btn-secondary" style="padding: 10px 20px;">Guardar Artesanía</button>
+            </div>
+          </form>
+
+          <!-- Products Table -->
+          <div style="overflow-x: auto;">
+            <table class="account-orders-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Unidades vendidas</th>
+                  <th>Stock actual</th>
+                  <th style="text-align: right;">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleProductForm() {
+      showAddForm = !showAddForm;
+      renderTabContent();
+    }
+
+    function saveProduct(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('prod-name').value.trim();
+      const category = document.getElementById('prod-category').value;
+      const priceStr = document.getElementById('prod-price').value;
+      const stockStr = document.getElementById('prod-stock').value;
+
+      if (!name || !priceStr || !stockStr) {
+        alert('Por favor complete todos los campos');
+        return;
+      }
+
+      const price = parseFloat(priceStr);
+      const stock = parseInt(stockStr);
+      if (isNaN(price) || isNaN(stock)) {
+        alert('Precio y stock deben ser valores numéricos');
+        return;
+      }
+
+      // Add product locally in dashboard products list
+      const products = JSON.parse(localStorage.getItem('seller_products') || '[]');
+      const newProd = {
+        id: String(Date.now()),
+        name: name,
+        category: category,
+        price: price,
+        stock: stock,
+        sales: 0
+      };
+      products.push(newProd);
+      localStorage.setItem('seller_products', JSON.stringify(products));
+
+      // Also register this product in global product catalog in productos.js database!
+      // This is dynamic sync so the new product is actually sellable!
+      const catalogProd = {
+        id: newProd.id,
+        name: newProd.name,
+        description: `Hermosa pieza de artesanía de tipo ${newProd.category} elaborada por María Elena de forma directa y bajo el sello de comercio justo.`,
+        price: newProd.price,
+        image: 'img/mochila_wayuu.png', // default fallback image
+        category: newProd.category,
+        sellerName: 'María Elena',
+        stock: newProd.stock,
+        rating: 5.0,
+        reviewsCount: 0
+      };
+      addCustomProduct(catalogProd);
+
+      showAddForm = false;
+      alert('¡Producto agregado con éxito al catálogo de venta!');
+      renderTabContent();
+    }
+
+    function renderPedidos(panel, orders) {
+      let rowsHtml = '';
+      orders.forEach(o => {
+        let actionHTML = '';
+        if (o.status === 'Pendiente') {
+          actionHTML = `
+            <button 
+              onclick="dispatchOrder('${o.id}')"
+              class="btn btn-outline-green" 
+              style="padding: 6px 12px; font-size: 0.8rem; border-radius: 6px;"
+            >
+              Despachar pedido
+            </button>
+          `;
+        } else {
+          const badgeClass = o.status === 'Entregado' ? 'delivered' : 'transit';
+          const labelText = o.status === 'Entregado' ? 'Entregado al cliente' : 'En tránsito al destino';
+          actionHTML = `<span class="status-badge ${badgeClass}">${labelText}</span>`;
+        }
+
+        rowsHtml += `
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 1rem 0.5rem; font-weight: 700;">#${o.id}</td>
+            <td style="padding: 1rem 0.5rem;">${o.customer}</td>
+            <td style="padding: 1rem 0.5rem;">${o.product}</td>
+            <td style="padding: 1rem 0.5rem;">${o.date}</td>
+            <td style="padding: 1rem 0.5rem; font-weight: 600;">${formatCOP(o.amount)}</td>
+            <td style="padding: 1rem 0.5rem; text-align: right;">
+              ${actionHTML}
+            </td>
+          </tr>
+        `;
+      });
+
+      panel.innerHTML = `
+        <div>
+          <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Pedidos Recibidos</h2>
+          <p style="color: var(--text-muted); margin-bottom: 2rem;">Gestiona los despachos de tus pedidos. Recuerda embalar con cuidado las piezas únicas de arte.</p>
+
+          <div style="overflow-x: auto;">
+            <table class="account-orders-table">
+              <thead>
+                <tr>
+                  <th>ID Pedido</th>
+                  <th>Cliente</th>
+                  <th>Artesanía</th>
+                  <th>Fecha</th>
+                  <th>Monto recibido</th>
+                  <th style="text-align: right;">Acción despacho</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function dispatchOrder(orderId) {
+      const orders = JSON.parse(localStorage.getItem('seller_orders') || '[]');
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        order.status = 'En tránsito';
+        localStorage.setItem('seller_orders', JSON.stringify(orders));
+
+        // Sync order status in customer orders list if it is there!
+        const customerOrders = JSON.parse(localStorage.getItem('orders_history') || '[]');
+        const custOrder = customerOrders.find(co => co.id === `#${orderId}`);
+        if (custOrder) {
+          custOrder.status = 'transit';
+          custOrder.statusText = 'En tránsito';
+          localStorage.setItem('orders_history', JSON.stringify(customerOrders));
+        }
+
+        alert(`El pedido #${orderId} ha sido despachado y está en tránsito.`);
+        renderTabContent();
+      }
+    }
+
+    function triggerLogout() {
+      logoutUser();
+      alert('Cerrando sesión de artesano...');
+      window.location.replace('index.html');
+    }
+  </script>
+</body>
+</html>

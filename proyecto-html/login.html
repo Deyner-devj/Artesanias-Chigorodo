@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <title>Ingreso / Registro - Artesanías Chigorodó</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/login.css" />
+  <style>
+    .validation-error {
+      color: #c2410c;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+      display: none;
+      padding-left: 0.5rem;
+    }
+    .input-group.has-error {
+      border-color: #c2410c !important;
+      background-color: #fffaf8 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Navbar Header -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main Content -->
+    <div class="app-main-content">
+      <div class="auth-page-wrapper" style="background-image: url('img/bg-login-decorativo.png');">
+        <div class="auth-card-container">
+          <!-- Logo and Header -->
+          <div class="auth-logo-header">
+            <div class="auth-logo-icon">
+              <img src="img/logo-vasija.svg" alt="Logo de Artesanías Chigorodó" style="width: 56px; height: 56px;" />
+            </div>
+            <h2>Artesanías <span class="highlight">Chigorodó</span></h2>
+            <p class="auth-tagline">Descubre el arte hecho a mano</p>
+          </div>
+
+          <!-- Double Columns Form -->
+          <div class="auth-columns">
+            <!-- Column 1: Login -->
+            <div class="auth-column" id="login-column">
+              <div class="auth-column-title active" id="title-login">
+                <!-- User SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Iniciar Sesión</span>
+              </div>
+
+              <form class="auth-card-form" id="login-form" novalidate>
+                <div class="input-group" id="group-login-email">
+                  <input 
+                    type="email" 
+                    id="login-email"
+                    placeholder="Correo electrónico" 
+                    required
+                  />
+                  <div class="input-icon-wrapper orange">
+                    <!-- Mail SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                  </div>
+                </div>
+                <span class="validation-error" id="error-login-email">Ingresa un correo electrónico válido</span>
+
+                <div class="input-group" id="group-login-password">
+                  <input 
+                    type="password" 
+                    id="login-password"
+                    placeholder="Contraseña" 
+                    required
+                  />
+                  <div class="input-icon-wrapper orange">
+                    <!-- Lock SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  </div>
+                </div>
+                <span class="validation-error" id="error-login-password">Ingresa tu contraseña</span>
+
+                <div class="form-options">
+                  <a href="#" class="forgot-password-link" onclick="alert('Funcionalidad de recuperación de contraseña simulada. Te enviaremos un correo para restaurar tu contraseña.')">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" class="auth-submit-btn btn-login">Iniciar Sesión</button>
+              </form>
+              
+              <div class="auth-switch-link" style="margin-top: 1.5rem;">
+                ¿No tienes cuenta? <a href="#" onclick="toggleColumn('register')" class="text-green">Regístrate aquí</a>
+              </div>
+            </div>
+
+            <!-- Vertical Divider -->
+            <div class="auth-divider-line"></div>
+
+            <!-- Column 2: Register -->
+            <div class="auth-column" id="register-column">
+              <div class="auth-column-title inactive" id="title-register">
+                <!-- UserPlus SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+                <span>Registrarse</span>
+              </div>
+
+              <form class="auth-card-form" id="register-form" novalidate>
+                <div class="input-group" id="group-register-name">
+                  <input 
+                    type="text" 
+                    id="register-name"
+                    placeholder="Nombre completo" 
+                    required
+                  />
+                  <div class="input-icon-wrapper green">
+                    <!-- User SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  </div>
+                </div>
+                <span class="validation-error" id="error-register-name">Por favor ingresa tu nombre</span>
+
+                <div class="input-group" id="group-register-email">
+                  <input 
+                    type="email" 
+                    id="register-email"
+                    placeholder="Correo electrónico" 
+                    required
+                  />
+                  <div class="input-icon-wrapper green">
+                    <!-- Mail SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                  </div>
+                </div>
+                <span class="validation-error" id="error-register-email">Ingresa un correo electrónico válido</span>
+
+                <div class="input-group" id="group-register-password">
+                  <input 
+                    type="password" 
+                    id="register-password"
+                    placeholder="Contraseña" 
+                    required
+                  />
+                  <div class="input-icon-wrapper green">
+                    <!-- Lock SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  </div>
+                </div>
+                <span class="validation-error" id="error-register-password">La contraseña debe tener al menos 6 caracteres</span>
+
+                <div class="input-group" id="group-register-confirm">
+                  <input 
+                    type="password" 
+                    id="register-confirm"
+                    placeholder="Confirmar contraseña" 
+                    required
+                  />
+                  <div class="input-icon-wrapper green">
+                    <!-- Lock SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  </div>
+                </div>
+                <span class="validation-error" id="error-register-confirm">Las contraseñas no coinciden</span>
+
+                <button type="submit" class="auth-submit-btn btn-register">Crear Cuenta</button>
+              </form>
+
+              <div class="auth-switch-link" style="margin-top: 1.5rem;">
+                ¿Ya tienes cuenta? <a href="#" onclick="toggleColumn('login')" class="text-orange">Inicia sesión aquí</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="auth-card-footer">
+            <!-- Shield SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>API REST · JWT Authentication · Artesanías Chigorodó</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Element -->
+    <div id="footer-placeholder"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/productos.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/carrito.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/footer.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // If user is already logged in, redirect them
+      const user = getLoggedInUser();
+      if (user) {
+        redirectUser(user);
+      }
+
+      bindForms();
+    });
+
+    function toggleColumn(column) {
+      const loginTitle = document.getElementById('title-login');
+      const registerTitle = document.getElementById('title-register');
+      
+      if (column === 'login') {
+        loginTitle.className = 'auth-column-title active';
+        registerTitle.className = 'auth-column-title inactive';
+        document.getElementById('login-email').focus();
+      } else {
+        loginTitle.className = 'auth-column-title inactive';
+        registerTitle.className = 'auth-column-title active';
+        document.getElementById('register-name').focus();
+      }
+    }
+
+    function redirectUser(user) {
+      const redirectPath = sessionStorage.getItem('redirect_after_login');
+      if (redirectPath) {
+        sessionStorage.removeItem('redirect_after_login');
+        window.location.replace(redirectPath);
+      } else if (user.role === 'vendedor' || user.role === 'admin') {
+        window.location.replace('dashboard.html');
+      } else {
+        window.location.replace('mi-cuenta.html');
+      }
+    }
+
+    function bindForms() {
+      // LOGIN SUBMIT
+      const loginForm = document.getElementById('login-form');
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Reset errors
+        resetErrors('login');
+
+        let isValid = true;
+        const email = document.getElementById('login-email');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.value.trim())) {
+          showError('login-email');
+          isValid = false;
+        }
+
+        const password = document.getElementById('login-password');
+        if (!password.value.trim()) {
+          showError('login-password');
+          isValid = false;
+        }
+
+        if (isValid) {
+          const user = loginUser(email.value, password.value);
+          if (user) {
+            redirectUser(user);
+          } else {
+            alert('Credenciales incorrectas');
+          }
+        }
+      });
+
+      // REGISTER SUBMIT
+      const registerForm = document.getElementById('register-form');
+      registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Reset errors
+        resetErrors('register');
+
+        let isValid = true;
+
+        const name = document.getElementById('register-name');
+        if (!name.value.trim()) {
+          showError('register-name');
+          isValid = false;
+        }
+
+        const email = document.getElementById('register-email');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.value.trim())) {
+          showError('register-email');
+          isValid = false;
+        }
+
+        const password = document.getElementById('register-password');
+        if (password.value.trim().length < 6) {
+          showError('register-password');
+          isValid = false;
+        }
+
+        const confirm = document.getElementById('register-confirm');
+        if (confirm.value.trim() !== password.value.trim()) {
+          showError('register-confirm');
+          isValid = false;
+        }
+
+        if (isValid) {
+          const success = registerUser(name.value.trim(), email.value.trim(), password.value);
+          if (success) {
+            alert('¡Cuenta creada con éxito! Ahora puedes iniciar sesión.');
+            
+            // Auto fill login email and switch columns
+            document.getElementById('login-email').value = email.value.trim();
+            toggleColumn('login');
+
+            // Reset fields
+            name.value = '';
+            email.value = '';
+            password.value = '';
+            confirm.value = '';
+          } else {
+            alert('El correo electrónico ya está registrado.');
+          }
+        }
+      });
+    }
+
+    function resetErrors(formPrefix) {
+      const errors = document.querySelectorAll(`[id^="error-${formPrefix}"]`);
+      errors.forEach(err => err.style.display = 'none');
+      const groups = document.querySelectorAll(`[id^="group-${formPrefix}"]`);
+      groups.forEach(g => g.classList.remove('has-error'));
+    }
+
+    function showError(fieldId) {
+      const errSpan = document.getElementById(`error-${fieldId}`);
+      if (errSpan) {
+        errSpan.style.display = 'block';
+      }
+      const group = document.getElementById(`group-${fieldId}`);
+      if (group) {
+        group.classList.add('has-error');
+      }
+    }
+  </script>
+</body>
+</html>

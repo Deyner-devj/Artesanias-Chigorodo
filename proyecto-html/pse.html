@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <title>PSE Portal Bancario - Artesanías Chigorodó</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <link rel="stylesheet" href="css/carrito.css" />
+  <link rel="stylesheet" href="css/checkout.css" />
+</head>
+<body>
+  <!-- Protect Route -->
+  <script src="js/protected-routes.js"></script>
+
+  <div class="app-shell" style="background-color: #f6efe2;">
+    <!-- Main Content -->
+    <div class="app-main-content">
+      <main class="page pse-mock-portal-overlay">
+        <div class="pse-portal-card">
+          <div class="pse-portal-header">
+            <span class="pse-logo-badge">pse</span>
+            <h3>PSE - Portal de Pagos Seguros</h3>
+          </div>
+          <div class="pse-portal-body">
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0 0 1rem 0;">
+              Serás redirigido al portal seguro del banco para realizar el pago.
+            </p>
+            
+            <div class="pse-transaction-info">
+              <h4>Detalle de la transacción</h4>
+              <div class="pse-info-row">
+                <span>Comercio:</span>
+                <strong>Artesanías Chigorodó S.A.S</strong>
+              </div>
+              <div class="pse-info-row">
+                <span>Banco:</span>
+                <strong id="pse-bank-name">Bancolombia</strong>
+              </div>
+              <div class="pse-info-row">
+                <span>Titular:</span>
+                <strong id="pse-holder-name">Juan Pérez</strong>
+              </div>
+              <div class="pse-info-row">
+                <span>Monto:</span>
+                <strong class="pse-amount" id="pse-total-amount"></strong>
+              </div>
+            </div>
+
+            <div class="pse-bank-security-msg">
+              <!-- Shield SVG Icon -->
+              <svg class="security-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: #1a4d80;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <p>
+                Esta es una transacción segura. Por favor verifica que estás en la URL correcta y nunca compartas tu clave de acceso.
+              </p>
+            </div>
+
+            <div class="pse-terms-checkbox" style="margin-top: 1.5rem;">
+              <input type="checkbox" id="pse-terms" required />
+              <label htmlFor="pse-terms" style="cursor: pointer; user-select: none;">
+                Acepto los términos y condiciones y la política de privacidad de la pasarela.
+              </label>
+            </div>
+
+            <div style="text-align: center; margin: 1.5rem 0 0.5rem 0;">
+              <span style="font-size: 0.85rem; color: var(--text-muted);">Total a pagar:</span>
+              <div style="font-size: 1.8rem; font-weight: 800; color: #0b428c; margin-top: 0.25rem;" id="pse-grand-total"></div>
+            </div>
+
+            <div class="pse-portal-actions">
+              <a href="checkout-pago.html" class="btn btn-outline-orange" style="text-align: center;">Cancelar</a>
+              <button onclick="payWithPSE()" class="btn btn-pse-blue" style="border-radius: 8px; padding: 14px; font-weight: 700; border: none; cursor: pointer;">
+                Pagar con PSE
+              </button>
+            </div>
+          </div>
+          <div class="pse-portal-footer">
+            <!-- Lock SVG Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Transacción segura cifrada SSL</span>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/productos.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/carrito.js"></script>
+
+  <script>
+    let grandTotal = 0;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Settle cart constraints
+      if (getCartItems().length === 0) {
+        window.location.href = 'carrito.html';
+        return;
+      }
+
+      loadTransactionDetails();
+    });
+
+    function loadTransactionDetails() {
+      const bank = sessionStorage.getItem('checkout_pse_bank') || 'Bancolombia';
+      const info = JSON.parse(sessionStorage.getItem('checkout_info') || '{}');
+      
+      const total = getCartTotal();
+      const discount = parseInt(sessionStorage.getItem('checkout_discount') || '0');
+      const shippingCost = parseInt(sessionStorage.getItem('checkout_shipping_cost') || '15000');
+      grandTotal = Math.max(0, total - discount) + shippingCost;
+
+      document.getElementById('pse-bank-name').textContent = bank;
+      document.getElementById('pse-holder-name').textContent = info.name || 'Juan Pérez';
+      
+      const formattedTotal = formatCOP(grandTotal);
+      document.getElementById('pse-total-amount').textContent = formattedTotal;
+      document.getElementById('pse-grand-total').textContent = formattedTotal;
+    }
+
+    function payWithPSE() {
+      const check = document.getElementById('pse-terms');
+      if (!check.checked) {
+        alert('Debes aceptar los términos y condiciones de la pasarela de pagos.');
+        return;
+      }
+
+      // Generate order number
+      const orderNum = generateOrderNumber();
+      sessionStorage.setItem('checkout_order_number', orderNum);
+
+      // Save order in orders history
+      saveOrderToHistory(orderNum, 'PSE');
+
+      // Clear Cart
+      clearCart();
+
+      // Redirect to confirmation
+      window.location.href = 'confirmacion.html';
+    }
+
+    function saveOrderToHistory(orderNum, paymentMethod) {
+      const items = getCartItems();
+      const total = getCartTotal();
+      const discount = parseInt(sessionStorage.getItem('checkout_discount') || '0');
+      const shippingCost = parseInt(sessionStorage.getItem('checkout_shipping_cost') || '15000');
+      const grandTotal = Math.max(0, total - discount) + shippingCost;
+      const info = JSON.parse(sessionStorage.getItem('checkout_info') || '{}');
+
+      const newOrder = {
+        id: `#${orderNum}`,
+        date: new Date().toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' }),
+        status: 'transit',
+        statusText: 'En tránsito',
+        total: grandTotal,
+        address: info.address || 'Calle 12 #45-67',
+        city: info.city || 'Medellín',
+        items: items.map(item => ({
+          name: item.product.name,
+          qty: item.quantity,
+          price: item.product.price
+        })),
+        paymentMethod: paymentMethod
+      };
+
+      const ordersHistoryStr = localStorage.getItem('orders_history');
+      let history = [];
+      if (ordersHistoryStr) {
+        try {
+          history = JSON.parse(ordersHistoryStr);
+        } catch (e) {}
+      }
+      
+      history.unshift(newOrder);
+      localStorage.setItem('orders_history', JSON.stringify(history));
+
+      // Save in seller orders
+      saveOrderToSellerList(orderNum, newOrder);
+    }
+
+    function saveOrderToSellerList(orderNum, orderDetails) {
+      const sellerOrdersStr = localStorage.getItem('seller_orders');
+      let sellerOrders = [];
+      if (sellerOrdersStr) {
+        try {
+          sellerOrders = JSON.parse(sellerOrdersStr);
+        } catch (e) {}
+      } else {
+        // Pre-fill default
+        sellerOrders = [
+          { id: 'AC-2024-88032', customer: 'Carlos Gómez', product: 'Mochila Wayuu Colores del Sol', date: '2024-07-08', amount: 280000, status: 'Pendiente' },
+          { id: 'AC-2024-77123', customer: 'Lucía Ortiz', product: 'Hamaca San Jacinto', date: '2024-07-05', amount: 350000, status: 'En tránsito' },
+          { id: 'AC-2024-66432', customer: 'Mateo Restrepo', product: 'Mochila Wayuu Colores del Sol', date: '2024-06-28', amount: 280000, status: 'Entregado' }
+        ];
+      }
+
+      const info = JSON.parse(sessionStorage.getItem('checkout_info') || '{}');
+      const items = getCartItems();
+
+      items.forEach(item => {
+        sellerOrders.unshift({
+          id: orderNum,
+          customer: info.name || 'Juan Pérez',
+          product: item.product.name,
+          date: new Date().toISOString().split('T')[0],
+          amount: item.product.price * item.quantity,
+          status: 'Pendiente'
+        });
+      });
+
+      localStorage.setItem('seller_orders', JSON.stringify(sellerOrders));
+    }
+  </script>
+</body>
+</html>
