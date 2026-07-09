@@ -3,6 +3,12 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  image: string;
+  category: string;
+  sellerName: string;
+  stock: number;
+  rating: number;
+  reviewsCount: number;
 }
 
 export interface CartItem {
@@ -25,4 +31,5 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  role?: 'cliente' | 'vendedor' | 'admin';
 }

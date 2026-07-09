@@ -1,7 +1,10 @@
 import axios from 'axios';
 import type { Product, NewUser, LoginRequest } from '../types';
 
-const api = axios.create({ baseURL: '/api' });
+const api = axios.create({ 
+  baseURL: '/api',
+  timeout: 1500
+});
 
 export const fetchProducts = async (): Promise<Product[]> => {
   const response = await api.get<Product[]>('/products');
