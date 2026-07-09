@@ -1,4 +1,4 @@
-// js/navbar.js
+// Nombre de marca oficial: Artesanías Chigorodó — NUNCA cambiar a 'Colombia', el mockup de diseño usa ese nombre solo como referencia visual.
 
 document.addEventListener('DOMContentLoaded', function() {
   const navbarPlaceholder = document.getElementById('navbar-placeholder');
@@ -32,7 +32,7 @@ function renderNavbar() {
             <img src="img/logo-vasija.svg" alt="Logo de Artesanías Chigorodó" style="width: 38px; height: 38px;" />
             <span class="brand-text" style="font-size: 1.65rem; fontWeight: 800; letter-spacing: -0.02em; display: flex; align-items: center; gap: 0.35rem;">
               <span style="color: var(--text-dark);">Artesanías</span>
-              <span style="color: var(--secondary);">Chigorodó</span>
+              <span style="color: var(--primary);">Chigorodó</span>
             </span>
           </a>
         </div>
@@ -102,13 +102,13 @@ function renderNavbar() {
             </ul>
           </li>
           <li>
-            <a href="productos.html">Artesanos</a>
+            <a href="artesanos.html">Artesanos</a>
           </li>
           <li>
-            <a href="productos.html">Nosotros</a>
+            <a href="nosotros.html">Nosotros</a>
           </li>
           <li>
-            <a href="productos.html">Contacto</a>
+            <a href="contacto.html">Contacto</a>
           </li>
         </ul>
       </div>
@@ -165,8 +165,10 @@ function renderNavbar() {
       dropdownMenu.style.display = isVisible ? 'none' : 'block';
     });
     // Close on click outside
-    document.addEventListener('click', () => {
-      dropdownMenu.style.display = 'none';
+    document.addEventListener('click', (e) => {
+      if (!dropdownTrigger.contains(e.target)) {
+        dropdownMenu.style.display = 'none';
+      }
     });
   }
 

@@ -9,7 +9,8 @@
 }
 
 .navbar-main {
-  width: min(1200px, calc(100% - 2rem));
+  width: 90%;
+  max-width: 1400px;
   margin: 0 auto;
   height: 80px;
   display: flex;
@@ -132,7 +133,8 @@
 }
 
 .menu-links {
-  width: min(1200px, calc(100% - 2rem));
+  width: 90%;
+  max-width: 1400px;
   margin: 0 auto;
   list-style: none;
   display: flex;

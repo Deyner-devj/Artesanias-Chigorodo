@@ -1,6 +1,6 @@
-/* Home Page Styles */
 .home-page-container {
-  width: min(1200px, calc(100% - 2rem));
+  width: 90%;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -9,13 +9,13 @@
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
   gap: 3rem;
-  padding: 4rem 0;
+  padding: 3rem 0;
 }
 
 .hero-title {
-  font-size: clamp(2.75rem, 4vw, 4.5rem);
-  font-weight: 900;
-  line-height: 1.1;
+  font-size: clamp(2.25rem, 3.2vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.15;
   color: var(--text-dark);
 }
 
@@ -24,9 +24,9 @@
 }
 
 .hero-description {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   color: var(--text-muted);
-  margin: 1.5rem 0 2rem;
+  margin: 1.25rem 0 2rem;
   max-width: 500px;
 }
 
@@ -42,9 +42,9 @@
 
 .hero-banner-image {
   width: 100%;
-  max-height: 480px;
+  max-height: 400px;
   object-fit: cover;
-  border-radius: 2rem;
+  border-radius: 1.75rem;
   box-shadow: var(--shadow-lg);
 }
 
@@ -54,11 +54,11 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   background-color: #ffffff;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 1.5rem;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 }
 
 .badge-item {
@@ -89,16 +89,16 @@
 
 /* Categories Section */
 .categories-section {
-  padding: 2rem 0 4rem;
+  padding: 2rem 0 3rem;
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .section-header h2 {
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
 }
@@ -245,5 +245,22 @@
 @media (max-width: 480px) {
   .trust-badges-bar {
     grid-template-columns: 1fr !important;
+  }
+}
+
+.hero-decor-sombrero {
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .hero-decor-sombrero {
+    left: 28% !important;
+    width: 180px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-decor-sombrero {
+    display: none !important;
   }
 }

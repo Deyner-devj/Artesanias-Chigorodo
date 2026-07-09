@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;900&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Contacto - Artesanías Chigorodó</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/footer.css" />
+  <style>
+    .contacto-container {
+      width: min(800px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 4rem 0;
+    }
+    .contacto-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 2rem;
+      padding: 3rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .contacto-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Navbar Header -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main Content -->
+    <div class="app-main-content">
+      <main class="contacto-container">
+        <div class="contacto-card">
+          <header class="contacto-header" style="text-align: center;">
+            <p class="eyebrow" style="color: var(--secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Ponte en Contacto</p>
+            <h1 style="font-size: 2.25rem; font-weight: 800; margin: 0.5rem 0; font-family: var(--font-serif); color: var(--text-dark);">¿Tienes alguna pregunta?</h1>
+            <p style="color: var(--text-muted); font-size: 1rem; max-width: 500px; margin: 0 auto 2rem;">
+              Escríbenos y nuestro equipo te responderá lo antes posible. También puedes sugerirnos nuevos artesanos o comunidades para incorporar.
+            </p>
+          </header>
+
+          <form id="contact-form" class="contacto-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-name">Nombre completo</label>
+                <input type="text" id="contact-name" placeholder="Tu nombre" required />
+              </div>
+              <div class="form-group">
+                <label for="contact-email">Correo electrónico</label>
+                <input type="email" id="contact-email" placeholder="correo@ejemplo.com" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contact-subject">Asunto</label>
+              <input type="text" id="contact-subject" placeholder="¿En qué podemos ayudarte?" required />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message">Mensaje</label>
+              <textarea id="contact-message" rows="5" placeholder="Escribe tu mensaje aquí..." style="border-radius: var(--border-radius-input); border: 1px solid var(--border-color); padding: 1rem 1.25rem; font-family: inherit; font-size: 0.95rem; resize: vertical;" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="padding: 14px; font-weight: 700; border-radius: 8px; margin-top: 1rem;">
+              Enviar mensaje
+            </button>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <!-- Footer Element -->
+    <div id="footer-placeholder"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/productos.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/carrito.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/footer.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('contact-form');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          alert('¡Gracias por ponerte en contacto con nosotros! Hemos recibido tu mensaje y te responderemos en breve.');
+          form.reset();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

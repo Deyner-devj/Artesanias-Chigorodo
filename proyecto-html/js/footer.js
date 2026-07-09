@@ -1,4 +1,4 @@
-// js/footer.js
+// Nombre de marca oficial: Artesanías Chigorodó — NUNCA cambiar a 'Colombia', el mockup de diseño usa ese nombre solo como referencia visual.
 
 document.addEventListener('DOMContentLoaded', function() {
   renderFooter();
@@ -90,12 +90,22 @@ function renderFooter() {
           <p class="payment-support-desc" style="color: #E5DFD6; opacity: 0.8; font-size: 0.85rem;">
             Aceptamos transacciones directas y compras protegidas.
           </p>
-          <div class="payment-badges-grid" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
-            <span class="payment-badge" style="background-color: #ffffff; color: #0b428c; font-weight: 800; padding: 0.35rem 0.65rem; border-radius: 4px; font-size: 0.75rem;">PSE</span>
-            <span class="payment-badge" style="background-color: #ffffff; color: #1A1A1A; font-weight: 800; padding: 0.35rem 0.65rem; border-radius: 4px; font-size: 0.75rem;">VISA</span>
-            <span class="payment-badge" style="background-color: #ffffff; color: #FF5F00; font-weight: 800; padding: 0.35rem 0.65rem; border-radius: 4px; font-size: 0.75rem;">Mastercard</span>
-            <span class="payment-badge" style="background-color: #ffffff; color: #00c1d5; font-weight: 800; padding: 0.35rem 0.65rem; border-radius: 4px; font-size: 0.75rem;">Nequi</span>
-            <span class="payment-badge" style="background-color: #ffffff; color: #e82c2c; font-weight: 800; padding: 0.35rem 0.65rem; border-radius: 4px; font-size: 0.75rem;">Daviplata</span>
+          <div class="payment-badges-grid" style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem; align-items: center;">
+            <div class="payment-logo-card" style="background-color: #ffffff; padding: 4px 8px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; height: 36px; width: 60px;">
+              <img src="img/pagos/pse.svg" alt="PSE" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+            </div>
+            <div class="payment-logo-card" style="background-color: #ffffff; padding: 4px 8px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; height: 36px; width: 60px;">
+              <img src="img/pagos/visa.svg" alt="Visa" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+            </div>
+            <div class="payment-logo-card" style="background-color: #ffffff; padding: 4px 8px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; height: 36px; width: 60px;">
+              <img src="img/pagos/mastercard.svg" alt="Mastercard" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+            </div>
+            <div class="payment-logo-card" style="background-color: #ffffff; padding: 4px 8px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; height: 36px; width: 60px;">
+              <img src="img/pagos/nequi.svg" alt="Nequi" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+            </div>
+            <div class="payment-logo-card" style="background-color: #ffffff; padding: 4px 8px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; height: 36px; width: 60px;">
+              <img src="img/pagos/daviplata.svg" alt="Daviplata" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+            </div>
           </div>
         </div>
       </div>

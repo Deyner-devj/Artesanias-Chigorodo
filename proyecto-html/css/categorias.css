@@ -1,6 +1,6 @@
-/* Categories Page Styles */
 .categories-page-container {
-  width: min(1200px, calc(100% - 2rem));
+  width: 90%;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2.5rem 0;
 }

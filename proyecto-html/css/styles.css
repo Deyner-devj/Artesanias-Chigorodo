@@ -1,11 +1,12 @@
 :root {
   color-scheme: light;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Sora', sans-serif;
   line-height: 1.5;
 
   /* Fonts */
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Fraunces', serif;
+  --font-sans: 'Sora', sans-serif;
+  --font-serif: var(--font-display);
 
   /* Color Palette HSL / Hex */
   --bg-primary: #FAF6F0; /* beige/crema muy claro */
@@ -38,7 +39,7 @@
 
 /* Global Typography Hierarchy & Consistency */
 h1, h2, h3, h4, h5, h6, .brand-text, .hero-title, .product-title, .auth-logo-header h2, .section-header h1, .section-header h2 {
-  font-family: var(--font-serif) !important;
+  font-family: var(--font-display) !important;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
@@ -87,7 +88,8 @@ button, input, select {
 }
 
 .page {
-  width: min(1200px, calc(100% - 2rem));
+  width: 90%;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2.5rem 0;
 }
