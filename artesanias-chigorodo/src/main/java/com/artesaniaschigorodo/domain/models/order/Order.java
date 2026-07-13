@@ -1,7 +1,9 @@
 package com.artesaniaschigorodo.domain.models.order;
 
-import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.models.enums.OrderStatus;
+import com.artesaniaschigorodo.domain.models.payment.PaymentDetails;
+import com.artesaniaschigorodo.domain.models.user.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

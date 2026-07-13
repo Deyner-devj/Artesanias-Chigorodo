@@ -2,9 +2,9 @@ package com.artesaniaschigorodo.application.adapters.persistence.sql.adapters;
 
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.UserEntity;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.UserMapper;
-import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.UserJpaRepository;
-import com.artesaniaschigorodo.domain.models.client.User;
-import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
+import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.UserRepository;
+import com.artesaniaschigorodo.domain.models.user.User;
+import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +12,9 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class UserPersistenceAdapter implements UserPersistencePort {
+public class UserPersistenceAdapter implements UserPortOut {
 
-    private final UserJpaRepository userJpaRepository;
+    private final UserRepository userJpaRepository;
 
     @Override
     public Optional<User> findById(Long id) {

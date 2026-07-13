@@ -2,9 +2,9 @@ package com.artesaniaschigorodo.application.adapters.persistence.sql.adapters;
 
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.InvoiceEntity;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.InvoiceMapper;
-import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.InvoiceJpaRepository;
+import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.InvoiceRepository;
 import com.artesaniaschigorodo.domain.models.order.Invoice;
-import com.artesaniaschigorodo.domain.ports.out.InvoicePersistencePort;
+import com.artesaniaschigorodo.domain.ports.out.InvoicePortOut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +12,9 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class InvoicePersistenceAdapter implements InvoicePersistencePort {
+public class InvoicePersistenceAdapter implements InvoicePortOut {
 
-    private final InvoiceJpaRepository invoiceJpaRepository;
+    private final InvoiceRepository invoiceJpaRepository;
 
     @Override
     public Invoice save(Invoice invoice) {

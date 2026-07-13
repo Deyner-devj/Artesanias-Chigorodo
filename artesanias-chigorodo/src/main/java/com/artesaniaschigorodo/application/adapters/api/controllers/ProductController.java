@@ -5,10 +5,10 @@ import com.artesaniaschigorodo.application.adapters.api.response.ProductResponse
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.models.product.Product;
-import com.artesaniaschigorodo.domain.models.client.User;
+import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.models.enums.Category;
-import com.artesaniaschigorodo.domain.ports.in.ProductUseCase;
-import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
+import com.artesaniaschigorodo.domain.ports.in.ProductPortIn;
+import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductUseCase productUseCase;
-    private final UserPersistencePort userPersistencePort;
+    private final ProductPortIn productUseCase;
+    private final UserPortOut userPersistencePort;
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProducts(

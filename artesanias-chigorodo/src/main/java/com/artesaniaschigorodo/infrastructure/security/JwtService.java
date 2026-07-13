@@ -1,6 +1,6 @@
 package com.artesaniaschigorodo.infrastructure.security;
 
-import com.artesaniaschigorodo.domain.models.client.User;
+import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.ports.out.JwtTokenPort;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -81,7 +81,7 @@ public class JwtService implements JwtTokenPort {
 
     private Claims extractAllClaims(String token) {
         return Jwts
-                .parserBuilder()
+                .parser()
                 .setSigningKey(getSignInKey())
                 .build()
                 .parseClaimsJws(token)

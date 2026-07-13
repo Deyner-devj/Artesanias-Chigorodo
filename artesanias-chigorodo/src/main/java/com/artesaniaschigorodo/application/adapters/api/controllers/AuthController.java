@@ -3,10 +3,10 @@ package com.artesaniaschigorodo.application.adapters.api.controllers;
 import com.artesaniaschigorodo.application.adapters.api.request.LoginRequest;
 import com.artesaniaschigorodo.application.adapters.api.request.RegisterRequest;
 import com.artesaniaschigorodo.application.adapters.api.response.AuthResponse;
-import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.models.enums.Role;
-import com.artesaniaschigorodo.domain.ports.in.AuthUseCase;
-import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
+import com.artesaniaschigorodo.domain.models.user.User;
+import com.artesaniaschigorodo.domain.ports.in.AuthPortIn;
+import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthUseCase authUseCase;
-    private final UserPersistencePort userPersistencePort;
+    private final AuthPortIn authUseCase;
+    private final UserPortOut userPersistencePort;
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@Valid @RequestBody RegisterRequest request) {

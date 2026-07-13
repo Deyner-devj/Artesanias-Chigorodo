@@ -1,9 +1,9 @@
 package com.artesaniaschigorodo.application.adapters.persistence.sql.mappers;
 
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.UserEntity;
-import com.artesaniaschigorodo.domain.models.client.User;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.models.enums.UserStatus;
+import com.artesaniaschigorodo.domain.models.user.User;
 
 public class UserMapper {
 

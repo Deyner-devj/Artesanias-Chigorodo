@@ -4,8 +4,8 @@ import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.Ord
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.OrderItemEntity;
 import com.artesaniaschigorodo.domain.models.order.Order;
 import com.artesaniaschigorodo.domain.models.order.OrderItem;
-import com.artesaniaschigorodo.domain.models.order.PaymentDetails;
 import com.artesaniaschigorodo.domain.models.order.ShippingDetails;
+import com.artesaniaschigorodo.domain.models.payment.PaymentDetails;
 import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.enums.OrderStatus;
 import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;

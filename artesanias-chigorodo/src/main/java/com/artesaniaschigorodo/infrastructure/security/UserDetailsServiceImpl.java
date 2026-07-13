@@ -1,7 +1,7 @@
 package com.artesaniaschigorodo.infrastructure.security;
 
-import com.artesaniaschigorodo.domain.models.client.User;
-import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
+import com.artesaniaschigorodo.domain.models.user.User;
+import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +15,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserPersistencePort userPersistencePort;
+    private final UserPortOut userPersistencePort;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

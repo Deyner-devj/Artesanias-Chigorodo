@@ -4,8 +4,8 @@ import com.artesaniaschigorodo.application.adapters.api.request.UpdateProfileReq
 import com.artesaniaschigorodo.application.adapters.api.response.UserResponse;
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
-import com.artesaniaschigorodo.domain.models.client.User;
-import com.artesaniaschigorodo.domain.ports.out.UserPersistencePort;
+import com.artesaniaschigorodo.domain.models.user.User;
+import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserPersistencePort userPersistencePort;
+    private final UserPortOut userPersistencePort;
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getProfile() {

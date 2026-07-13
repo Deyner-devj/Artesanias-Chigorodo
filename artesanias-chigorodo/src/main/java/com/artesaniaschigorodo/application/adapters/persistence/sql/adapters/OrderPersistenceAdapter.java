@@ -2,9 +2,9 @@ package com.artesaniaschigorodo.application.adapters.persistence.sql.adapters;
 
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.OrderEntity;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.OrderMapper;
-import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.OrderJpaRepository;
+import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.OrderRepository;
 import com.artesaniaschigorodo.domain.models.order.Order;
-import com.artesaniaschigorodo.domain.ports.out.OrderPersistencePort;
+import com.artesaniaschigorodo.domain.ports.out.OrderPortOut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class OrderPersistenceAdapter implements OrderPersistencePort {
+public class OrderPersistenceAdapter implements OrderPortOut {
 
-    private final OrderJpaRepository orderJpaRepository;
+    private final OrderRepository orderJpaRepository;
 
     @Override
     public Optional<Order> findById(Long id) {
