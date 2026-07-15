@@ -1,0 +1,482 @@
+:root {
+  --sidebar-width: 260px;
+  --topbar-height: 70px;
+  --primary-color: #e65c00;
+  --bg-dark: #1e1e24;
+  --bg-light: #f8f9fa;
+  --text-dark: #333333;
+  --border-color: #e9ecef;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* Shell Layout */
+.dash-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dash-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: var(--sidebar-width);
+  min-width: 0;
+}
+
+.dash-content {
+  padding: 30px;
+  flex: 1;
+}
+
+/* Sidebar Estilos */
+.dash-sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--bg-dark);
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-brand {
+  height: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-brand-name strong {
+  display: block;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.sidebar-brand-name span {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+}
+
+.sidebar-profile {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.sidebar-profile-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.sidebar-profile-role {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.dash-nav {
+  flex: 1;
+  padding: 20px 0;
+  overflow-y: auto;
+}
+
+.sidebar-nav-label {
+  display: block;
+  padding: 10px 24px 5px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+}
+
+.account-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: #ccc;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.menu-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2px;
+}
+
+.account-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+  color: #fff;
+}
+
+.account-menu-item.active {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.05);
+  margin: 15px 24px;
+}
+/* ==========================================================================
+   NUEVO TOPBAR ESTILO EXACTO
+   ========================================================================== */
+.dash-topbar {
+  height: var(--topbar-height);
+  background-color: #fff;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px; /* Mayor separación lateral */
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.topbar-title {
+  font-size: 1.4rem;
+  font-weight: 700; /* Letras gruesas como en la imagen */
+  color: #111827;
+}
+
+/* Buscador Central */
+.topbar-center {
+  flex: 1;
+  max-width: 380px; /* Ancho ajustado para centrarse */
+  margin: 0 20px;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  width: 18px;
+  height: 18px;
+  color: #9ca3af; /* Gris sutil */
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px 10px 45px;
+  border-radius: 30px; /* Bordes circulares como en la captura */
+  border: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  font-size: 0.9rem;
+  color: #1f2937;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #d37135; /* Color naranja al enfocar */
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(211, 113, 53, 0.15);
+}
+
+/* Sección Derecha de Acciones */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espaciado entre botones */
+}
+
+/* Botones con Ícono Redondos */
+.topbar-icon-btn {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #4b5563;
+  transition: all 0.2s ease;
+}
+
+.topbar-icon-btn:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.topbar-icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Punto indicador de notificaciones */
+.notification-badge {
+  position: absolute;
+  top: 10px;
+  right: 11px;
+  width: 6px;
+  height: 6px;
+  background-color: #ef4444; /* Rojo de alerta de la captura */
+  border-radius: 50%;
+}
+
+/* Avatar de Usuario "AC" */
+.topbar-avatar {
+  width: 42px;
+  height: 42px;
+  background-color: #d37135; /* Naranja exacto de la marca */
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(211, 113, 53, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.topbar-avatar:hover {
+  transform: scale(1.05);
+}
+
+/* Ocultar barra en pantallas móviles */
+@media (max-width: 768px) {
+  .topbar-center {
+    display: none; /* Esconde el buscador en móviles para evitar colapsos */
+  }
+}
+/* Responsive */
+@media (max-width: 992px) {
+  .dash-sidebar {
+    transform: translateX(-100%);
+  }
+  .dash-sidebar.open {
+    transform: translateX(0);
+  }
+  .dash-main {
+    margin-left: 0;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .sidebar-overlay.active {
+    display: block;
+  }
+}
+/* Estilos para el botón de Cerrar Sesión */
+.account-menu-item.logout-item {
+  color: #ff4d4d;
+  transition: all 0.2s ease;
+}
+
+.account-menu-item.logout-item .menu-icon {
+  stroke: #ff4d4d;
+}
+
+.account-menu-item.logout-item:hover {
+  background-color: rgba(255, 77, 77, 0.1);
+  color: #ff6666;
+}
+
+.account-menu-item.logout-item:hover .menu-icon {
+  stroke: #ff6666;
+}
+/* Estilos para la tarjeta de Configuración de Mantenimiento */
+.config-card {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.config-header {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.config-icon-wrapper {
+  background-color: rgba(211, 113, 53, 0.1);
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.config-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.config-card-subtitle {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radio-option:hover {
+  border-color: #d37135;
+  background-color: rgba(211, 113, 53, 0.02);
+}
+
+.radio-option input[type="radio"] {
+  accent-color: #d37135;
+  margin-top: 4px;
+}
+
+.radio-desc strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #1f2937;
+  margin-bottom: 2px;
+}
+
+.radio-desc span {
+  font-size: 0.82rem;
+  color: #6b7280;
+}
+
+.date-selector-box {
+  background-color: #fff;
+  border: 1px dashed #d37135;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.date-selector-box label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.custom-datetime-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.custom-datetime-input:focus {
+  border-color: #d37135;
+}
+
+/* Banners de estado actual */
+.maint-status-banner {
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+}
+
+.banner-active {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.banner-scheduled {
+  background-color: #fef3c7;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+
+/* Botones de acción */
+.actions-row {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-save {
+  background-color: #d37135;
+  color: #fff;
+}
+
+.btn-save:hover {
+  background-color: #b85c27;
+}
+
+.btn-disable {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.btn-disable:hover {
+  background-color: #e5e7eb;
+}

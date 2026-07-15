@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Método de Envío - Artesanías Chigorodó</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/footer.css" />
+    <link rel="stylesheet" href="../css/carrito.css" />
+    <link rel="stylesheet" href="../css/checkout.css" />
+  </head>
+  <body>
+    <!-- Protect Route -->
+    <script src="../js/protected-routes.js"></script>
+
+    <div class="app-shell">
+      <!-- Navbar Header -->
+      <div id="navbar-placeholder"></div>
+
+      <!-- Main Content -->
+      <div class="app-main-content">
+        <main class="page cart-page-container">
+          <!-- Checkout Progress Bar -->
+          <div class="checkout-progress-bar">
+            <div class="progress-step completed">
+              <div class="step-num-badge">✓</div>
+              <span class="step-label">1. Información</span>
+            </div>
+            <div class="progress-connector filled"></div>
+            <div class="progress-step active">
+              <div class="step-num-badge">2</div>
+              <span class="step-label">2. Envío</span>
+            </div>
+            <div class="progress-connector"></div>
+            <div class="progress-step pending">
+              <div class="step-num-badge">3</div>
+              <span class="step-label">3. Pago</span>
+            </div>
+          </div>
+
+          <div class="cart-grid">
+            <!-- Shipping Selection Panel -->
+            <div class="checkout-form-panel">
+              <h2>Finalizar compra</h2>
+              <div class="form-section-title">2. Método de envío</div>
+
+              <div class="shipping-methods-list">
+                <label class="shipping-option-card" id="card-standard">
+                  <input
+                    type="radio"
+                    name="shippingMethod"
+                    value="STANDARD"
+                    onclick="selectShippingMethod('STANDARD', 15000)"
+                  />
+                  <div class="shipping-option-details">
+                    <span class="option-title"
+                      >Envío estándar (2 a 5 días hábiles)</span
+                    >
+                    <span class="option-desc"
+                      >Entrega nacional confiable a tu domicilio.</span
+                    >
+                  </div>
+                  <span class="option-price" id="price-standard"></span>
+                </label>
+
+                <label class="shipping-option-card" id="card-express">
+                  <input
+                    type="radio"
+                    name="shippingMethod"
+                    value="EXPRESS"
+                    onclick="selectShippingMethod('EXPRESS', 25000)"
+                  />
+                  <div class="shipping-option-details">
+                    <span class="option-title"
+                      >Envío express (24 a 48 horas)</span
+                    >
+                    <span class="option-desc"
+                      >Entrega prioritaria en principales ciudades
+                      colombianas.</span
+                    >
+                  </div>
+                  <span class="option-price" id="price-express"></span>
+                </label>
+
+                <label class="shipping-option-card" id="card-pickup">
+                  <input
+                    type="radio"
+                    name="shippingMethod"
+                    value="PICKUP"
+                    onclick="selectShippingMethod('PICKUP', 0)"
+                  />
+                  <div class="shipping-option-details">
+                    <span class="option-title"
+                      >Recoger en tienda (Medellín)</span
+                    >
+                    <span class="option-desc"
+                      >Retira directamente en nuestro punto físico sin costos de
+                      envío.</span
+                    >
+                  </div>
+                  <span class="option-price">Gratis</span>
+                </label>
+              </div>
+
+              <div class="form-actions-row">
+                <a
+                  href="checkout-info.html"
+                  class="btn btn-outline-green"
+                  style="display: flex; align-items: center; gap: 0.5rem"
+                >
+                  <!-- ArrowLeft Icon -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                  Volver
+                </a>
+                <button
+                  type="button"
+                  onclick="continueToPayment()"
+                  class="btn btn-secondary"
+                >
+                  Continuar con pago
+                </button>
+              </div>
+            </div>
+
+            <!-- Cart Summary Mini -->
+            <div id="checkout-summary-placeholder"></div>
+          </div>
+        </main>
+      </div>
+
+      <!-- Footer Element -->
+      <div id="footer-placeholder"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/productos.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/carrito.js"></script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/footer.js"></script>
+
+    <script>
+      let selectedMethod = "STANDARD";
+      let selectedCost = 15000;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Settle cart constraints
+        if (getCartItems().length === 0) {
+          window.location.href = "carrito.html";
+          return;
+        }
+
+        // Load price displays
+        document.getElementById("price-standard").textContent =
+          formatCOP(15000);
+        document.getElementById("price-express").textContent = formatCOP(25000);
+
+        // Load saved shipping method if exists
+        const savedMethod = sessionStorage.getItem("checkout_shipping_method");
+        if (savedMethod) {
+          selectedMethod = savedMethod;
+          selectedCost = parseInt(
+            sessionStorage.getItem("checkout_shipping_cost") || "0",
+          );
+        }
+
+        // Check radio and update styles
+        const radios = document.getElementsByName("shippingMethod");
+        radios.forEach((radio) => {
+          if (radio.value === selectedMethod) {
+            radio.checked = true;
+          }
+        });
+
+        updateSelectionStyles();
+        renderCheckoutSummary();
+      });
+
+      function selectShippingMethod(method, cost) {
+        selectedMethod = method;
+        selectedCost = cost;
+        updateSelectionStyles();
+        renderCheckoutSummary();
+      }
+
+      function updateSelectionStyles() {
+        const cards = ["STANDARD", "EXPRESS", "PICKUP"];
+        cards.forEach((c) => {
+          const el = document.getElementById(`card-${c.toLowerCase()}`);
+          if (el) {
+            el.classList.remove("selected");
+            if (c === selectedMethod) {
+              el.classList.add("selected");
+            }
+          }
+        });
+      }
+
+      function renderCheckoutSummary() {
+        const ph = document.getElementById("checkout-summary-placeholder");
+        if (!ph) return;
+
+        let items = [];
+        try {
+          const stored =
+            localStorage.getItem("cart") || localStorage.getItem("carrito");
+          if (stored) {
+            items = JSON.parse(stored);
+          } else if (typeof getCartItems === "function") {
+            items = getCartItems();
+          }
+        } catch (e) {
+          console.error("Error recuperando el carrito", e);
+        }
+
+        // Matemáticas Manuales
+        const total = items.reduce(
+          (sum, item) => sum + item.product.price * item.quantity,
+          0,
+        );
+        const discount = parseInt(
+          sessionStorage.getItem("checkout_discount") || "0",
+        );
+
+        // Cargar el costo de envío guardado (si no existe, poner 0)
+        let shippingCost = parseInt(
+          sessionStorage.getItem("checkout_shipping_cost") || "0",
+        );
+
+        // Si estamos específicamente en la pantalla de pago, asegúrate de que use el costo correcto
+        if (window.location.pathname.includes("pago") && shippingCost === 0) {
+          shippingCost = 15000; // Valor por defecto si falló el paso anterior
+        }
+
+        const grandTotal = Math.max(0, total - discount) + shippingCost;
+
+        // Formato Manual Seguro
+        const formatMoney = (val) => {
+          if (typeof formatCOP === "function") return formatCOP(val);
+          return new Intl.NumberFormat("es-CO", {
+            style: "currency",
+            currency: "COP",
+            minimumFractionDigits: 0,
+          }).format(val);
+        };
+
+        let itemsHtml = "";
+        items.forEach((item) => {
+          itemsHtml += `
+          <div class="checkout-summary-item-card" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+            <img src="${item.product.image}" alt="${item.product.name}" class="checkout-summary-item-img" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;" onerror="this.src='img/mochila_wayuu.png'" />
+            <div class="checkout-summary-item-info" style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
+              <span class="checkout-summary-item-name" style="font-weight: 600; font-size: 0.9rem;">${item.product.name}</span>
+              <span class="checkout-summary-item-qty" style="font-size: 0.8rem; color: #666;">Cantidad: ${item.quantity}</span>
+              <span class="checkout-summary-item-price" style="font-weight: 500;">${formatMoney(item.product.price * item.quantity)}</span>
+            </div>
+          </div>`;
+        });
+
+        ph.innerHTML = `
+        <div class="cart-summary-panel" style="background-color: #fff; border-radius: 12px; border: 1px solid #eee; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+          <h2 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 1.5rem; color: #333;">Resumen del pedido</h2>
+          <div class="summary-items-preview">${itemsHtml}</div>
+          <div style="height: 1px; background-color: #eee; margin: 1.5rem 0;"></div>
+          <div class="summary-row" style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+            <span>Subtotal</span><span style="font-weight: 600;">${formatMoney(total)}</span>
+          </div>
+          <div style="display: ${discount > 0 ? "flex" : "none"}; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.95rem; color: #2e7d32;">
+            <span>Descuento</span><span style="font-weight: 600;">-${formatMoney(discount)}</span>
+          </div>
+          <div class="summary-row" style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+            <span>Envío</span><span style="font-weight: 600;">${shippingCost === 0 ? "Por calcular" : formatMoney(shippingCost)}</span>
+          </div>
+          <div style="height: 1px; background-color: #eee; margin: 1.5rem 0;"></div>
+          <div class="summary-row total-row" style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: 700;">
+            <span>Total a pagar</span><span style="color: #2e7d32;">${formatMoney(grandTotal)}</span>
+          </div>
+        </div>`;
+      }
+
+      function continueToPayment() {
+        sessionStorage.setItem("checkout_shipping_method", selectedMethod);
+        sessionStorage.setItem("checkout_shipping_cost", selectedCost);
+        window.location.href = "checkout-pago.html";
+      }
+    </script>
+  </body>
+</html>

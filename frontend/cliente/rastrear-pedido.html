@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Rastrear Pedido - Artesanías Chigorodó</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/footer.css" />
+    <link rel="stylesheet" href="../css/checkout.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <div id="navbar-placeholder"></div>
+
+      <div class="app-main-content">
+        <main
+          class="page"
+          style="display: flex; justify-content: center; padding: 4rem 1rem"
+        >
+          <div
+            class="checkout-form-panel"
+            style="max-width: 600px; width: 100%"
+          >
+            <h2>Rastrear mi pedido</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem">
+              Ingresa tu número de orden (el que aparece en tu pantalla de éxito
+              o en tu correo) para conocer el estado actual de tu envío.
+            </p>
+
+            <form id="track-form" method="POST" action="javascript:void(0);">
+              <div class="input-field" style="margin-bottom: 1.5rem">
+                <label for="track-id">Número de Orden</label>
+                <div class="checkout-input-with-icon">
+                  <svg
+                    class="checkout-input-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input
+                    type="text"
+                    id="track-id"
+                    required
+                    placeholder="Ej: #123456 o 123456"
+                  />
+                </div>
+                <span class="validation-error" id="track-error"
+                  >No pudimos encontrar un pedido con este número. Revisa e
+                  intenta de nuevo.</span
+                >
+              </div>
+              <button
+                type="submit"
+                class="btn btn-secondary"
+                style="width: 100%"
+              >
+                Buscar Pedido
+              </button>
+            </form>
+
+            <div
+              id="track-result"
+              style="
+                display: none;
+                margin-top: 2.5rem;
+                border-top: 1px solid var(--border-color);
+                padding-top: 2rem;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: flex-end;
+                  margin-bottom: 1.5rem;
+                "
+              >
+                <div>
+                  <span style="font-size: 0.85rem; color: var(--text-muted)"
+                    >Pedido Encontrado</span
+                  >
+                  <h3
+                    id="result-order-num"
+                    style="color: var(--primary); font-size: 1.5rem; margin: 0"
+                  >
+                    #000000
+                  </h3>
+                </div>
+                <div style="text-align: right">
+                  <span style="font-size: 0.85rem; color: var(--text-muted)"
+                    >Fecha</span
+                  >
+                  <strong id="result-order-date" style="display: block"
+                    >00/00/0000</strong
+                  >
+                </div>
+              </div>
+
+              <div
+                style="
+                  background-color: var(--bg-primary);
+                  padding: 1.5rem;
+                  border-radius: var(--border-radius);
+                  border: 1px solid var(--border-color);
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  <div
+                    style="
+                      width: 12px;
+                      height: 12px;
+                      border-radius: 50%;
+                      background-color: var(--secondary);
+                    "
+                  ></div>
+                  <strong style="font-size: 1.1rem" id="result-order-status"
+                    >En tránsito</strong
+                  >
+                </div>
+                <p
+                  style="
+                    font-size: 0.9rem;
+                    color: var(--text-muted);
+                    margin-left: 1.75rem;
+                  "
+                >
+                  Tu paquete está en camino a
+                  <strong id="result-order-city">Ciudad</strong>. Te
+                  notificaremos cuando esté próximo a ser entregado.
+                </p>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <div id="footer-placeholder"></div>
+    </div>
+
+    <script src="../js/core/main.js"></script>
+    <script src="../js/core/auth.js"></script>
+    <script src="../js/components/navbar.js"></script>
+    <script src="../js/components/footer.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const trackForm = document.getElementById("track-form");
+        const trackError = document.getElementById("track-error");
+        const trackResult = document.getElementById("track-result");
+
+        trackForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Limpiamos errores previos
+          trackError.style.display = "none";
+          trackResult.style.display = "none";
+
+          // Obtenemos lo que escribió el usuario (y le agregamos el # si se le olvidó)
+          let inputId = document.getElementById("track-id").value.trim();
+          if (!inputId.startsWith("#")) {
+            inputId = "#" + inputId;
+          }
+
+          // Buscamos en el historial de la máquina
+          let history = [];
+          try {
+            const historyStr = localStorage.getItem("orders_history");
+            if (historyStr) {
+              history = JSON.parse(historyStr);
+            }
+          } catch (error) {
+            console.error("No se pudo leer el historial");
+          }
+
+          const foundOrder = history.find((order) => order.id === inputId);
+
+          if (foundOrder) {
+            // Llenamos los datos en la tarjeta de resultado
+            document.getElementById("result-order-num").textContent =
+              foundOrder.id;
+            document.getElementById("result-order-date").textContent =
+              foundOrder.date;
+            document.getElementById("result-order-status").textContent =
+              foundOrder.statusText || "En preparación";
+            document.getElementById("result-order-city").textContent =
+              foundOrder.city || "tu dirección";
+
+            // Mostramos el resultado
+            trackResult.style.display = "block";
+          } else {
+            // Mostramos error
+            trackError.style.display = "block";
+            document
+              .getElementById("track-id")
+              .closest(".input-field")
+              .classList.add("has-error");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

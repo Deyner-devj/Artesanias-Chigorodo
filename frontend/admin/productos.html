@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Productos · Admin</title>
+    <link rel="stylesheet" href="../css/admin/admin.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body data-page-title="Productos">
+    <div
+      class="sidebar-overlay"
+      id="sidebar-overlay"
+      onclick="closeMobileSidebar()"
+    ></div>
+
+    <div class="dash-shell">
+      <div id="dash-sidebar-container"></div>
+
+      <div class="dash-main">
+        <div id="dash-topbar-container"></div>
+
+        <div class="dash-content">
+          <div class="card">
+            <h2>Inventario de Productos</h2>
+            <p style="margin-top: 10px; color: #666">
+              Carga productos, edita detalles, actualiza el stock y los precios.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/admin/dashboard-loader.js"></script>
+  </body>
+</html>

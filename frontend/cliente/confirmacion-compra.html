@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Compra Confirmada - Artesanías Chigorodó</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/footer.css" />
+    <link rel="stylesheet" href="../css/carrito.css" />
+    <link rel="stylesheet" href="../css/checkout.css" />
+  </head>
+  <body>
+    <script src="../js/protected-routes.js"></script>
+
+    <div class="app-shell">
+      <div id="navbar-placeholder"></div>
+
+      <div class="app-main-content">
+        <main class="page cart-page-container">
+          <div class="order-success-panel">
+            <div class="success-check-badge">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="42"
+                height="42"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <h1>¡Gracias por tu compra!</h1>
+            <p class="success-message">
+              Tu pedido ha sido recibido correctamente.
+            </p>
+
+            <div
+              class="success-invoice-box"
+              id="invoice-details-container"
+            ></div>
+
+            <div class="success-next-steps">
+              <h4 style="font-family: var(--font-serif); font-weight: 700">
+                ¿Qué sigue?
+              </h4>
+              <div class="steps-list" style="margin-top: 1.25rem">
+                <div class="step-card">
+                  <div class="step-icon-circle">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                      <path
+                        d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+                      ></path>
+                    </svg>
+                  </div>
+                  <h5>Confirmación</h5>
+                  <p>
+                    Te hemos enviado un correo con los detalles de tu factura.
+                  </p>
+                </div>
+
+                <div class="step-card">
+                  <div class="step-icon-circle">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"
+                      ></path>
+                      <polyline points="3 3 3 8 8 8"></polyline>
+                    </svg>
+                  </div>
+                  <h5>Preparación</h5>
+                  <p>
+                    El maestro artesano comenzará a preparar el embalaje de tu
+                    pieza.
+                  </p>
+                </div>
+
+                <div class="step-card">
+                  <div class="step-icon-circle">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect width="16" height="13" x="2" y="4" rx="2"></rect>
+                      <path d="M16 7h4l3 3.5v5.5h-7Z"></path>
+                      <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                      <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                    </svg>
+                  </div>
+                  <h5>Envío</h5>
+                  <p>
+                    Recibirás un correo con el número de guía para rastrear el
+                    paquete.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="success-actions"
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.85rem;
+              "
+            >
+              <a
+                href="rastrear-pedido.html"
+                class="btn btn-secondary"
+                style="padding: 14px 28px; min-width: 260px"
+                >Rastrear mi pedido</a
+              >
+
+              <button
+                type="button"
+                onclick="goToMisPedidos()"
+                class="btn btn-outline-green"
+                style="padding: 14px 28px; min-width: 260px"
+              >
+                Ir a mis pedidos
+              </button>
+
+              <a
+                href="../home/productos.html"
+                class="link-secondary"
+                style="margin-top: 0.5rem"
+                >Seguir comprando</a
+              >
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <div id="footer-placeholder"></div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/productos.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/carrito.js"></script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/footer.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        renderInvoice();
+      });
+
+      // LÓGICA DEL BOTÓN "MIS PEDIDOS"
+      function goToMisPedidos() {
+        const user =
+          typeof getLoggedInUser === "function" ? getLoggedInUser() : null;
+
+        if (user) {
+          // Si tiene sesión iniciada, lo dejamos pasar
+          window.location.href = "mis-pedidos.html";
+        } else {
+          // Si no tiene sesión, le lanzamos la alerta que pediste
+          alert(
+            "Para ver tus pedidos tienes que iniciar sesión o tener una cuenta creada.",
+          );
+
+          // Guardamos la ruta para que vuelva a "Mis Pedidos" después de hacer login
+          sessionStorage.setItem("redirect_after_login", "mis-pedidos.html");
+
+          // Lo enviamos a la pantalla de inicio de sesión
+          window.location.href = "../home/login.html";
+        }
+      }
+
+      function safeFormatCOP(val) {
+        if (typeof formatCOP === "function") return formatCOP(val);
+        return new Intl.NumberFormat("es-CO", {
+          style: "currency",
+          currency: "COP",
+          minimumFractionDigits: 0,
+        }).format(val);
+      }
+
+      function renderInvoice() {
+        const container = document.getElementById("invoice-details-container");
+        const orderNum = sessionStorage.getItem("checkout_order_number");
+        const info = JSON.parse(
+          sessionStorage.getItem("checkout_info") || "{}",
+        );
+        const shippingCost = parseInt(
+          sessionStorage.getItem("checkout_shipping_cost") || "15000",
+        );
+        const discount = parseInt(
+          sessionStorage.getItem("checkout_discount") || "0",
+        );
+
+        // Load from orders history to get items purchased
+        const historyStr = localStorage.getItem("orders_history");
+        let latestOrder = null;
+        if (historyStr) {
+          try {
+            const history = JSON.parse(historyStr);
+            if (history.length > 0) {
+              latestOrder = history[0];
+            }
+          } catch (e) {}
+        }
+
+        const displayOrderNum =
+          orderNum ||
+          (latestOrder ? latestOrder.id.replace("#", "") : "AC-2024-000000");
+        const displayDate = new Date().toLocaleDateString("es-CO", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+        const displayName = info.name || (latestOrder ? "Juan Pérez" : "");
+        const displayAddress = info.address
+          ? `${info.address}, ${info.city}`
+          : latestOrder
+            ? `${latestOrder.address}, ${latestOrder.city}`
+            : "";
+
+        let subtotal = 0;
+        let itemsHtml = "";
+        if (latestOrder && latestOrder.items) {
+          latestOrder.items.forEach((item) => {
+            subtotal += item.price * item.qty;
+            itemsHtml += `
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.25rem;">
+              <span>${item.name} (x${item.qty})</span>
+              <span>${safeFormatCOP(item.price * item.qty)}</span>
+            </div>
+          `;
+          });
+        }
+
+        const grandTotal = Math.max(0, subtotal - discount) + shippingCost;
+
+        container.innerHTML = `
+        <h3>Resumen del pedido</h3>
+        <div class="invoice-details-grid" style="margin-bottom: 1.5rem;">
+          <div class="detail-col">
+            <span>Número de orden:</span>
+            <strong style="color: var(--primary); font-size: 1.1rem;">#${displayOrderNum}</strong>
+          </div>
+          <div class="detail-col">
+            <span>Fecha:</span>
+            <strong>${displayDate}</strong>
+          </div>
+          <div class="detail-col">
+            <span>Cliente:</span>
+            <strong>${displayName}</strong>
+          </div>
+          <div class="detail-col">
+            <span>Dirección de envío:</span>
+            <strong>${displayAddress}</strong>
+          </div>
+        </div>
+
+        <div class="invoice-divider"></div>
+        
+        <div style="margin-bottom: 1rem;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-dark);">Artículos comprados:</h4>
+          ${itemsHtml}
+        </div>
+
+        <div class="invoice-divider"></div>
+
+        <div class="invoice-total-summary">
+          <div style="display: flex; justify-content: space-between; width: 100%; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem;">
+            <span>Subtotal:</span>
+            <span>${safeFormatCOP(subtotal)}</span>
+          </div>
+          ${
+            discount > 0
+              ? `
+            <div style="display: flex; justify-content: space-between; width: 100%; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--primary);">
+              <span>Descuento:</span>
+              <span>-${safeFormatCOP(discount)}</span>
+            </div>
+          `
+              : ""
+          }
+          <div style="display: flex; justify-content: space-between; width: 100%; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem;">
+            <span>Envío:</span>
+            <span>${shippingCost === 0 ? "Gratis" : safeFormatCOP(shippingCost)}</span>
+          </div>
+          <div class="invoice-divider" style="margin: 0.75rem 0; width: 100%;"></div>
+          <div style="display: flex; justify-content: space-between; width: 100%; font-weight: 800; font-size: 1.35rem;">
+            <span>Total:</span>
+            <span style="color: var(--primary);">${safeFormatCOP(grandTotal)}</span>
+          </div>
+        </div>
+      `;
+      }
+    </script>
+  </body>
+</html>

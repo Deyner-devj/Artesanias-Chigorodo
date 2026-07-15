@@ -1,0 +1,217 @@
+<div
+  style="
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    max-width: 650px;
+    margin: 0 auto;
+  "
+>
+  <h3
+    style="
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+    "
+  >
+    Editar Producto
+  </h3>
+  <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem">
+    Modifica los detalles técnicos o el inventario del producto seleccionado.
+  </p>
+
+  <form
+    onsubmit="
+      event.preventDefault();
+      alert('¡Los cambios han sido guardados correctamente!');
+      loadView('productos');
+    "
+  >
+    <div style="margin-bottom: 1.25rem">
+      <label
+        style="
+          display: block;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #475569;
+          margin-bottom: 0.5rem;
+        "
+        >Nombre del Producto</label
+      >
+      <input
+        type="text"
+        value="Mochila Wayuu Colores de Urabá"
+        required
+        style="
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          font-family: inherit;
+          font-size: 0.9rem;
+        "
+      />
+    </div>
+
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+      "
+    >
+      <div>
+        <label
+          style="
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 0.5rem;
+          "
+          >Categoría</label
+        >
+        <select
+          style="
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            background: white;
+          "
+        >
+          <option selected>Tejidos</option>
+          <option>Alfarería y Barro</option>
+          <option>Ebanistería y Madera</option>
+        </select>
+      </div>
+      <div>
+        <label
+          style="
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 0.5rem;
+          "
+          >Precio Unitario</label
+        >
+        <input
+          type="number"
+          value="240000"
+          required
+          style="
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+          "
+        />
+      </div>
+    </div>
+
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      "
+    >
+      <div>
+        <label
+          style="
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 0.5rem;
+          "
+          >Stock Disponible</label
+        >
+        <input
+          type="number"
+          value="12"
+          required
+          style="
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+          "
+        />
+      </div>
+      <div>
+        <label
+          style="
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 0.5rem;
+          "
+          >Estado de Publicación</label
+        >
+        <select
+          style="
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            background: white;
+          "
+        >
+          <option selected>Visible en Catálogo</option>
+          <option>Oculto / Borrador</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 1rem">
+      <button
+        type="button"
+        onclick="loadView('productos')"
+        style="
+          flex: 1;
+          background: #f1f5f9;
+          color: #475569;
+          border: none;
+          padding: 0.75rem;
+          border-radius: 8px;
+          font-weight: 700;
+          cursor: pointer;
+          font-family: inherit;
+        "
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        style="
+          flex: 2;
+          background: var(--color-active);
+          color: white;
+          border: none;
+          padding: 0.75rem;
+          border-radius: 8px;
+          font-weight: 700;
+          cursor: pointer;
+          font-family: inherit;
+        "
+      >
+        Guardar Cambios
+      </button>
+    </div>
+  </form>
+</div>

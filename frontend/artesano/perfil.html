@@ -1,0 +1,136 @@
+<div
+  style="
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    max-width: 600px;
+    margin: 0 auto;
+  "
+>
+  <h3
+    style="
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+    "
+  >
+    Mi Perfil de Artesano
+  </h3>
+  <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem">
+    Define tu biografía, foto y datos que los clientes verán al comprar tus
+    piezas.
+  </p>
+
+  <form
+    onsubmit="
+      event.preventDefault();
+      alert('¡Perfil público actualizado con éxito!');
+    "
+  >
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      "
+    >
+      <div
+        style="
+          width: 70px;
+          height: 70px;
+          background-color: var(--color-active);
+          color: white;
+          font-weight: 800;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+        "
+      >
+        AC
+      </div>
+      <div>
+        <h4 style="font-weight: 800; color: #0f172a">
+          Asociación Artesanal Chigorodó
+        </h4>
+        <p style="font-size: 0.75rem; color: #64748b">
+          Urabá Antioqueño, Colombia
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 1.25rem">
+      <label
+        style="
+          display: block;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #475569;
+          margin-bottom: 0.5rem;
+        "
+        >Nombre de Marca / Artesano Líder</label
+      >
+      <input
+        type="text"
+        value="Asociación Artesanal Chigorodó"
+        required
+        style="
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          font-family: inherit;
+          font-size: 0.9rem;
+        "
+      />
+    </div>
+
+    <div style="margin-bottom: 1.5rem">
+      <label
+        style="
+          display: block;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #475569;
+          margin-bottom: 0.5rem;
+        "
+        >Nuestra Historia / Biografía</label
+      >
+      <textarea
+        rows="4"
+        style="
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          font-family: inherit;
+          font-size: 0.9rem;
+          resize: none;
+        "
+      >
+Somos tejedores dedicados a salvaguardar y expandir el patrimonio cultural de las mochilas tejidas tradicionales en Chigorodó, trayendo colores vivos y técnicas de hilado milenarias a las salas de todo el país.</textarea
+      >
+    </div>
+
+    <button
+      type="submit"
+      style="
+        width: 100%;
+        background: var(--color-active);
+        color: white;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+      "
+    >
+      Guardar Perfil Público
+    </button>
+  </form>
+</div>

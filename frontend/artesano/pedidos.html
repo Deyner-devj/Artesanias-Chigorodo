@@ -1,0 +1,95 @@
+<div
+  style="
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+  "
+>
+  <h3
+    style="
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+    "
+  >
+    Control de Pedidos
+  </h3>
+  <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem">
+    Despacha y actualiza el estado de las compras de tus clientes.
+  </p>
+
+  <table
+    style="
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    "
+  >
+    <thead>
+      <tr style="border-bottom: 2px solid #e2e8f0; color: #64748b">
+        <th style="padding: 1rem 0.5rem">Pedido ID</th>
+        <th style="padding: 1rem 0.5rem">Cliente</th>
+        <th style="padding: 1rem 0.5rem">Producto comprado</th>
+        <th style="padding: 1rem 0.5rem">Fecha</th>
+        <th style="padding: 1rem 0.5rem">Total pagado</th>
+        <th style="padding: 1rem 0.5rem; text-align: right; width: 180px">
+          Estado / Envío
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom: 1px solid #f1f5f9">
+        <td style="padding: 1rem 0.5rem; font-weight: 700; color: #0f172a">
+          #CH-2026-004
+        </td>
+        <td style="padding: 1rem 0.5rem">Daniela Gaviria</td>
+        <td style="padding: 1rem 0.5rem">Sombrero Vueltiao Tradicional</td>
+        <td style="padding: 1rem 0.5rem; color: #64748b">2026-07-12</td>
+        <td style="padding: 1rem 0.5rem; font-weight: 600">$180.000</td>
+        <!-- Celda interactiva alineada a la derecha con el contenedor del despacho -->
+        <td style="padding: 1rem 0.5rem; text-align: right">
+          <div
+            style="display: inline-flex; justify-content: flex-end; width: 100%"
+          >
+            <div class="dispatch-container" id="dispatch-block-2026-004">
+              <button
+                onclick="iniciarDespacho('2026-004')"
+                style="
+                  background-color: var(--color-active);
+                  color: white;
+                  border: none;
+                  padding: 8px 16px;
+                  border-radius: 8px;
+                  font-weight: 700;
+                  cursor: pointer;
+                  font-family: inherit;
+                  font-size: 0.8rem;
+                  transition: background-color 0.2s ease;
+                "
+                onmouseover="this.style.backgroundColor = '#c25e22'"
+                onmouseout="this.style.backgroundColor = 'var(--color-active)'"
+              >
+                Despachar
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr style="border-bottom: 1px solid #f1f5f9">
+        <td style="padding: 1rem 0.5rem; font-weight: 700; color: #0f172a">
+          #CH-2026-003
+        </td>
+        <td style="padding: 1rem 0.5rem">Juan Fernando Hoyos</td>
+        <td style="padding: 1rem 0.5rem">Jarrón de Barro Tradicional</td>
+        <td style="padding: 1rem 0.5rem; color: #64748b">2026-07-09</td>
+        <td style="padding: 1rem 0.5rem; font-weight: 600">$95.000</td>
+        <td style="padding: 1rem 0.5rem; text-align: right">
+          <span style="color: #10b981; font-weight: 700">Entregado ✓</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

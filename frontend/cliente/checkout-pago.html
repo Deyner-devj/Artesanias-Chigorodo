@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Método de Pago - Artesanías Chigorodó</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/navbar.css" />
+    <link rel="stylesheet" href="../css/footer.css" />
+    <link rel="stylesheet" href="../css/carrito.css" />
+    <link rel="stylesheet" href="../css/checkout.css" />
+  </head>
+  <body>
+    <script src="../js/protected-routes.js"></script>
+
+    <div class="app-shell">
+      <div id="navbar-placeholder"></div>
+
+      <div class="app-main-content">
+        <main class="page cart-page-container">
+          <div class="checkout-progress-bar">
+            <div class="progress-step completed">
+              <div class="step-num-badge">✓</div>
+              <span class="step-label">1. Información</span>
+            </div>
+            <div class="progress-connector filled"></div>
+            <div class="progress-step completed">
+              <div class="step-num-badge">✓</div>
+              <span class="step-label">2. Envío</span>
+            </div>
+            <div class="progress-connector filled"></div>
+            <div class="progress-step active">
+              <div class="step-num-badge">3</div>
+              <span class="step-label">3. Pago</span>
+            </div>
+          </div>
+
+          <div class="cart-grid">
+            <div class="checkout-form-panel">
+              <h2>Finalizar compra</h2>
+              <div class="form-section-title">3. Método de pago</div>
+
+              <form
+                id="checkout-payment-form"
+                method="POST"
+                action="javascript:void(0);"
+              >
+                <div class="payment-methods-list">
+                  <label class="payment-option-card" id="card-pse">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="PSE"
+                      onclick="selectPaymentMethod('PSE')"
+                      required
+                    />
+                    <div
+                      class="payment-option-icon"
+                      style="
+                        background-color: #ffffff;
+                        padding: 4px;
+                        border-radius: 6px;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 32px;
+                        width: 52px;
+                        flex-shrink: 0;
+                      "
+                    >
+                      <img
+                        src="img/pagos/pse.svg"
+                        alt="PSE"
+                        style="
+                          max-height: 100%;
+                          max-width: 100%;
+                          object-fit: contain;
+                        "
+                      />
+                    </div>
+                    <div class="payment-option-details">
+                      <span class="payment-title"
+                        >PSE - Pagos Seguros en Línea</span
+                      >
+                      <span class="payment-desc"
+                        >Débito directo desde tu cuenta bancaria
+                        (Ahorros/Corriente).</span
+                      >
+                    </div>
+                  </label>
+
+                  <label class="payment-option-card" id="card-card">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="CARD"
+                      onclick="selectPaymentMethod('CARD')"
+                    />
+                    <div class="payment-option-icon">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.75"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+                        <line x1="2" x2="22" y1="10" y2="10"></line>
+                      </svg>
+                    </div>
+                    <div class="payment-option-details">
+                      <span class="payment-title"
+                        >Tarjeta de crédito / débito</span
+                      >
+                      <span class="payment-desc"
+                        >Visa, Mastercard, American Express.</span
+                      >
+                    </div>
+                  </label>
+
+                  <label class="payment-option-card" id="card-mercadopago">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="MERCADOPAGO"
+                      onclick="selectPaymentMethod('MERCADOPAGO')"
+                    />
+                    <div
+                      class="payment-option-icon"
+                      style="
+                        background-color: #ffffff;
+                        padding: 4px;
+                        border-radius: 6px;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 32px;
+                        width: 52px;
+                        flex-shrink: 0;
+                      "
+                    >
+                      <img
+                        src="img/pagos/mercadopago.svg"
+                        alt="Mercado Pago"
+                        style="
+                          max-height: 100%;
+                          max-width: 100%;
+                          object-fit: contain;
+                        "
+                      />
+                    </div>
+                    <div class="payment-option-details">
+                      <span class="payment-title">Mercado Pago</span>
+                      <span class="payment-desc"
+                        >Dinero en cuenta de Mercado Pago o tarjetas
+                        guardadas.</span
+                      >
+                    </div>
+                  </label>
+
+                  <label class="payment-option-card" id="card-nequi">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="NEQUI"
+                      onclick="selectPaymentMethod('NEQUI')"
+                    />
+                    <div
+                      class="payment-option-icon"
+                      style="
+                        background-color: #ffffff;
+                        padding: 4px;
+                        border-radius: 6px;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 32px;
+                        width: 52px;
+                        flex-shrink: 0;
+                      "
+                    >
+                      <img
+                        src="img/pagos/nequi.svg"
+                        alt="Nequi"
+                        style="
+                          max-height: 100%;
+                          max-width: 100%;
+                          object-fit: contain;
+                        "
+                      />
+                    </div>
+                    <div class="payment-option-details">
+                      <span class="payment-title">Nequi</span>
+                      <span class="payment-desc"
+                        >Paga al instante de forma móvil con tu celular
+                        Nequi.</span
+                      >
+                    </div>
+                  </label>
+
+                  <label class="payment-option-card" id="card-daviplata">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="DAVIPLATA"
+                      onclick="selectPaymentMethod('DAVIPLATA')"
+                    />
+                    <div
+                      class="payment-option-icon"
+                      style="
+                        background-color: #ffffff;
+                        padding: 4px;
+                        border-radius: 6px;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 32px;
+                        width: 52px;
+                        flex-shrink: 0;
+                      "
+                    >
+                      <img
+                        src="img/pagos/daviplata.svg"
+                        alt="Daviplata"
+                        style="
+                          max-height: 100%;
+                          max-width: 100%;
+                          object-fit: contain;
+                        "
+                      />
+                    </div>
+                    <div class="payment-option-details">
+                      <span class="payment-title">Daviplata</span>
+                      <span class="payment-desc"
+                        >Paga de forma fácil y segura usando tu cuenta
+                        Daviplata.</span
+                      >
+                    </div>
+                  </label>
+                </div>
+
+                <div
+                  class="pse-bank-select-box"
+                  id="pse-bank-container"
+                  style="display: none"
+                >
+                  <label for="pseBank">Selecciona tu banco:</label>
+                  <select id="pseBank" name="pseBank">
+                    <option value="">-- Seleccionar Banco --</option>
+                    <option value="Bancolombia">Bancolombia</option>
+                    <option value="Banco de Bogotá">Banco de Bogotá</option>
+                    <option value="Davivienda">Davivienda</option>
+                    <option value="Banco Popular">Banco Popular</option>
+                    <option value="Banco Itaú">Banco Itaú</option>
+                    <option value="BBVA Colombia">BBVA Colombia</option>
+                    <option value="Scotiabank Colpatria">
+                      Scotiabank Colpatria
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-actions-row">
+                  <a
+                    href="checkout-envio.html"
+                    class="btn btn-outline-green"
+                    style="display: flex; align-items: center; gap: 0.5rem"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <line x1="19" y1="12" x2="5" y2="12"></line>
+                      <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Volver
+                  </a>
+                  <button type="submit" class="btn btn-secondary">
+                    Pagar ahora
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div id="checkout-summary-placeholder"></div>
+          </div>
+        </main>
+      </div>
+
+      <div id="footer-placeholder"></div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/productos.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/carrito.js"></script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/footer.js"></script>
+
+    <script>
+      let selectedMethod = "PSE";
+      let shippingCost = 15000;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Settle cart constraints
+        if (typeof getCartItems === "function" && getCartItems().length === 0) {
+          window.location.href = "carrito.html";
+          return;
+        }
+
+        shippingCost = parseInt(
+          sessionStorage.getItem("checkout_shipping_cost") || "15000",
+        );
+
+        // Load saved payment if exists
+        const savedMethod = sessionStorage.getItem("checkout_payment_method");
+        if (savedMethod) {
+          selectedMethod = savedMethod;
+        }
+
+        // Check radio and update styles
+        const radios = document.getElementsByName("paymentMethod");
+        radios.forEach((radio) => {
+          if (radio.value === selectedMethod) {
+            radio.checked = true;
+          }
+        });
+
+        selectPaymentMethod(selectedMethod);
+        if (typeof renderCheckoutSummary === "function")
+          renderCheckoutSummary();
+        if (typeof bindFormSubmit === "function") bindFormSubmit();
+      });
+
+      function selectPaymentMethod(method) {
+        selectedMethod = method;
+
+        const cards = ["pse", "card", "mercadopago", "nequi", "daviplata"];
+        cards.forEach((c) => {
+          const el = document.getElementById(`card-${c}`);
+          if (el) {
+            el.classList.remove("selected");
+            if (c === method.toLowerCase()) {
+              el.classList.add("selected");
+            }
+          }
+        });
+
+        const bankContainer = document.getElementById("pse-bank-container");
+        const bankSelect = document.getElementById("pseBank");
+        if (method === "PSE") {
+          bankContainer.style.display = "block";
+          bankSelect.setAttribute("required", "required");
+        } else {
+          bankContainer.style.display = "none";
+          bankSelect.removeAttribute("required");
+        }
+      }
+
+      function renderCheckoutSummary() {
+        const ph = document.getElementById("checkout-summary-placeholder");
+        if (!ph) return;
+
+        let items = [];
+        try {
+          const stored =
+            localStorage.getItem("cart") || localStorage.getItem("carrito");
+          if (stored) {
+            items = JSON.parse(stored);
+          } else if (typeof getCartItems === "function") {
+            items = getCartItems();
+          }
+        } catch (e) {
+          console.error("Error recuperando el carrito", e);
+        }
+
+        // Matemáticas Manuales
+        const total = items.reduce(
+          (sum, item) => sum + item.product.price * item.quantity,
+          0,
+        );
+        const discount = parseInt(
+          sessionStorage.getItem("checkout_discount") || "0",
+        );
+
+        // Cargar el costo de envío guardado (si no existe, poner 0)
+        let shippingCost = parseInt(
+          sessionStorage.getItem("checkout_shipping_cost") || "0",
+        );
+
+        // Si estamos específicamente en la pantalla de pago, asegúrate de que use el costo correcto
+        if (window.location.pathname.includes("pago") && shippingCost === 0) {
+          shippingCost = 15000; // Valor por defecto si falló el paso anterior
+        }
+
+        const grandTotal = Math.max(0, total - discount) + shippingCost;
+
+        // Formato Manual Seguro
+        const formatMoney = (val) => {
+          if (typeof formatCOP === "function") return formatCOP(val);
+          return new Intl.NumberFormat("es-CO", {
+            style: "currency",
+            currency: "COP",
+            minimumFractionDigits: 0,
+          }).format(val);
+        };
+
+        let itemsHtml = "";
+        items.forEach((item) => {
+          itemsHtml += `
+          <div class="checkout-summary-item-card" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+            <img src="${item.product.image}" alt="${item.product.name}" class="checkout-summary-item-img" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;" onerror="this.src='img/mochila_wayuu.png'" />
+            <div class="checkout-summary-item-info" style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
+              <span class="checkout-summary-item-name" style="font-weight: 600; font-size: 0.9rem;">${item.product.name}</span>
+              <span class="checkout-summary-item-qty" style="font-size: 0.8rem; color: #666;">Cantidad: ${item.quantity}</span>
+              <span class="checkout-summary-item-price" style="font-weight: 500;">${formatMoney(item.product.price * item.quantity)}</span>
+            </div>
+          </div>`;
+        });
+
+        ph.innerHTML = `
+        <div class="cart-summary-panel" style="background-color: #fff; border-radius: 12px; border: 1px solid #eee; padding: 2.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+          <h2 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 1.5rem; color: #333;">Resumen del pedido</h2>
+          <div class="summary-items-preview">${itemsHtml}</div>
+          <div style="height: 1px; background-color: #eee; margin: 1.5rem 0;"></div>
+          <div class="summary-row" style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+            <span>Subtotal</span><span style="font-weight: 600;">${formatMoney(total)}</span>
+          </div>
+          <div style="display: ${discount > 0 ? "flex" : "none"}; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.95rem; color: #2e7d32;">
+            <span>Descuento</span><span style="font-weight: 600;">-${formatMoney(discount)}</span>
+          </div>
+          <div class="summary-row" style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+            <span>Envío</span><span style="font-weight: 600;">${shippingCost === 0 ? "Por calcular" : formatMoney(shippingCost)}</span>
+          </div>
+          <div style="height: 1px; background-color: #eee; margin: 1.5rem 0;"></div>
+          <div class="summary-row total-row" style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: 700;">
+            <span>Total a pagar</span><span style="color: #2e7d32;">${formatMoney(grandTotal)}</span>
+          </div>
+        </div>`;
+      }
+
+      function bindFormSubmit() {
+        const form = document.getElementById("checkout-payment-form");
+        if (!form) return;
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          sessionStorage.setItem("checkout_payment_method", selectedMethod);
+
+          if (selectedMethod === "PSE") {
+            const bank = document.getElementById("pseBank").value;
+            if (!bank) {
+              alert("Por favor selecciona tu banco para continuar con PSE.");
+              return;
+            }
+            sessionStorage.setItem("checkout_pse_bank", bank);
+            // CORRECCIÓN: Apuntando al archivo correcto del simulador (verifica si se llama pago-pse.html)
+            // Si no tienes simulador de PSE, cambia "pago-pse.html" por "confirmacion-compra.html"
+            window.location.href = "pago-pse.html";
+          } else {
+            processLocalOrder();
+          }
+        });
+      }
+
+      function processLocalOrder() {
+        const orderNum = Math.floor(Math.random() * 1000000);
+        sessionStorage.setItem("checkout_order_number", orderNum);
+
+        // Limpiar carrito después de pagar
+        localStorage.removeItem("cart");
+        localStorage.removeItem("carrito");
+
+        // CORRECCIÓN: Nombre correcto del archivo final
+        window.location.href = "confirmacion-compra.html";
+      }
+
+      function processLocalOrder() {
+        const orderNum =
+          typeof generateOrderNumber === "function"
+            ? generateOrderNumber()
+            : Math.floor(Math.random() * 1000000);
+        sessionStorage.setItem("checkout_order_number", orderNum);
+
+        saveOrderToHistory(orderNum, selectedMethod);
+
+        if (typeof clearCart === "function") {
+          clearCart();
+        }
+
+        window.location.href = "confirmacion.html";
+      }
+
+      function saveOrderToHistory(orderNum, paymentMethod) {
+        const items = typeof getCartItems === "function" ? getCartItems() : [];
+        const total = typeof getCartTotal === "function" ? getCartTotal() : 0;
+        const discount = parseInt(
+          sessionStorage.getItem("checkout_discount") || "0",
+        );
+        const grandTotal = Math.max(0, total - discount) + shippingCost;
+        const info = JSON.parse(
+          sessionStorage.getItem("checkout_info") || "{}",
+        );
+
+        const newOrder = {
+          id: `#${orderNum}`,
+          date: new Date().toLocaleDateString("es-CO", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          status: "transit",
+          statusText: "En tránsito",
+          total: grandTotal,
+          address: info.address || "Calle 12 #45-67",
+          city: info.city || "Medellín",
+          items: items.map((item) => ({
+            name: item.product.name,
+            qty: item.quantity,
+            price: item.product.price,
+          })),
+          paymentMethod: paymentMethod,
+        };
+
+        const ordersHistoryStr = localStorage.getItem("orders_history");
+        let history = [];
+        if (ordersHistoryStr) {
+          try {
+            history = JSON.parse(ordersHistoryStr);
+          } catch (e) {}
+        }
+
+        history.unshift(newOrder);
+        localStorage.setItem("orders_history", JSON.stringify(history));
+
+        saveOrderToSellerList(orderNum, newOrder);
+      }
+
+      function saveOrderToSellerList(orderNum, orderDetails) {
+        const sellerOrdersStr = localStorage.getItem("seller_orders");
+        let sellerOrders = [];
+        if (sellerOrdersStr) {
+          try {
+            sellerOrders = JSON.parse(sellerOrdersStr);
+          } catch (e) {}
+        } else {
+          sellerOrders = [
+            {
+              id: "AC-2024-88032",
+              customer: "Carlos Gómez",
+              product: "Mochila Wayuu Colores del Sol",
+              date: "2024-07-08",
+              amount: 280000,
+              status: "Pendiente",
+            },
+            {
+              id: "AC-2024-77123",
+              customer: "Lucía Ortiz",
+              product: "Hamaca San Jacinto",
+              date: "2024-07-05",
+              amount: 350000,
+              status: "En tránsito",
+            },
+            {
+              id: "AC-2024-66432",
+              customer: "Mateo Restrepo",
+              product: "Mochila Wayuu Colores del Sol",
+              date: "2024-06-28",
+              amount: 280000,
+              status: "Entregado",
+            },
+          ];
+        }
+
+        const info = JSON.parse(
+          sessionStorage.getItem("checkout_info") || "{}",
+        );
+        const items = typeof getCartItems === "function" ? getCartItems() : [];
+
+        items.forEach((item) => {
+          sellerOrders.unshift({
+            id: orderNum,
+            customer: info.name || "Juan Pérez",
+            product: item.product.name,
+            date: new Date().toISOString().split("T")[0],
+            amount: item.product.price * item.quantity,
+            status: "Pendiente",
+          });
+        });
+
+        localStorage.setItem("seller_orders", JSON.stringify(sellerOrders));
+      }
+    </script>
+  </body>
+</html>

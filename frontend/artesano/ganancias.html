@@ -1,0 +1,269 @@
+<!-- Módulo de Liquidación y Ganancias con Historial de Desembolsos -->
+<div
+  style="
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
+    margin-bottom: 2rem;
+  "
+>
+  <!-- Panel Izquierdo: Saldo Disponible -->
+  <div
+    style="
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    "
+  >
+    <div>
+      <h3
+        style="
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: #0f172a;
+          margin: 0 0 0.25rem 0;
+        "
+      >
+        Liquidación de Saldos
+      </h3>
+      <p style="color: #64748b; font-size: 0.9rem; margin: 0 0 1.5rem 0">
+        Corte financiero de ganancias netas descontando la comisión de la
+        pasarela.
+      </p>
+
+      <div
+        style="
+          background: #f8fafc;
+          padding: 1.5rem;
+          border-radius: 12px;
+          margin-bottom: 1.5rem;
+          border: 1px solid #e2e8f0;
+        "
+      >
+        <span
+          style="
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+          "
+          >Ganancias Netas Disponibles</span
+        >
+        <h1
+          style="
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #10b981;
+            margin: 0.5rem 0;
+          "
+        >
+          $1.240.500
+        </h1>
+        <div style="display: flex; align-items: center; gap: 6px">
+          <span
+            style="
+              display: inline-block;
+              width: 8px;
+              height: 8px;
+              background-color: #3b82f6;
+              border-radius: 50%;
+            "
+          ></span>
+          <p style="font-size: 0.8rem; color: #64748b; margin: 0">
+            Transferencia programada para todos los viernes.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <button
+      onclick="alert('Solicitud de dispersión inmediata enviada a tesorería.')"
+      style="
+        width: 100%;
+        background: #0f172a;
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+        font-family: inherit;
+        font-size: 0.95rem;
+      "
+      onmouseover="
+        this.style.background = '#1e293b';
+        this.style.transform = 'scale(1.01)';
+      "
+      onmouseout="
+        this.style.background = '#0f172a';
+        this.style.transform = 'scale(1)';
+      "
+    >
+      Solicitar Retiro Anticipado
+    </button>
+  </div>
+
+  <!-- Panel Derecho: Historial y Gráfico de Desembolsos -->
+  <div
+    style="
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    "
+  >
+    <div>
+      <h3
+        style="
+          font-size: 1.5rem;
+          font-weight: 800;
+          color: #0f172a;
+          margin: 0 0 0.25rem 0;
+        "
+      >
+        Historial de Desembolsos
+      </h3>
+      <p style="color: #64748b; font-size: 0.9rem; margin: 0 0 1.5rem 0">
+        Historial de transferencias exitosas a tu cuenta bancaria.
+      </p>
+
+      <!-- Gráfico de Desembolsos Recibidos -->
+      <div style="margin-bottom: 1.5rem; height: 130px; position: relative">
+        <canvas id="payoutsChart"></canvas>
+      </div>
+
+      <!-- Lista de Desembolsos -->
+      <div style="display: flex; flex-direction: column; gap: 1rem">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+          "
+        >
+          <div>
+            <h4
+              style="
+                font-size: 0.9rem;
+                font-weight: 700;
+                color: #0f172a;
+                margin: 0;
+              "
+            >
+              Transferencia Recibida
+            </h4>
+            <p style="font-size: 0.75rem; color: #64748b; margin: 2px 0 0 0">
+              Ahorros Bancolombia (Julio 3)
+            </p>
+          </div>
+          <span
+            style="
+              color: #10b981;
+              font-weight: 800;
+              background: #ecfdf5;
+              padding: 4px 8px;
+              border-radius: 6px;
+              font-size: 0.85rem;
+            "
+            >$980.000 ✓</span
+          >
+        </div>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <div>
+            <h4
+              style="
+                font-size: 0.9rem;
+                font-weight: 700;
+                color: #0f172a;
+                margin: 0;
+              "
+            >
+              Transferencia Recibida
+            </h4>
+            <p style="font-size: 0.75rem; color: #64748b; margin: 2px 0 0 0">
+              Ahorros Bancolombia (Junio 26)
+            </p>
+          </div>
+          <span
+            style="
+              color: #10b981;
+              font-weight: 800;
+              background: #ecfdf5;
+              padding: 4px 8px;
+              border-radius: 6px;
+              font-size: 0.85rem;
+            "
+            >$1.420.000 ✓</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Carga de Chart.js desde CDN (si no se ha cargado arriba) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctxPayouts = document.getElementById("payoutsChart").getContext("2d");
+  new Chart(ctxPayouts, {
+    type: "bar",
+    data: {
+      labels: ["Jun 26", "Jul 03"], // Fechas de desembolso
+      datasets: [
+        {
+          label: "Desembolsado ($)",
+          data: [1420000, 980000], // Valores
+          backgroundColor: "#3b82f6",
+          borderRadius: 6,
+          barThickness: 35,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: "#f1f5f9" },
+          ticks: {
+            callback: (value) => "$" + value / 1000 + "k",
+          },
+        },
+        x: {
+          grid: { display: false },
+        },
+      },
+    },
+  });
+</script>

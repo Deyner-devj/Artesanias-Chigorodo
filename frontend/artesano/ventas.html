@@ -1,0 +1,191 @@
+<!-- Módulo de Ventas con Gráfico Interactivo -->
+<div
+  style="
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow:
+      0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    font-family:
+      system-ui,
+      -apple-system,
+      sans-serif;
+    margin-bottom: 2rem;
+  "
+>
+  <!-- Encabezado -->
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    "
+  >
+    <div>
+      <h3
+        style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0"
+      >
+        Historial de Ventas
+      </h3>
+      <p style="color: #64748b; font-size: 0.9rem; margin: 4px 0 0 0">
+        Registro histórico de todas las transacciones procesadas.
+      </p>
+    </div>
+    <span
+      style="
+        background: #f1f5f9;
+        color: #334155;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 700;
+      "
+    >
+      Filtrado: Todos los tiempos
+    </span>
+  </div>
+
+  <!-- Contenedor del Gráfico de Ventas -->
+  <div
+    style="
+      margin-bottom: 2.5rem;
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    "
+  >
+    <h4
+      style="
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #334155;
+        margin-top: 0;
+        margin-bottom: 1rem;
+      "
+    >
+      Tendencia de Ventas Recientes
+    </h4>
+    <div style="position: relative; height: 220px; width: 100%">
+      <canvas id="salesChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Tabla de Ventas -->
+  <div style="overflow-x: auto">
+    <table
+      style="
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.9rem;
+        min-width: 600px;
+      "
+    >
+      <thead>
+        <tr style="border-bottom: 2px solid #e2e8f0; color: #64748b">
+          <th style="padding: 1rem 0.75rem">Referencia de Pago</th>
+          <th style="padding: 1rem 0.75rem">Producto vendido</th>
+          <th style="padding: 1rem 0.75rem">Método de Pago</th>
+          <th style="padding: 1rem 0.75rem">Fecha</th>
+          <th style="padding: 1rem 0.75rem; text-align: right">Monto Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s"
+          onmouseover="this.style.background = '#f8fafc'"
+          onmouseout="this.style.background = 'transparent'"
+        >
+          <td style="padding: 1rem 0.75rem; font-weight: 700; color: #0f172a">
+            PAY-987-2026
+          </td>
+          <td style="padding: 1rem 0.75rem">Mochila Wayuu Colores de Urabá</td>
+          <td style="padding: 1rem 0.75rem; color: #64748b">
+            Wompi (Bancolombia)
+          </td>
+          <td style="padding: 1rem 0.75rem">2026-07-10</td>
+          <td
+            style="
+              padding: 1rem 0.75rem;
+              text-align: right;
+              font-weight: 700;
+              color: #10b981;
+            "
+          >
+            $240.000
+          </td>
+        </tr>
+        <tr
+          style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s"
+          onmouseover="this.style.background = '#f8fafc'"
+          onmouseout="this.style.background = 'transparent'"
+        >
+          <td style="padding: 1rem 0.75rem; font-weight: 700; color: #0f172a">
+            PAY-452-2026
+          </td>
+          <td style="padding: 1rem 0.75rem">Sombrero Vueltiao Tradicional</td>
+          <td style="padding: 1rem 0.75rem; color: #64748b">PSE (Nequi)</td>
+          <td style="padding: 1rem 0.75rem">2026-07-08</td>
+          <td
+            style="
+              padding: 1rem 0.75rem;
+              text-align: right;
+              font-weight: 700;
+              color: #10b981;
+            "
+          >
+            $180.000
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Carga de Chart.js desde CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctxSales = document.getElementById("salesChart").getContext("2d");
+  new Chart(ctxSales, {
+    type: "line",
+    data: {
+      labels: ["2026-07-08", "2026-07-09", "2026-07-10"], // Fechas de ventas
+      datasets: [
+        {
+          label: "Monto de Ventas ($)",
+          data: [180000, 0, 240000], // Valores correspondientes
+          borderColor: "#10b981",
+          backgroundColor: "rgba(16, 185, 129, 0.1)",
+          borderWidth: 3,
+          tension: 0.3,
+          fill: true,
+          pointBackgroundColor: "#10b981",
+          pointRadius: 6,
+          pointHoverRadius: 8,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: "#f1f5f9" },
+          ticks: {
+            callback: (value) => "$" + value.toLocaleString("es-CO"),
+          },
+        },
+        x: {
+          grid: { display: false },
+        },
+      },
+    },
+  });
+</script>

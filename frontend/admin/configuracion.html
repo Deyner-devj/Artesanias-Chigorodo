@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuración · Admin</title>
+    <link rel="stylesheet" href="../css/admin/admin.css" />
+
+    <!-- Iconos Inteligentes -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Modales Profesionales y Animados (SweetAlert2) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      /* Personalización rápida de SweetAlert para que combine con el naranja artesanal */
+      .swal2-styled.swal2-confirm {
+        background-color: #d37135 !important;
+      }
+      .swal2-styled.swal2-confirm:focus {
+        box-shadow: 0 0 0 3px rgba(211, 113, 53, 0.3) !important;
+      }
+    </style>
+  </head>
+  <body data-page-title="Configuración">
+    <div
+      class="sidebar-overlay"
+      id="sidebar-overlay"
+      onclick="closeMobileSidebar()"
+    ></div>
+
+    <div class="dash-shell">
+      <div id="dash-sidebar-container"></div>
+
+      <div class="dash-main">
+        <div id="dash-topbar-container"></div>
+
+        <div class="dash-content">
+          <!-- Tarjeta de Configuración de Mantenimiento -->
+          <div class="card config-card">
+            <div class="config-header">
+              <div class="config-icon-wrapper">
+                <i
+                  data-lucide="shield-alert"
+                  style="color: #d37135; width: 24px; height: 24px"
+                ></i>
+              </div>
+              <div>
+                <h2 class="config-card-title">
+                  Mantenimiento de la Plataforma
+                </h2>
+                <p class="config-card-subtitle">
+                  Controla el acceso público de tus clientes durante
+                  actualizaciones técnicas.
+                </p>
+              </div>
+            </div>
+
+            <div class="config-body">
+              <p style="margin-bottom: 20px; font-size: 0.95rem; color: #555">
+                Como administrador <strong>(Deyner Chaverra)</strong>, no serás
+                bloqueado por el sistema para que puedas trabajar libremente.
+              </p>
+
+              <div class="option-group">
+                <label class="radio-option">
+                  <input
+                    type="radio"
+                    name="modo-mantenimiento"
+                    value="inmediato"
+                    id="opt-inmediato"
+                  />
+                  <div class="radio-desc">
+                    <strong>Activar mantenimiento inmediatamente</strong>
+                    <span
+                      >Bloqueará la web a todos los usuarios del sistema al
+                      instante.</span
+                    >
+                  </div>
+                </label>
+
+                <label class="radio-option">
+                  <input
+                    type="radio"
+                    name="modo-mantenimiento"
+                    value="programado"
+                    id="opt-programado"
+                  />
+                  <div class="radio-desc">
+                    <strong>Programar para una fecha específica</strong>
+                    <span
+                      >Se le notificará a los usuarios y se bloqueará
+                      automáticamente al llegar la fecha/hora elegida.</span
+                    >
+                  </div>
+                </label>
+              </div>
+
+              <!-- Entrada de fecha oculta por defecto, se activa al seleccionar programar -->
+              <div
+                id="input-fecha-container"
+                class="date-selector-box"
+                style="display: none"
+              >
+                <label for="fecha-mantenimiento"
+                  >Selecciona Fecha y Hora:</label
+                >
+                <input
+                  type="datetime-local"
+                  id="fecha-mantenimiento"
+                  class="custom-datetime-input"
+                />
+              </div>
+
+              <div
+                class="maint-status-banner"
+                id="status-banner"
+                style="display: none"
+              ></div>
+
+              <div class="actions-row">
+                <button
+                  class="btn btn-save"
+                  onclick="guardarConfiguracionMantenimiento()"
+                >
+                  Aplicar Cambios
+                </button>
+                <button
+                  class="btn btn-disable"
+                  onclick="desactivarTodoMantenimiento()"
+                >
+                  Desactivar Todo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/admin/dashboard-loader.js"></script>
+    <!-- Inyección del script de mantenimiento para monitoreo -->
+    <script src="../js/admin/mantenimiento.js"></script>
+
+    <!-- Lógica Interactiva con SweetAlert2 -->
+    <script>
+      // NOTA: el rol de admin NO se debe forzar aquí con localStorage, porque
+      // localStorage es compartido por todas las pestañas y nunca expira.
+      // El sistema de mantenimiento (mantenimiento.js) ya identifica al admin
+      // leyendo sessionStorage("user").role, que es lo que tu login real
+      // debe guardar al iniciar sesión (y que es propio de cada pestaña).
+
+      const radioInmediato = document.getElementById("opt-inmediato");
+      const radioProgramado = document.getElementById("opt-programado");
+      const contenedorFecha = document.getElementById("input-fecha-container");
+
+      // Escuchar cambios en los botones de selección
+      radioInmediato.addEventListener("change", () => {
+        contenedorFecha.style.display = "none";
+      });
+
+      radioProgramado.addEventListener("change", () => {
+        contenedorFecha.style.display = "block";
+        // Autoestablecer fecha mínima a partir de la hora actual
+        const ahora = new Date();
+        ahora.setMinutes(ahora.getMinutes() - ahora.getTimezoneOffset());
+        document.getElementById("fecha-mantenimiento").min = ahora
+          .toISOString()
+          .slice(0, 16);
+      });
+
+      // Renderizar estado visual actual al cargar la página
+      function renderizarEstadoActual() {
+        const config = JSON.parse(localStorage.getItem("mantenimiento_config"));
+        const banner = document.getElementById("status-banner");
+
+        if (config) {
+          banner.style.display = "block";
+          if (config.activoInstante) {
+            radioInmediato.checked = true;
+            banner.className = "maint-status-banner banner-active";
+            banner.innerHTML =
+              "🎯 <strong>Estado:</strong> Mantenimiento ACTIVO en tiempo real.";
+          } else if (config.fechaProgramada) {
+            radioProgramado.checked = true;
+            contenedorFecha.style.display = "block";
+            document.getElementById("fecha-mantenimiento").value =
+              config.fechaProgramada;
+            banner.className = "maint-status-banner banner-scheduled";
+            banner.innerHTML = `📅 <strong>Estado:</strong> Mantenimiento PROGRAMADO para: ${new Date(config.fechaProgramada).toLocaleString()}`;
+          }
+        } else {
+          banner.style.display = "none";
+          radioInmediato.checked = false;
+          radioProgramado.checked = false;
+          contenedorFecha.style.display = "none";
+        }
+      }
+
+      // Guardar configuración usando alertas profesionales animadas
+      function guardarConfiguracionMantenimiento() {
+        if (!radioInmediato.checked && !radioProgramado.checked) {
+          Swal.fire({
+            icon: "warning",
+            title: "Atención",
+            text: "Por favor selecciona una opción de mantenimiento.",
+            confirmButtonText: "Entendido",
+          });
+          return;
+        }
+
+        if (radioInmediato.checked) {
+          // Modal de confirmación animado e integrado
+          Swal.fire({
+            title: "¿Iniciar mantenimiento ahora?",
+            text: "La plataforma pública se bloqueará de inmediato para todos los visitantes.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d37135",
+            cancelButtonColor: "#4b5563",
+            confirmButtonText: "Sí, activar ahora",
+            cancelButtonText: "Cancelar",
+            showClass: {
+              popup: "animate__animated animate__fadeInDown",
+            },
+            hideClass: {
+              popup: "animate__animated animate__fadeOutUp",
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              localStorage.setItem(
+                "mantenimiento_config",
+                JSON.stringify({
+                  activoInstante: true,
+                  fechaProgramada: null,
+                }),
+              );
+
+              Swal.fire({
+                icon: "success",
+                title: "Mantenimiento Activado",
+                text: "La plataforma ya se encuentra en mantenimiento público.",
+                confirmButtonText: "Excelente",
+              });
+
+              renderizarEstadoActual();
+              evaluarEstadoMantenimiento();
+            }
+          });
+        } else if (radioProgramado.checked) {
+          const fechaElegida = document.getElementById(
+            "fecha-mantenimiento",
+          ).value;
+          if (!fechaElegida) {
+            Swal.fire({
+              icon: "warning",
+              title: "Campo Requerido",
+              text: "Por favor escoge una fecha y hora válidas.",
+              confirmButtonText: "Entendido",
+            });
+            return;
+          }
+
+          localStorage.setItem(
+            "mantenimiento_config",
+            JSON.stringify({
+              activoInstante: false,
+              fechaProgramada: fechaElegida,
+            }),
+          );
+
+          Swal.fire({
+            icon: "success",
+            title: "Programación Exitosa",
+            text: `El mantenimiento iniciará automáticamente el ${new Date(fechaElegida).toLocaleString()}`,
+            confirmButtonText: "Entendido",
+          });
+
+          renderizarEstadoActual();
+          evaluarEstadoMantenimiento();
+        }
+      }
+
+      // Desactivar usando alertas profesionales animadas
+      function desactivarTodoMantenimiento() {
+        Swal.fire({
+          title: "¿Reactivar plataforma?",
+          text: "Esto removerá cualquier bloqueo activo y permitirá el libre acceso a la tienda.",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#d37135",
+          cancelButtonColor: "#4b5563",
+          confirmButtonText: "Sí, reactivar ya",
+          cancelButtonText: "Cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.removeItem("mantenimiento_config");
+
+            Swal.fire({
+              icon: "success",
+              title: "Plataforma Online",
+              text: "La web se encuentra activa y funcional para todos los usuarios.",
+              confirmButtonText: "Genial",
+            }).then(() => {
+              window.location.reload();
+            });
+          }
+        });
+      }
+
+      // Inicializar al cargar
+      renderizarEstadoActual();
+    </script>
+  </body>
+</html>

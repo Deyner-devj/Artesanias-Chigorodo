@@ -1,0 +1,392 @@
+:root {
+  color-scheme: light;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.5;
+
+  /* Fonts */
+  --font-display: "Poppins", sans-serif;
+  --font-sans: "Poppins", sans-serif;
+  --font-serif: "Poppins", sans-serif;
+
+  /* Color Palette Hex */
+  --bg-primary: #f8f6f2;
+  --bg-secondary: #f3efe9;
+  --bg-card: #ffffff;
+
+  --primary: #c46b2d; /* naranja artesanal */
+  --primary-hover: #b05c24;
+  --primary-light: rgba(196, 107, 45, 0.08);
+
+  --secondary: #2e7d32; /* verde naturaleza */
+  --secondary-hover: #236026;
+  --secondary-light: rgba(46, 125, 50, 0.08);
+
+  --accent: #c46b2d;
+  --accent-hover: #b05c24;
+  --accent-light: rgba(196, 107, 45, 0.08);
+
+  --text-dark: #111827; /* negro/carbón muy oscuro */
+  --text-muted: #6b7280; /* gris cálido medio */
+  --border-color: #e5e7eb; /* gris muy claro */
+
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+
+  --shadow-sm: 0 4px 12px rgba(17, 24, 39, 0.03);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08); /* shadow premium */
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 12px 35px rgba(0, 0, 0, 0.1); /* shadow hover premium */
+
+  --border-radius: 18px; /* cards border-radius */
+  --border-radius-btn: 12px;
+  --border-radius-input: 12px;
+  --border-radius-modal: 22px;
+
+  /* System Spacing Scale */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 80px;
+  --space-9: 96px;
+}
+
+/* Global Typography Hierarchy & Consistency */
+h1 {
+  font-size: 48px;
+  font-weight: 800;
+}
+h2 {
+  font-size: 40px;
+  font-weight: 700;
+}
+h3 {
+  font-size: 32px;
+  font-weight: 600;
+}
+h4 {
+  font-size: 28px;
+  font-weight: 600;
+}
+h5 {
+  font-size: 24px;
+  font-weight: 500;
+}
+h6 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.brand-text,
+.hero-title,
+.product-title,
+.auth-logo-header h2,
+.section-header h1,
+.section-header h2 {
+  font-family: var(--font-display) !important;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text-dark);
+}
+
+body,
+input,
+select,
+textarea,
+button,
+.btn,
+.menu-links,
+.user-text,
+.payment-badge,
+.status-badge,
+.qty-selector-group,
+.price-display,
+.catalog-product-price {
+  font-family: var(--font-sans) !important;
+  font-size: 16px;
+}
+
+/* Tabular Numbers for prices to prevent layout shift on counter changes */
+.catalog-product-price,
+.cart-item-card div,
+.summary-row span,
+.invoice-total-summary div span,
+.checkout-summary-item-price {
+  font-variant-numeric: tabular-nums;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-dark);
+  min-height: 100vh;
+  font-family: var(--font-sans);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition:
+    color 250ms ease,
+    transform 250ms ease;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+/* App Shell Structure */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main-content {
+  flex: 1 0 auto;
+}
+
+.page {
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-4) 0;
+}
+
+/* Button Utilities */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 24px;
+  border-radius: var(--border-radius-btn);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  transition:
+    background-color 250ms ease,
+    transform 250ms ease,
+    box-shadow 250ms ease;
+  font-family: var(--font-sans);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: scale(1.02);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--secondary-hover);
+  transform: scale(1.02);
+}
+
+.btn-outline-orange {
+  background-color: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline-orange:hover:not(:disabled) {
+  background-color: var(--primary-light);
+  transform: scale(1.02);
+}
+
+.btn-outline-green {
+  background-color: transparent;
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+}
+
+.btn-outline-green:hover:not(:disabled) {
+  background-color: var(--secondary-light);
+  transform: scale(1.02);
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Formulario e Inputs Globales */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+select,
+textarea {
+  border-radius: var(--border-radius-input);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  padding: 0.85rem 1.25rem;
+  font-size: 16px;
+  color: var(--text-dark);
+  outline: none;
+  transition:
+    border-color 250ms ease,
+    background-color 250ms ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary);
+  background-color: #ffffff;
+}
+
+/* Spinner Loader Utilities */
+.loader-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spinner 0.8s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Empty State Common Styles */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: var(--space-7) var(--space-3);
+  text-align: center;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  margin-top: var(--space-2);
+}
+/* =========================================
+   ANIMACIONES GLOBALES (Carrito y Papelera)
+   ========================================= */
+
+/* Notificación flotante (Toast) universal */
+.toast-notification {
+  position: fixed;
+  bottom: -100px;
+  right: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 16px 24px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10000;
+  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.toast-notification.show {
+  bottom: 30px;
+}
+
+/* Animación: Vuelo hacia el carrito */
+.flying-product {
+  position: fixed;
+  z-index: 9999;
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  object-fit: contain;
+}
+.cart-bounce {
+  animation: bounceCart 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes bounceCart {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+    color: var(--primary);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Animación: Vuelo hacia la papelera */
+.trash-overlay {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(150px);
+  background: #fee2e2;
+  color: #ef4444;
+  padding: 20px;
+  border-radius: 50%;
+  z-index: 9998;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+}
+.trash-overlay.show {
+  transform: translateX(-50%) translateY(0);
+}
+.trash-bounce {
+  animation: bounceTrash 0.4s ease;
+}
+@keyframes bounceTrash {
+  0% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.2);
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+}
+.item-deleting {
+  transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  z-index: 9999;
+  position: fixed;
+  opacity: 0.8;
+}

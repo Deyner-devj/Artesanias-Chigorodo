@@ -1,0 +1,133 @@
+<div
+  style="
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    max-width: 600px;
+    margin: 0 auto;
+  "
+>
+  <h3
+    style="
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+    "
+  >
+    Registrar Colaborador
+  </h3>
+  <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem">
+    Crea una cuenta para un nuevo tejedor o artesano asociado a tu taller
+    regional.
+  </p>
+
+  <form
+    onsubmit="
+      event.preventDefault();
+      alert(
+        '¡Colaborador registrado exitosamente! Se ha enviado una contraseña temporal a su correo electrónico.',
+      );
+      loadView('resumen');
+    "
+  >
+    <div style="margin-bottom: 1.25rem">
+      <label
+        style="
+          display: block;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #475569;
+          margin-bottom: 0.5rem;
+        "
+        >Nombre Completo del Artesano</label
+      >
+      <input
+        type="text"
+        placeholder="Ej. Rosa Isabel Martínez"
+        required
+        style="
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          font-family: inherit;
+          font-size: 0.9rem;
+        "
+      />
+    </div>
+
+    <div style="margin-bottom: 1.25rem">
+      <label
+        style="
+          display: block;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #475569;
+          margin-bottom: 0.5rem;
+        "
+        >Correo Electrónico de Acceso</label
+      >
+      <input
+        type="email"
+        placeholder="rosamartinez@ejemplo.com"
+        required
+        style="
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          font-family: inherit;
+          font-size: 0.9rem;
+        "
+      />
+    </div>
+
+    <div style="margin-bottom: 1.5rem">
+      <label
+        style="
+          display: block;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #475569;
+          margin-bottom: 0.5rem;
+        "
+        >Especialidad / Rol en el Taller</label
+      >
+      <select
+        style="
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid #cbd5e1;
+          border-radius: 8px;
+          font-family: inherit;
+          font-size: 0.9rem;
+          background: white;
+        "
+      >
+        <option>Tejedora Principal (Hilados)</option>
+        <option>Modelado de Arcilla</option>
+        <option>Tallado en Madera Fina</option>
+        <option>Logística y Despachos</option>
+      </select>
+    </div>
+
+    <button
+      type="submit"
+      style="
+        width: 100%;
+        background: var(--color-active);
+        color: white;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+      "
+    >
+      Registrar e Invitar a la Red
+    </button>
+  </form>
+</div>

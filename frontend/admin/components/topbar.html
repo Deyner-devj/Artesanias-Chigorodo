@@ -1,0 +1,41 @@
+<header class="dash-topbar">
+  <div class="topbar-left">
+    <button
+      class="menu-toggle"
+      id="menu-toggle"
+      onclick="toggleSidebar()"
+      aria-label="Abrir menú"
+    >
+      <i data-lucide="menu"></i>
+    </button>
+    <h1 class="topbar-title" id="topbar-title">Dashboard</h1>
+  </div>
+
+  <div class="topbar-center">
+    <div class="search-container">
+      <i data-lucide="search" class="search-icon"></i>
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Buscar productos, pedidos..."
+        class="search-input"
+      />
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <!-- Botón Notificaciones con Punto de Alerta -->
+    <button class="topbar-icon-btn" id="btn-notifications">
+      <i data-lucide="bell"></i>
+      <span class="notification-badge"></span>
+    </button>
+
+    <!-- Botón Inicio (Home) -->
+    <button class="topbar-icon-btn" id="btn-home">
+      <i data-lucide="home"></i>
+    </button>
+
+    <!-- Avatar AC en Color Naranja Artesanal -->
+    <div class="topbar-avatar" id="btn-profile" style="cursor: pointer">AC</div>
+  </div>
+</header>
