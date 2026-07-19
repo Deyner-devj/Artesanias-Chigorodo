@@ -38,7 +38,7 @@ function renderFooter() {
 
   // Enlace inteligente para artesanos
   const sellerLinkHTML = isSeller
-    ? `<li><a href="${artisanPrefix}dashboard.html" style="color: #E5DFD6; font-weight: 600;">Panel de Vendedor</a></li>`
+    ? `<li><a href="${artisanPrefix}artesano-dashboard.html" style="color: #E5DFD6; font-weight: 600;">Panel de Vendedor</a></li>`
     : `<li><a href="${artisanPrefix}registro-artesano.html" style="color: #E5DFD6; font-weight: 600; text-decoration: underline;">¿Eres artesano? Vende aquí</a></li>`;
 
   const html = `
@@ -151,7 +151,10 @@ function renderFooter() {
     newsletterForm.addEventListener("submit", function (e) {
       e.preventDefault();
       if (newsletterEmail.value.trim()) {
-        alert("¡Gracias por suscribirte a nuestro boletín informativo!");
+        showModernToast(
+          "¡Gracias por suscribirte a nuestro boletín informativo!",
+          "success",
+        );
         newsletterEmail.value = "";
       }
     });

@@ -2,7 +2,7 @@
   width: 90%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: var(--space-4) 0 var(--space-7);
+  padding: 0 0 var(--space-7);
 }
 
 .cart-grid {
@@ -83,7 +83,9 @@
   font-weight: 600;
   display: grid;
   place-items: center;
-  transition: background-color 250ms ease, color 250ms ease;
+  transition:
+    background-color 250ms ease,
+    color 250ms ease;
   color: var(--text-muted);
 }
 
@@ -221,3 +223,24 @@
   }
 }
 
+/* Botón de eliminar producto (icono de papelera) */
+.cart-remove-btn {
+  border: none;
+  background: #fef2f2;
+  color: #ef4444;
+  cursor: pointer;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.cart-remove-btn:hover {
+  background: #fee2e2;
+  transform: scale(1.06);
+}

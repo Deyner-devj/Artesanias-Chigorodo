@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Inicializa la primera vista sin animación para no molestar en la carga inicial
   loadView("resumen", true);
   createClayOverlayDOM();
   setupSidebarEventListeners();
-  setupTopbarEventListeners(); // Inicializa los elementos de la topbar
+  setupTopbarEventListeners();
 });
 
-// Mapeo directo a tus archivos HTML físicos
+// Mapeo a tus archivos HTML físicos
 const viewFiles = {
   resumen: "resumen-view.html",
   "agregar-producto": "agregar-producto.html",
@@ -35,7 +34,7 @@ const viewTitles = {
   ventas: "Historial de Ventas",
 };
 
-// Escucha los clics en el menú lateral directamente
+// Escucha los clics en el menú lateral
 function setupSidebarEventListeners() {
   document.querySelectorAll(".menu-item").forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -47,40 +46,32 @@ function setupSidebarEventListeners() {
     });
   });
 }
+
 // ==========================================================================
-// CONFIGURACIÓN DE EVENTOS DE LA TOPBAR (Barra Superior) - VERSIÓN CORREGIDA
+// EVENTOS DE LA TOPBAR
 // ==========================================================================
 function setupTopbarEventListeners() {
   if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }
 
-  // 1. Botón Inicio (Casita) -> Te lleva al Dashboard (Resumen)
-  // Busca el botón que contiene el icono de "home"
   const iconHome = document.querySelector('i[data-lucide="home"]');
   const btnHome = iconHome
     ? iconHome.closest("button")
     : document.getElementById("btn-home");
 
   if (btnHome) {
-    btnHome.addEventListener("click", () => {
-      console.log("🏠 Redirigiendo al Dashboard...");
-      loadView("resumen");
-    });
+    btnHome.addEventListener("click", () => loadView("resumen"));
   }
 
-  // 2. Avatar de Perfil -> Te lleva a Mi Perfil
-  // Busca directamente la bolita con las iniciales (clase .topbar-avatar)
-  const btnProfile = document.querySelector(".topbar-avatar");
+  const btnProfile =
+    document.querySelector(".topbar-avatar") ||
+    document.querySelector(".avatar-header");
   if (btnProfile) {
-    btnProfile.style.cursor = "pointer"; // Hace que parezca un botón clickeable
-    btnProfile.addEventListener("click", () => {
-      console.log("👤 Redirigiendo a Perfil...");
-      loadView("perfil");
-    });
+    btnProfile.style.cursor = "pointer";
+    btnProfile.addEventListener("click", () => loadView("perfil"));
   }
 
-  // 3. Botón de Notificaciones -> Abre el panel flotante
   const iconBell = document.querySelector('i[data-lucide="bell"]');
   const btnNotifications = iconBell
     ? iconBell.closest("button")
@@ -88,32 +79,29 @@ function setupTopbarEventListeners() {
 
   if (btnNotifications) {
     btnNotifications.addEventListener("click", (e) => {
-      e.stopPropagation(); // Evita que se cierre instantáneamente
+      e.stopPropagation();
       toggleNotificationsPanel(btnNotifications);
     });
   }
 
-  // 4. Menú Lateral (Hamburguesa)
   const menuToggle =
     document.getElementById("menu-toggle") ||
     document.querySelector(".menu-toggle");
   if (menuToggle) {
-    menuToggle.removeAttribute("onclick"); // Limpia conflictos si existen
+    menuToggle.removeAttribute("onclick");
     menuToggle.addEventListener("click", toggleSidebar);
   }
 }
 
 // ==========================================================================
-// CREADOR DEL PANEL DE NOTIFICACIONES
+// PANEL DE NOTIFICACIONES
 // ==========================================================================
 function toggleNotificationsPanel(buttonEl) {
   let panel = document.getElementById("floating-notifications-panel");
 
-  // Si el panel no existe aún en el HTML, lo creamos y lo inyectamos
   if (!panel) {
     panel = document.createElement("div");
     panel.id = "floating-notifications-panel";
-    // Estilos del panel desplegable
     panel.style.cssText = `
       position: absolute;
       width: 320px;
@@ -127,7 +115,6 @@ function toggleNotificationsPanel(buttonEl) {
       transition: opacity 0.2s ease;
     `;
 
-    // Contenido del panel
     panel.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 10px;">
         <h4 style="margin: 0; color: #0f172a; font-size: 1.1rem; font-weight: 700;">Notificaciones</h4>
@@ -150,11 +137,9 @@ function toggleNotificationsPanel(buttonEl) {
     `;
     document.body.appendChild(panel);
 
-    // Ocultar el punto rojo (badge) de la campana porque ya abrimos las notificaciones
     const badge = buttonEl.querySelector(".notification-badge");
     if (badge) badge.style.display = "none";
 
-    // Detectar clic fuera del panel para cerrarlo
     document.addEventListener("click", (e) => {
       if (!panel.contains(e.target) && !buttonEl.contains(e.target)) {
         panel.style.display = "none";
@@ -162,19 +147,16 @@ function toggleNotificationsPanel(buttonEl) {
     });
   }
 
-  // Alternar entre abrir y cerrar el panel
   if (panel.style.display === "none" || panel.style.display === "") {
-    // Calcular dónde está el botón de la campana para poner el panel debajo
     const rect = buttonEl.getBoundingClientRect();
-    panel.style.top = rect.bottom + 15 + "px"; // 15px debajo del botón
-    panel.style.right = window.innerWidth - rect.right - 10 + "px"; // Alineado a la derecha
+    panel.style.top = rect.bottom + 15 + "px";
+    panel.style.right = window.innerWidth - rect.right - 10 + "px";
     panel.style.display = "block";
   } else {
     panel.style.display = "none";
   }
 }
 
-// Función alternativa para desplegar u ocultar el menú lateral
 function toggleSidebar() {
   const sidebar =
     document.querySelector(".sidebar") ||
@@ -182,13 +164,11 @@ function toggleSidebar() {
     document.querySelector(".dash-sidebar");
   if (sidebar) {
     sidebar.classList.toggle("active");
-  } else {
-    console.warn("No se encontró el elemento contenedor del Sidebar.");
   }
 }
 
 // ==========================================================================
-// CREACIÓN DINÁMICA DEL OVERLAY DE LA VASIJA
+// CREACIÓN DEL OVERLAY DE LA VASIJA (con la sección que emerge)
 // ==========================================================================
 function createClayOverlayDOM() {
   if (document.getElementById("clay-transition-container")) return;
@@ -220,13 +200,19 @@ function createClayOverlayDOM() {
         <span class="dust-particle" style="--dx: 10px; --dy: -40px;"></span>
         <span class="dust-particle" style="--dx: -10px; --dy: -8px;"></span>
       </div>
+      <div class="section-emerge" id="section-emerge">
+        <div class="section-emerge-card">
+          <div class="section-emerge-label">Sección</div>
+          <div class="section-emerge-title" id="section-emerge-title">Dashboard</div>
+        </div>
+      </div>
     </div>
   `;
   document.body.appendChild(overlay);
 }
 
 // ==========================================================================
-// CONTROLADOR DE VISTAS CON CAÍDA Y RUPTURA DE VASIJA
+// CONTROLADOR DE VISTAS: CAÍDA + RUPTURA + EMERGE LA SECCIÓN
 // ==========================================================================
 async function loadView(viewName, isInitialLoad = false) {
   const container = document.getElementById("dynamic-content");
@@ -237,7 +223,7 @@ async function loadView(viewName, isInitialLoad = false) {
 
   if (!file || !container) return;
 
-  // 1. Carga inicial inmediata sin animación
+  // 1. Carga inicial sin animación
   if (isInitialLoad) {
     updateSidebarUI(viewName, headerTitle);
     const html = await fetchHTMLContent(file);
@@ -252,8 +238,9 @@ async function loadView(viewName, isInitialLoad = false) {
   // 2. Transición con vasija
   const overlay = document.getElementById("clay-transition-container");
   const wrapper = document.getElementById("clay-pot-wrapper");
+  const emergeTitle = document.getElementById("section-emerge-title");
+  const emergeEl = document.getElementById("section-emerge");
 
-  // Si no existen los elementos visuales de la transición, cargamos directo para no romper la app
   if (!overlay || !wrapper) {
     updateSidebarUI(viewName, headerTitle);
     const html = await fetchHTMLContent(file);
@@ -265,41 +252,39 @@ async function loadView(viewName, isInitialLoad = false) {
     return;
   }
 
-  // Limpiamos estados previos
+  // Limpiar estados previos
   overlay.classList.remove("shattering");
   overlay.classList.add("active");
-  wrapper.classList.remove("dropping", "impact", "bouncing");
+  wrapper.classList.remove("dropping", "impact");
+  if (emergeEl) emergeEl.classList.remove("emerge-active");
+
+  // Poner el nombre de la sección que va a emerger
+  if (emergeTitle) {
+    emergeTitle.innerText = viewTitles[viewName] || "Dashboard";
+  }
 
   let htmlContent = null;
   let isFinished = false;
 
-  // Iniciamos la descarga del HTML en paralelo
+  // Descargar el HTML en paralelo
   const fetchPromise = fetchHTMLContent(file).then((html) => {
     htmlContent = html;
   });
 
-  // Temporizador de Emergencia (Seguridad Absoluta)
-  // Si en 1.5 segundos no ha terminado la animación o la descarga, forzamos el renderizado.
+  // Safety timeout
   const safetyTimeout = setTimeout(() => {
     if (!isFinished) {
-      console.warn(
-        "⚠️ Tiempo límite de transición excedido. Forzando carga segura...",
-      );
       isFinished = true;
       finishWithShatter();
     }
   }, 1500);
 
   // Iniciar caída
-  startDrop();
+  wrapper.classList.remove("bouncing", "impact");
+  void wrapper.offsetWidth;
+  wrapper.classList.add("dropping");
 
-  function startDrop() {
-    wrapper.classList.remove("bouncing", "impact");
-    void wrapper.offsetWidth; // Forzar reflujo
-    wrapper.classList.add("dropping");
-  }
-
-  // Al terminar la animación de caída
+  // Al terminar la caída
   async function onAnimationEnd(e) {
     if (e.target !== wrapper) return;
 
@@ -307,7 +292,6 @@ async function loadView(viewName, isInitialLoad = false) {
       wrapper.classList.remove("dropping");
       wrapper.classList.add("impact");
 
-      // Esperar a que se complete la descarga del HTML real
       await fetchPromise;
 
       if (!isFinished) {
@@ -324,6 +308,7 @@ async function loadView(viewName, isInitialLoad = false) {
     wrapper.removeEventListener("animationend", onAnimationEnd);
     overlay.classList.add("shattering");
 
+    // Después del destello y los pedazos, cambiar el contenido
     setTimeout(() => {
       updateSidebarUI(viewName, headerTitle);
 
@@ -339,7 +324,7 @@ async function loadView(viewName, isInitialLoad = false) {
       setupViewEventListeners(viewName);
     }, 220);
 
-    // Escondemos por completo el overlay de la vasija al final
+    // Ocultar el overlay al final
     setTimeout(() => {
       overlay.classList.remove("active", "shattering");
       wrapper.classList.remove("impact");
@@ -347,7 +332,7 @@ async function loadView(viewName, isInitialLoad = false) {
   }
 }
 
-// Auxiliar: Actualizar la interfaz de navegación lateral e interfaz general
+// Actualizar sidebar y título
 function updateSidebarUI(viewName, headerTitle) {
   document
     .querySelectorAll(".menu-item")
@@ -360,7 +345,7 @@ function updateSidebarUI(viewName, headerTitle) {
   }
 }
 
-// Auxiliar: Descarga de archivos unificada
+// Descarga de archivos
 async function fetchHTMLContent(file) {
   const currentPath = window.location.pathname;
   const directory = currentPath.substring(0, currentPath.lastIndexOf("/"));
@@ -382,25 +367,47 @@ async function fetchHTMLContent(file) {
 }
 
 // ==========================================================================
-// CONTROLADOR DINÁMICO DE DESPACHOS
+// DESPACHOS
 // ==========================================================================
 function iniciarDespacho(pedidoId) {
   const container = document.getElementById(`dispatch-block-${pedidoId}`);
   if (!container) return;
 
+  // Fase 1: preparando el paquete (se empaca la pieza)
   container.innerHTML = `
-    <div class="delivery-scene">
-      <div class="mini-factory"><div class="factory-smoke"></div></div>
-      <div class="mini-road"></div>
-      <div class="mini-truck">
-        <div class="truck-bed"></div>
-        <div class="truck-cabin"></div>
-        <div class="truck-wheel wheel-front"></div>
-        <div class="truck-wheel wheel-back"></div>
+    <div class="dispatch-progress">
+      <div class="delivery-scene">
+        <div class="mini-factory"><div class="factory-smoke"></div></div>
+        <div class="mini-road"></div>
+        <div class="mini-package" id="package-${pedidoId}"></div>
+        <div class="mini-truck" id="truck-${pedidoId}" style="animation-play-state: paused; left: 15px;">
+          <div class="truck-bed"></div>
+          <div class="truck-cabin"></div>
+          <div class="truck-wheel wheel-front"></div>
+          <div class="truck-wheel wheel-back"></div>
+        </div>
       </div>
+      <span class="dispatch-status-text" id="status-${pedidoId}">Empacando la pieza…</span>
     </div>
   `;
 
+  // Fase 2: el paquete sube al camión y arranca el viaje
+  setTimeout(() => {
+    const pkg = document.getElementById(`package-${pedidoId}`);
+    const truck = document.getElementById(`truck-${pedidoId}`);
+    const status = document.getElementById(`status-${pedidoId}`);
+    if (pkg) pkg.classList.add("loaded");
+    if (status) status.textContent = "En camino al cliente…";
+    setTimeout(() => {
+      if (truck) {
+        truck.style.animationPlayState = "running";
+        truck.classList.add("truck-driving");
+      }
+      if (pkg) pkg.style.opacity = "0";
+    }, 350);
+  }, 1200);
+
+  // Fase 3: sello de confirmación
   setTimeout(() => {
     container.innerHTML = `
       <div class="dispatched-stamp" id="stamp-${pedidoId}">Despachado ✓</div>
@@ -415,11 +422,15 @@ function iniciarDespacho(pedidoId) {
         }
       }
     }, 50);
-  }, 5000);
+
+    if (typeof showModernToast === "function") {
+      showModernToast(`Pedido #${pedidoId} despachado con éxito`, "success");
+    }
+  }, 6600);
 }
 
 // ==========================================================================
-// CONTROLADORES DE EVENTOS EN VISTAS
+// EVENTOS EN VISTAS
 // ==========================================================================
 function setupViewEventListeners(viewName) {
   if (viewName === "productos") {
@@ -482,7 +493,7 @@ function setupViewEventListeners(viewName) {
 }
 
 // ==========================================================================
-// MODALES COMPLEMENTARIOS VECTORIALES
+// MODALES
 // ==========================================================================
 function showCraftLoading(message, subtitle, duration, callback) {
   const overlay = document.createElement("div");
@@ -563,4 +574,20 @@ function showCraftConfirm(message, subtitle, onConfirm) {
     close();
     if (onConfirm) onConfirm();
   });
+}
+
+function logout() {
+  showCraftConfirm(
+    "¿Cerrar Sesión?",
+    "Tendrás que ingresar tus datos de nuevo para acceder al panel.",
+    () => {
+      showCraftSuccess("Cerrando sesión...", "¡Hasta pronto!", 1500, () => {
+        sessionStorage.removeItem("user");
+        localStorage.removeItem("user");
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user_role");
+        window.location.href = "../home/index.html";
+      });
+    },
+  );
 }

@@ -10,9 +10,10 @@
       rel="stylesheet"
     />
     <title>Detalle de Producto - Artesanías Chigorodó</title>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/footer.css" />
+    <link rel="stylesheet" href="../css/components/styles.css" />
+    <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/footer.css" />
+    <link rel="stylesheet" href="../css/cliente/carrito.css" />
     <style>
       .product-detail-container {
         max-width: 1200px;
@@ -293,6 +294,7 @@
                     href="../cliente/carrito.html"
                     class="btn btn-secondary"
                     style="padding: 16px"
+                    data-view-cart
                     >Ver mi carrito</a
                   >
                 </div>
@@ -352,9 +354,9 @@
     </div>
 
     <script src="../js/core/main.js"></script>
-    <script src="../js/components/productos.js"></script>
+    <script src="../js/cliente/productos.js"></script>
     <script src="../js/core/auth.js"></script>
-    <script src="../js/components/carrito.js"></script>
+    <script src="../js/cliente/carrito.js"></script>
     <script src="../js/components/navbar.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/admin/mantenimiento.js"></script>
@@ -462,34 +464,38 @@
         clone.style.height = "25px";
         clone.style.opacity = "0.2";
 
-        clone.addEventListener("transitionend", function () {
-          clone.remove();
-          cartIcon.classList.add("cart-bounce");
-          setTimeout(() => cartIcon.classList.remove("cart-bounce"), 500);
-          addSingleProductToCart(productObj);
-        });
+        clone.addEventListener(
+          "transitionend",
+          function () {
+            clone.remove();
+            cartIcon.classList.add("cart-bounce");
+            setTimeout(() => cartIcon.classList.remove("cart-bounce"), 500);
+            addSingleProductToCart(productObj);
+          },
+          { once: true },
+        );
       }
 
       // --- AGREGADO Y NOTIFICACIÓN MODERNA ---
+      // IMPORTANTE: usamos SIEMPRE addProductToCart() de carrito.js, que es la
+      // única fuente de verdad y guarda bajo la clave "cart_items" (la misma
+      // que lee carrito.html, el navbar y el checkout). Antes esta función
+      // escribía en las claves "cart"/"carrito", que nadie más leía, por eso
+      // los productos "desaparecían" al entrar al carrito.
       function addSingleProductToCart(productObj) {
-        let cart = [];
-        try {
-          const stored =
-            localStorage.getItem("cart") || localStorage.getItem("carrito");
-          if (stored) cart = JSON.parse(stored);
-        } catch (e) {}
-
-        const existingItem = cart.find(
-          (item) => String(item.product.id) === String(productObj.id),
-        );
-        if (existingItem) {
-          existingItem.quantity += 1;
+        if (typeof addProductToCart === "function") {
+          addProductToCart(productObj, 1);
         } else {
-          cart.push({ product: productObj, quantity: 1 });
+          // Fallback ultra defensivo por si carrito.js no cargó
+          const items = JSON.parse(localStorage.getItem("cart_items") || "[]");
+          const existing = items.find(
+            (item) => String(item.product.id) === String(productObj.id),
+          );
+          if (existing) existing.quantity += 1;
+          else items.push({ product: productObj, quantity: 1 });
+          localStorage.setItem("cart_items", JSON.stringify(items));
+          window.dispatchEvent(new Event("cartChanged"));
         }
-
-        localStorage.setItem("cart", JSON.stringify(cart));
-        localStorage.setItem("carrito", JSON.stringify(cart));
 
         if (typeof updateCartBadge === "function") updateCartBadge();
 

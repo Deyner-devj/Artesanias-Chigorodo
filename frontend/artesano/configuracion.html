@@ -4,7 +4,7 @@
     padding: 2rem;
     border-radius: 16px;
     box-shadow: var(--shadow);
-    max-width: 600px;
+    max-width: 680px;
     margin: 0 auto;
   "
 >
@@ -16,94 +16,137 @@
       margin-bottom: 0.25rem;
     "
   >
-    Configuraciones Técnicas
+    Configuración del Taller
   </h3>
   <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem">
-    Modifica tus datos de contacto y la cuenta de cobro de tus ventas.
+    Administra los datos de tu taller, tu cuenta de cobro y tus preferencias de
+    notificación.
   </p>
 
   <form
     onsubmit="
       event.preventDefault();
-      alert('¡Configuraciones guardadas!');
+      showModernToast('¡Configuraciones guardadas con éxito!', 'success');
     "
   >
-    <div style="margin-bottom: 1.25rem">
-      <label
-        style="
-          display: block;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #475569;
-          margin-bottom: 0.5rem;
-        "
-        >Correo Electrónico para Alertas</label
+    <p class="aa-section-title">Datos del taller</p>
+
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Nombre del Taller / Marca</label>
+        <input type="text" class="aa-input" value="Tejidos del Sol" required />
+      </div>
+      <div>
+        <label class="aa-label">Artesano Responsable</label>
+        <input
+          type="text"
+          class="aa-input"
+          value="María Elena Epieyu"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Especialidad Artesanal</label>
+        <select class="aa-select">
+          <option selected>Tejido Wayuu</option>
+          <option>Alfarería y Barro</option>
+          <option>Ebanistería y Madera</option>
+          <option>Joyería Artesanal</option>
+          <option>Accesorios</option>
+        </select>
+      </div>
+      <div>
+        <label class="aa-label">Ciudad / Región</label>
+        <input type="text" class="aa-input" value="Alta Guajira, La Guajira" />
+      </div>
+    </div>
+
+    <div class="aa-form-group">
+      <label class="aa-label">Historia del Taller</label>
+      <textarea class="aa-textarea">
+Comunidad de tejedoras de la Alta Guajira dedicada a preservar las técnicas ancestrales del tejido Wayuu, transmitidas de generación en generación.</textarea
       >
+      <span class="aa-hint"
+        >Se muestra en tu perfil público de "Nuestros Artesanos".</span
+      >
+    </div>
+
+    <p class="aa-section-title">Contacto y notificaciones</p>
+
+    <div class="aa-form-group">
+      <label class="aa-label">Correo Electrónico para Alertas</label>
       <input
         type="email"
+        class="aa-input"
         value="contacto@artesaniaschigorodo.com"
         required
-        style="
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
-          font-family: inherit;
-          font-size: 0.9rem;
-        "
       />
     </div>
 
-    <div style="margin-bottom: 1.25rem">
-      <label
-        style="
-          display: block;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #475569;
-          margin-bottom: 0.5rem;
-        "
+    <div class="aa-form-group">
+      <label class="aa-label"
         >Número Telefónico de Notificaciones (WhatsApp)</label
       >
-      <input
-        type="text"
-        value="+57 312 456 7890"
-        required
-        style="
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
-          font-family: inherit;
-          font-size: 0.9rem;
-        "
-      />
+      <input type="text" class="aa-input" value="+57 312 456 7890" required />
     </div>
 
-    <div style="margin-bottom: 1.5rem">
-      <label
-        style="
-          display: block;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #475569;
-          margin-bottom: 0.5rem;
-        "
-        >Cuenta Bancaria para Transferencias (COP)</label
-      >
-      <input
-        type="text"
-        value="Ahorros Bancolombia - Nº ***-****87-45"
-        required
-        style="
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
-          font-family: inherit;
-          font-size: 0.9rem;
-        "
-      />
+    <div class="aa-form-group">
+      <label class="aa-checkbox-row">
+        <input type="checkbox" checked />
+        Recibir notificación por correo cuando entre un pedido nuevo
+      </label>
+      <label class="aa-checkbox-row">
+        <input type="checkbox" checked />
+        Recibir notificación por WhatsApp cuando un pedido esté listo para
+        despachar
+      </label>
+      <label class="aa-checkbox-row">
+        <input type="checkbox" />
+        Recibir resumen semanal de ventas y estadísticas
+      </label>
+    </div>
+
+    <p class="aa-section-title">Cuenta de cobro</p>
+
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Documento (NIT / Cédula)</label>
+        <input type="text" class="aa-input" value="1.128.456.789" required />
+      </div>
+      <div>
+        <label class="aa-label">Tipo de Cuenta</label>
+        <select class="aa-select">
+          <option selected>Ahorros</option>
+          <option>Corriente</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Banco</label>
+        <input type="text" class="aa-input" value="Bancolombia" />
+      </div>
+      <div>
+        <label class="aa-label">Número de Cuenta</label>
+        <input type="text" class="aa-input" value="***-****87-45" required />
+      </div>
+    </div>
+
+    <p class="aa-section-title">Preferencias de despacho</p>
+
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Tiempo Promedio de Despacho (días)</label>
+        <input type="number" class="aa-input" value="3" min="1" />
+      </div>
+      <div>
+        <label class="aa-label">Ciudad de Origen del Envío</label>
+        <input type="text" class="aa-input" value="Riohacha, La Guajira" />
+      </div>
     </div>
 
     <button
@@ -113,14 +156,15 @@
         background: var(--color-active);
         color: white;
         border: none;
-        padding: 0.75rem;
+        padding: 0.85rem;
         border-radius: 8px;
         font-weight: 700;
         cursor: pointer;
         font-family: inherit;
+        margin-top: 0.5rem;
       "
     >
-      Actualizar Ajustes Técnicos
+      Guardar Configuración
     </button>
   </form>
 </div>

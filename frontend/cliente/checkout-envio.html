@@ -10,15 +10,16 @@
       rel="stylesheet"
     />
     <title>Método de Envío - Artesanías Chigorodó</title>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/footer.css" />
-    <link rel="stylesheet" href="../css/carrito.css" />
+    <link rel="stylesheet" href="../css/components/styles.css" />
+    <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/footer.css" />
+    <link rel="stylesheet" href="../css/cliente/carrito.css" />
     <link rel="stylesheet" href="../css/cliente/checkout.css" />
+    <link rel="stylesheet" href="../css/cliente/checkout-journey.css" />
   </head>
   <body>
     <!-- Protect Route -->
-    <script src="../js/protected-routes.js"></script>
+    <script src="../js/core/protected-routes.js"></script>
 
     <div class="app-shell">
       <!-- Navbar Header -->
@@ -153,14 +154,30 @@
     </div>
 
     <!-- Scripts -->
-    <script src="../js/main.js"></script>
-    <script src="../js/productos.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/carrito.js"></script>
-    <script src="../js/navbar.js"></script>
-    <script src="../js/footer.js"></script>
+    <script src="../js/core/main.js"></script>
+    <script src="../js/cliente/productos.js"></script>
+    <script src="../js/core/auth.js"></script>
+    <script src="../js/cliente/carrito.js"></script>
+    <script src="../js/components/navbar.js"></script>
+    <script src="../js/components/footer.js"></script>
 
     <script>
+      // Escapa caracteres especiales de HTML para evitar XSS al insertar
+      // datos dinámicos (nombre/imagen de producto) dentro de innerHTML.
+      function escapeHtml(value) {
+        return String(value ?? "").replace(
+          /[&<>"']/g,
+          (ch) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[ch],
+        );
+      }
+
       let selectedMethod = "STANDARD";
       let selectedCost = 15000;
 
@@ -184,7 +201,6 @@
             sessionStorage.getItem("checkout_shipping_cost") || "0",
           );
         }
-
         // Check radio and update styles
         const radios = document.getElementsByName("shippingMethod");
         radios.forEach((radio) => {
@@ -223,12 +239,10 @@
 
         let items = [];
         try {
-          const stored =
-            localStorage.getItem("cart") || localStorage.getItem("carrito");
-          if (stored) {
-            items = JSON.parse(stored);
-          } else if (typeof getCartItems === "function") {
+          if (typeof getCartItems === "function") {
             items = getCartItems();
+          } else {
+            items = JSON.parse(localStorage.getItem("cart_items") || "[]");
           }
         } catch (e) {
           console.error("Error recuperando el carrito", e);
@@ -269,7 +283,7 @@
         items.forEach((item) => {
           itemsHtml += `
           <div class="checkout-summary-item-card" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-            <img src="${item.product.image}" alt="${item.product.name}" class="checkout-summary-item-img" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;" onerror="this.src='img/mochila_wayuu.png'" />
+            <img src="${item.product.image}" alt="${item.product.name}" class="checkout-summary-item-img" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;" onerror="this.onerror=null;this.src='../img/mochila_wayuu.png'" />
             <div class="checkout-summary-item-info" style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
               <span class="checkout-summary-item-name" style="font-weight: 600; font-size: 0.9rem;">${item.product.name}</span>
               <span class="checkout-summary-item-qty" style="font-size: 0.8rem; color: #666;">Cantidad: ${item.quantity}</span>
@@ -305,5 +319,6 @@
         window.location.href = "checkout-pago.html";
       }
     </script>
+    <script src="../js/checkout.js"></script>
   </body>
 </html>

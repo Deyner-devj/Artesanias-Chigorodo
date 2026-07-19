@@ -10,10 +10,10 @@
       rel="stylesheet"
     />
     <title>Ingreso / Registro - Artesanías Chigorodó</title>
-    <link rel="stylesheet" href="../css/styles.css?v=1.2" />
-    <link rel="stylesheet" href="../css/navbar.css?v=1.2" />
-    <link rel="stylesheet" href="../css/footer.css?v=1.2" />
-    <link rel="stylesheet" href="../css/login.css?v=1.2" />
+    <link rel="stylesheet" href="../css/components/styles.css?v=1.2" />
+    <link rel="stylesheet" href="../css/components/navbar.css?v=1.2" />
+    <link rel="stylesheet" href="../css/components/footer.css?v=1.2" />
+    <link rel="stylesheet" href="../css/home/login.css?v=1.2" />
     <style>
       .validation-error {
         color: #c2410c;
@@ -40,7 +40,10 @@
         <div
           class="auth-page-wrapper"
           style="
-            background-image: url(&quot;../img/bg_login_decorativo.png?v=1.2&quot;);
+            background-image: url(&quot;../img/home/Bienvenida-home.png&quot;);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             background-color: #faf6f0;
             position: relative;
             overflow: hidden;
@@ -48,62 +51,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
           "
         >
-          <!-- Decorative corner images -->
-          <img
-            src="../img/login-bg-sombrero-vueltiao.png?v=1.2"
-            alt=""
-            class="decor-sombrero"
-            style="
-              position: absolute;
-              top: -10px;
-              left: -10px;
-              width: clamp(150px, 20vw, 300px);
-              pointer-events: none;
-              z-index: 1;
-            "
-          />
-          <img
-            src="../img/login-bg-mochila-wayuu.png?v=1.2"
-            alt=""
-            class="decor-mochila"
-            style="
-              position: absolute;
-              bottom: -10px;
-              left: -10px;
-              width: clamp(150px, 22vw, 320px);
-              pointer-events: none;
-              z-index: 1;
-            "
-          />
-          <img
-            src="../img/login-bg-vasijas-barro.png?v=1.2"
-            alt=""
-            class="decor-vasijas"
-            style="
-              position: absolute;
-              bottom: 20px;
-              right: -20px;
-              width: clamp(150px, 24vw, 350px);
-              pointer-events: none;
-              z-index: 1;
-            "
-          />
-          <img
-            src="../img/login-bg-hojas-palma.png?v=1.2"
-            alt=""
-            class="decor-palma"
-            style="
-              position: absolute;
-              top: -10px;
-              right: -10px;
-              width: clamp(120px, 15vw, 250px);
-              pointer-events: none;
-              z-index: 1;
-            "
-          />
-
           <div
             class="auth-card-container"
             style="z-index: 2; position: relative"
@@ -583,7 +533,7 @@
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
               </svg>
               <span
-                >API REST · JWT Authentication · Artesanías Colombianas</span
+                >Artesanías Chigorodó. Todos los derechos reservados 2026</span
               >
             </div>
           </div>
@@ -597,8 +547,8 @@
     <!-- Scripts -->
     <script src="../js/core/main.js"></script>
     <script src="../js/core/auth.js"></script>
-    <script src="../js/components/productos.js"></script>
-    <script src="../js/components/carrito.js"></script>
+    <script src="../js/cliente/productos.js"></script>
+    <script src="../js/cliente/carrito.js"></script>
     <script src="../js/components/navbar.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/admin/mantenimiento.js"></script>
@@ -627,9 +577,9 @@
           sessionStorage.removeItem("redirect_after_login");
           window.location.replace(redirectPath);
         } else if (user.role === "vendedor") {
-          window.location.replace("../artesano/dashboard.html");
+          window.location.replace("../artesano/artesano-dashboard.html");
         } else if (user.role === "admin") {
-          window.location.replace("../admin/dashboard.html");
+          window.location.replace("../admin/admin-dashboard.html");
         } else {
           window.location.replace("../cliente/perfil.html");
         }
@@ -663,7 +613,10 @@
             if (user) {
               redirectUser(user);
             } else {
-              alert("Credenciales incorrectas");
+              showModernToast(
+                "Credenciales incorrectas. Verifica tu correo y contraseña.",
+                "error",
+              );
             }
           }
         });
@@ -710,19 +663,23 @@
               password.value,
             );
             if (success) {
-              alert("¡Cuenta creada con éxito! Ahora puedes iniciar sesión.");
+              showModernToast(
+                "¡Cuenta creada con éxito! Ahora puedes iniciar sesión.",
+                "success",
+              );
 
-              // Auto fill login email and switch columns
               document.getElementById("login-email").value = email.value.trim();
               toggleColumn("login");
 
-              // Reset fields
               name.value = "";
               email.value = "";
               password.value = "";
               confirm.value = "";
             } else {
-              alert("El correo electrónico ya está registrado.");
+              showModernToast(
+                "El correo electrónico ya está registrado.",
+                "error",
+              );
             }
           }
         });

@@ -15,7 +15,15 @@ window.showModernToast = function (message, type = "success") {
   toast.id = "custom-toast";
   toast.className = "toast-notification";
   toast.style.borderLeft = `5px solid ${color}`;
-  toast.innerHTML = `${icon}<div style="font-size: 0.95rem; color: var(--text-dark);">${message}</div>`;
+  // El icono es SVG estático controlado por nosotros (seguro para innerHTML).
+  // El mensaje puede contener datos dinámicos (nombre de producto, búsqueda, etc.)
+  // por lo que se inserta como texto plano con textContent para evitar XSS.
+  toast.innerHTML = icon;
+  const msgDiv = document.createElement("div");
+  msgDiv.style.fontSize = "0.95rem";
+  msgDiv.style.color = "var(--text-dark)";
+  msgDiv.textContent = message;
+  toast.appendChild(msgDiv);
 
   document.body.appendChild(toast);
   setTimeout(() => toast.classList.add("show"), 10);
@@ -29,10 +37,7 @@ window.showModernToast = function (message, type = "success") {
 window.animateToCart = function (imgElement, productName, callback) {
   if (!imgElement) {
     if (callback) callback();
-    showModernToast(
-      `<strong>${productName}</strong> agregado al carrito`,
-      "success",
-    );
+    showModernToast(`${productName} agregado al carrito`, "success");
     return;
   }
 
@@ -41,10 +46,7 @@ window.animateToCart = function (imgElement, productName, callback) {
     document.querySelector(".cart-badge");
   if (!cartIcon) {
     if (callback) callback();
-    showModernToast(
-      `<strong>${productName}</strong> agregado al carrito`,
-      "success",
-    );
+    showModernToast(`${productName} agregado al carrito`, "success");
     return;
   }
 
@@ -67,17 +69,18 @@ window.animateToCart = function (imgElement, productName, callback) {
   clone.style.height = "25px";
   clone.style.opacity = "0.2";
 
-  clone.addEventListener("transitionend", function () {
-    clone.remove();
-    cartIcon.classList.add("cart-bounce");
-    setTimeout(() => cartIcon.classList.remove("cart-bounce"), 500);
+  clone.addEventListener(
+    "transitionend",
+    function () {
+      clone.remove();
+      cartIcon.classList.add("cart-bounce");
+      setTimeout(() => cartIcon.classList.remove("cart-bounce"), 500);
 
-    if (callback) callback();
-    showModernToast(
-      `<strong>${productName}</strong> agregado al carrito`,
-      "success",
-    );
-  });
+      if (callback) callback();
+      showModernToast(`${productName} agregado al carrito`, "success");
+    },
+    { once: true },
+  );
 };
 
 // 3. Animación de "Tirar a la Papelera"
@@ -127,16 +130,20 @@ window.animateToTrash = function (rowElement, callback) {
   clone.style.transform = "rotate(180deg) scale(0)";
   clone.style.opacity = "0";
 
-  clone.addEventListener("transitionend", function () {
-    clone.remove();
-    trashOverlay.classList.add("trash-bounce");
+  clone.addEventListener(
+    "transitionend",
+    function () {
+      clone.remove();
+      trashOverlay.classList.add("trash-bounce");
 
-    setTimeout(() => {
-      trashOverlay.classList.remove("trash-bounce");
-      trashOverlay.classList.remove("show"); // Ocultar papelera
-    }, 400);
+      setTimeout(() => {
+        trashOverlay.classList.remove("trash-bounce");
+        trashOverlay.classList.remove("show"); // Ocultar papelera
+      }, 400);
 
-    showModernToast(`Producto eliminado`, "error");
-    if (callback) callback();
-  });
+      showModernToast(`Producto eliminado`, "error");
+      if (callback) callback();
+    },
+    { once: true },
+  );
 };

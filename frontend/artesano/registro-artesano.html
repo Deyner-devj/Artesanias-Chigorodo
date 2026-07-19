@@ -1,133 +1,224 @@
-<div
-  style="
-    background: white;
-    padding: 2rem;
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-    max-width: 600px;
-    margin: 0 auto;
-  "
->
-  <h3
-    style="
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #0f172a;
-      margin-bottom: 0.25rem;
-    "
-  >
-    Registrar Colaborador
-  </h3>
-  <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem">
-    Crea una cuenta para un nuevo tejedor o artesano asociado a tu taller
-    regional.
-  </p>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar Artesano - Artesanías Chigorodó</title>
+    <link rel="stylesheet" href="../css/artesano/registro-artesano.css" />
+  </head>
+  <body>
+    <main class="main-container">
+      <!-- Tarjeta de Registro -->
+      <section class="register-card">
+        <!-- Logo y Encabezado -->
+        <header class="card-header">
+          <div class="logo-container">
+            <!-- Icono de vasija/barro similar a tu logo -->
+            <svg class="main-logo" viewBox="0 0 100 100" width="80" height="80">
+              <path
+                d="M50,15 C40,15 35,25 35,32 C35,35 37,38 40,40 C30,48 25,60 25,72 C25,82 33,85 50,85 C67,85 75,82 75,72 C75,60 70,48 60,40 C63,38 65,35 65,32 C65,25 60,15 50,15 Z"
+                fill="#D97706"
+              />
+              <path
+                d="M38,30 Q50,34 62,30"
+                stroke="#F59E0B"
+                stroke-width="3"
+                fill="none"
+              />
+              <path
+                d="M27,65 Q50,72 73,65"
+                stroke="#F59E0B"
+                stroke-width="3"
+                fill="none"
+              />
+            </svg>
+          </div>
+          <h1>Artesanías Chigorodó</h1>
+          <p class="subtitle">REGISTRO DE NUEVO ARTESANO</p>
+        </header>
 
-  <form
-    onsubmit="
-      event.preventDefault();
-      alert(
-        '¡Colaborador registrado exitosamente! Se ha enviado una contraseña temporal a su correo electrónico.',
-      );
-      loadView('resumen');
-    "
-  >
-    <div style="margin-bottom: 1.25rem">
-      <label
-        style="
-          display: block;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #475569;
-          margin-bottom: 0.5rem;
-        "
-        >Nombre Completo del Artesano</label
-      >
-      <input
-        type="text"
-        placeholder="Ej. Rosa Isabel Martínez"
-        required
-        style="
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
-          font-family: inherit;
-          font-size: 0.9rem;
-        "
-      />
-    </div>
+        <!-- Pestaña Activa de Registro -->
+        <div class="tabs-indicator">
+          <div class="tab active">
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+            <span>Registrarse como Artesano</span>
+          </div>
+        </div>
 
-    <div style="margin-bottom: 1.25rem">
-      <label
-        style="
-          display: block;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #475569;
-          margin-bottom: 0.5rem;
-        "
-        >Correo Electrónico de Acceso</label
-      >
-      <input
-        type="email"
-        placeholder="rosamartinez@ejemplo.com"
-        required
-        style="
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
-          font-family: inherit;
-          font-size: 0.9rem;
-        "
-      />
-    </div>
+        <!-- Formulario -->
+        <form
+          action="/api/artesanos/registro"
+          method="POST"
+          class="register-form"
+        >
+          <!-- Campo: Nombre Completo -->
+          <div class="input-group">
+            <span class="input-icon">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </span>
+            <input
+              type="text"
+              name="nombre"
+              placeholder="Nombre completo *"
+              required
+            />
+          </div>
 
-    <div style="margin-bottom: 1.5rem">
-      <label
-        style="
-          display: block;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #475569;
-          margin-bottom: 0.5rem;
-        "
-        >Especialidad / Rol en el Taller</label
-      >
-      <select
-        style="
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
-          font-family: inherit;
-          font-size: 0.9rem;
-          background: white;
-        "
-      >
-        <option>Tejedora Principal (Hilados)</option>
-        <option>Modelado de Arcilla</option>
-        <option>Tallado en Madera Fina</option>
-        <option>Logística y Despachos</option>
-      </select>
-    </div>
+          <!-- Campo: Correo Electrónico -->
+          <div class="input-group">
+            <span class="input-icon">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                ></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </span>
+            <input
+              type="email"
+              name="email"
+              placeholder="Correo electrónico *"
+              required
+            />
+          </div>
 
-    <button
-      type="submit"
-      style="
-        width: 100%;
-        background: var(--color-active);
-        color: white;
-        border: none;
-        padding: 0.75rem;
-        border-radius: 8px;
-        font-weight: 700;
-        cursor: pointer;
-        font-family: inherit;
-      "
-    >
-      Registrar e Invitar a la Red
-    </button>
-  </form>
-</div>
+          <!-- Campo: Teléfono / WhatsApp -->
+          <div class="input-group">
+            <span class="input-icon">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                ></path>
+              </svg>
+            </span>
+            <input
+              type="tel"
+              name="telefono"
+              placeholder="Teléfono / WhatsApp *"
+              required
+            />
+          </div>
+
+          <!-- Campo: Especialidad u Oficio -->
+          <div class="input-group">
+            <span class="input-icon">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
+                ></path>
+              </svg>
+            </span>
+            <select name="especialidad" required>
+              <option value="" disabled selected hidden>
+                Especialidad / Oficio *
+              </option>
+              <option value="tejeduria">Tejeduría e Hilados</option>
+              <option value="alfareria">Alfarería y Cerámica</option>
+              <option value="madera">Talla en Madera</option>
+              <option value="orfebreria">Orfebrería y Joyería</option>
+              <option value="cesteria">Cestería y Fibras Naturales</option>
+            </select>
+          </div>
+
+          <!-- Campo: Contraseña -->
+          <div class="input-group">
+            <span class="input-icon">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </span>
+            <input
+              type="password"
+              name="password"
+              placeholder="Contraseña *"
+              required
+            />
+          </div>
+
+          <!-- Campo: Confirmar Contraseña -->
+          <div class="input-group">
+            <span class="input-icon">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </span>
+            <input
+              type="password"
+              name="password_confirmation"
+              placeholder="Confirmar contraseña *"
+              required
+            />
+          </div>
+
+          <!-- Botón de Envío -->
+          <button type="submit" class="btn-submit">Crear Cuenta</button>
+
+          <!-- Enlace para volver -->
+          <p class="footer-link">
+            ¿Ya tienes una cuenta?
+            <a href="../home/login.html">Inicia sesión</a>
+          </p>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

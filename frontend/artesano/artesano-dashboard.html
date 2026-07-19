@@ -14,7 +14,7 @@
   </head>
   <body>
     <div class="dashboard-container">
-      <!-- BARRA LATERAL (Sidebar) -->
+      <!-- BARRA LATERAL -->
       <aside class="sidebar">
         <div class="sidebar-brand">
           <img
@@ -40,11 +40,7 @@
         <nav class="sidebar-menu">
           <div class="menu-category">Principal</div>
 
-          <button
-            class="menu-item active"
-            id="btn-resumen"
-            onclick="loadView('resumen')"
-          >
+          <button class="menu-item active" id="btn-resumen">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -60,11 +56,7 @@
             Dashboard
           </button>
 
-          <button
-            class="menu-item"
-            id="btn-productos"
-            onclick="loadView('productos')"
-          >
+          <button class="menu-item" id="btn-productos">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -79,11 +71,7 @@
             Mis Productos
           </button>
 
-          <button
-            class="menu-item"
-            id="btn-agregar-producto"
-            onclick="loadView('agregar-producto')"
-          >
+          <button class="menu-item" id="btn-agregar-producto">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -98,11 +86,7 @@
             Agregar Producto
           </button>
 
-          <button
-            class="menu-item"
-            id="btn-editar-productos"
-            onclick="loadView('editar-productos')"
-          >
+          <button class="menu-item" id="btn-editar-productos">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -118,11 +102,7 @@
             Editar Productos
           </button>
 
-          <button
-            class="menu-item"
-            id="btn-pedidos"
-            onclick="loadView('pedidos')"
-          >
+          <button class="menu-item" id="btn-pedidos">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -143,11 +123,7 @@
 
           <div class="menu-category">Gestión y Clientes</div>
 
-          <button
-            class="menu-item"
-            id="btn-clientes"
-            onclick="loadView('clientes')"
-          >
+          <button class="menu-item" id="btn-clientes">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -163,11 +139,7 @@
             Clientes
           </button>
 
-          <button
-            class="menu-item"
-            id="btn-registro-artesano"
-            onclick="loadView('registro-artesano')"
-          >
+          <button class="menu-item" id="btn-registro-artesano">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -185,11 +157,7 @@
 
           <div class="menu-category">Análisis Financiero</div>
 
-          <button
-            class="menu-item"
-            id="btn-ventas"
-            onclick="loadView('ventas')"
-          >
+          <button class="menu-item" id="btn-ventas">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -203,11 +171,7 @@
             Historial Ventas
           </button>
 
-          <button
-            class="menu-item"
-            id="btn-ganancias"
-            onclick="loadView('ganancias')"
-          >
+          <button class="menu-item" id="btn-ganancias">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -223,11 +187,7 @@
 
           <div class="menu-category">Personalización</div>
 
-          <button
-            class="menu-item"
-            id="btn-perfil"
-            onclick="loadView('perfil')"
-          >
+          <button class="menu-item" id="btn-perfil">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -241,11 +201,7 @@
             Mi Perfil
           </button>
 
-          <button
-            class="menu-item"
-            id="btn-configuracion"
-            onclick="loadView('configuracion')"
-          >
+          <button class="menu-item" id="btn-configuracion">
             <svg
               class="icon"
               viewBox="0 0 24 24"
@@ -300,14 +256,13 @@
           </div>
         </header>
 
-        <!-- Panel de Contenido Dinámico -->
+        <!-- Contenido dinámico -->
         <section class="content-body" id="dynamic-content">
-          <!-- El contenido de tus otros HTMLs se inyectará aquí de manera fluida -->
+          <!-- El contenido se inyecta aquí -->
         </section>
       </main>
     </div>
 
     <script src="../js/artesano/artesano-dashboard.js"></script>
-    <script src="../js/admin/mantenimiento.js"></script>
   </body>
 </html>

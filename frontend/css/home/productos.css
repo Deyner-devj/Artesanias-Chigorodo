@@ -8,7 +8,9 @@
   width: 90%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: var(--space-4) 0 var(--space-7);
+  /* padding-top usa --navbar-clearance (definida en styles.css) para despejar
+     el navbar flotante (position: absolute), que no reserva su propio espacio. */
+  padding: 0 0 var(--space-7);
 }
 
 /* Page Header */

@@ -4,7 +4,7 @@
     padding: 2rem;
     border-radius: 16px;
     box-shadow: var(--shadow);
-    max-width: 650px;
+    max-width: 700px;
     margin: 0 auto;
   "
 >
@@ -19,166 +19,158 @@
     Editar Producto
   </h3>
   <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem">
-    Modifica los detalles técnicos o el inventario del producto seleccionado.
+    Modifica los detalles técnicos, la historia y el inventario del producto
+    seleccionado.
   </p>
 
   <form
     onsubmit="
       event.preventDefault();
-      alert('¡Los cambios han sido guardados correctamente!');
+      showModernToast(
+        '¡Los cambios han sido guardados correctamente!',
+        'success',
+      );
       loadView('productos');
     "
   >
-    <div style="margin-bottom: 1.25rem">
-      <label
-        style="
-          display: block;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #475569;
-          margin-bottom: 0.5rem;
-        "
-        >Nombre del Producto</label
-      >
+    <p class="aa-section-title">Información general</p>
+
+    <div class="aa-form-group">
+      <label class="aa-label">Nombre del Producto</label>
       <input
         type="text"
+        class="aa-input"
         value="Mochila Wayuu Colores de Urabá"
         required
-        style="
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
-          font-family: inherit;
-          font-size: 0.9rem;
-        "
       />
     </div>
 
-    <div
-      style="
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-        margin-bottom: 1.25rem;
-      "
-    >
+    <div class="aa-form-group">
+      <label class="aa-label">Descripción del Producto</label>
+      <textarea class="aa-textarea" required>
+Mochila tejida a mano con hilo de algodón mercerizado, inspirada en los kanaas tradicionales Wayuu. Cada pieza toma aproximadamente 15 días de elaboración.</textarea
+      >
+      <span class="aa-hint"
+        >Cuenta la historia y la técnica: esto es lo primero que leen tus
+        clientes.</span
+      >
+    </div>
+
+    <div class="aa-form-grid-2">
       <div>
-        <label
-          style="
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 0.5rem;
-          "
-          >Categoría</label
-        >
-        <select
-          style="
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            background: white;
-          "
-        >
+        <label class="aa-label">Categoría</label>
+        <select class="aa-select">
           <option selected>Tejidos</option>
           <option>Alfarería y Barro</option>
           <option>Ebanistería y Madera</option>
+          <option>Joyería Artesanal</option>
+          <option>Accesorios</option>
+          <option>Hogar y Decoración</option>
         </select>
       </div>
       <div>
-        <label
-          style="
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 0.5rem;
-          "
-          >Precio Unitario</label
-        >
+        <label class="aa-label">Precio Unitario (COP)</label>
+        <input type="number" class="aa-input" value="240000" min="0" required />
+      </div>
+    </div>
+
+    <p class="aa-section-title">Detalles de fabricación</p>
+
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Material Principal</label>
         <input
-          type="number"
-          value="240000"
-          required
-          style="
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-          "
+          type="text"
+          class="aa-input"
+          value="Hilo de algodón mercerizado"
+          placeholder="Ej. Barro negro, palma de iraca..."
+        />
+      </div>
+      <div>
+        <label class="aa-label">Técnica de Elaboración</label>
+        <input
+          type="text"
+          class="aa-input"
+          value="Tejido en crochet Wayuu"
+          placeholder="Ej. Alfarería a mano, tallado..."
         />
       </div>
     </div>
 
-    <div
-      style="
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-      "
-    >
+    <div class="aa-form-grid-2">
       <div>
-        <label
-          style="
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 0.5rem;
-          "
-          >Stock Disponible</label
-        >
-        <input
-          type="number"
-          value="12"
-          required
-          style="
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-          "
-        />
+        <label class="aa-label">Tiempo de Elaboración (días)</label>
+        <input type="number" class="aa-input" value="15" min="1" />
       </div>
       <div>
-        <label
-          style="
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 0.5rem;
-          "
-          >Estado de Publicación</label
-        >
-        <select
-          style="
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            background: white;
-          "
-        >
+        <label class="aa-label">Dimensiones (Alto x Ancho x Fondo cm)</label>
+        <input type="text" class="aa-input" value="40 x 35 x 15" />
+      </div>
+    </div>
+
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Peso para Envío (kg)</label>
+        <input type="number" class="aa-input" value="0.6" step="0.1" min="0" />
+      </div>
+      <div>
+        <label class="aa-label">Código Interno / SKU</label>
+        <input type="text" class="aa-input" value="MWY-URB-004" />
+      </div>
+    </div>
+
+    <p class="aa-section-title">Inventario y publicación</p>
+
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Stock Disponible</label>
+        <input type="number" class="aa-input" value="12" min="0" required />
+      </div>
+      <div>
+        <label class="aa-label">Estado de Publicación</label>
+        <select class="aa-select">
           <option selected>Visible en Catálogo</option>
           <option>Oculto / Borrador</option>
+          <option>Agotado temporalmente</option>
         </select>
       </div>
     </div>
 
-    <div style="display: flex; gap: 1rem">
+    <div class="aa-form-group">
+      <label class="aa-label">Etiquetas de Búsqueda</label>
+      <input
+        type="text"
+        class="aa-input"
+        value="mochila, wayuu, tejido, guajira, colores"
+        placeholder="Separadas por comas"
+      />
+      <span class="aa-hint"
+        >Ayudan a que tu pieza aparezca en más búsquedas del catálogo.</span
+      >
+    </div>
+
+    <div class="aa-form-group">
+      <label class="aa-label">Imagen Principal (URL)</label>
+      <input
+        type="text"
+        class="aa-input"
+        id="edit-product-image-url"
+        value="../img/producto-mochila-wayuu-1.png"
+        oninput="
+          const p = document.getElementById('edit-product-image-preview');
+          if (p) p.src = this.value;
+        "
+      />
+      <img
+        id="edit-product-image-preview"
+        class="aa-image-preview"
+        src="../img/producto-mochila-wayuu-1.png"
+        alt="Vista previa del producto"
+        onerror="this.style.opacity = 0.3"
+      />
+    </div>
+
+    <div style="display: flex; gap: 1rem; margin-top: 1.5rem">
       <button
         type="button"
         onclick="loadView('productos')"

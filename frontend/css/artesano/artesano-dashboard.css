@@ -1,23 +1,22 @@
 /* ==========================================================================
-   VARIABLES Y CONFIGURACIÓN GLOBAL ORIGINAL
+   VARIABLES Y CONFIGURACIÓN GLOBAL
    ========================================================================== */
 :root {
   --bg-app: #f8f6f2;
-  --bg-sidebar: #1e293b;
-  --color-active: #d97736; /* Color naranja de tu captura */
+  --bg-sidebar: #0f3d2e;
+  --color-active: #c46b2d;
   --text-light: #f8fafc;
   --text-muted-sidebar: #94a3b8;
-  --text-dark: #334155;
-  --text-muted-body: #64748b;
+  --text-dark: #111827;
+  --text-muted-body: #6b7280;
   --card-bg: #ffffff;
   --border-radius: 16px;
   --shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
 
-  /* Variables nuevas para transiciones artesanas */
-  --color-clay: #d97736;
-  --color-clay-dark: #b85c20;
-  --color-clay-light: #fbeee6;
-  --color-success: #10b981;
+  --color-clay: #c46b2d;
+  --color-clay-dark: #8a4a1c;
+  --color-clay-light: #e08446;
+  --color-success: #2e7d32;
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -35,14 +34,13 @@ body {
 }
 
 /* ==========================================================================
-   CORRECCIÓN CLAVE DE SVGs (Evita lupas e iconos gigantes en el dashboard)
+   CORRECCIÓN DE SVGs
    ========================================================================== */
 svg {
   max-width: 100%;
   max-height: 100%;
 }
 
-/* Limita estrictamente los SVG de la cabecera, barra de búsqueda y botones */
 .search-bar svg,
 .search-icon,
 .notification-btn svg,
@@ -54,30 +52,34 @@ svg {
   flex-shrink: 0;
 }
 
-/* Controla SVGs dinámicos inyectados (Excepto camión, vasija o modales) */
 #dynamic-content
-  svg:not(.clay-pot svg):not(.craft-icon-container svg):not(.mini-truck svg) {
+  svg:not(.clay-pot svg):not(.craft-icon-container svg):not(
+    .mini-truck svg
+  ):not(.section-emerge-icon svg) {
   width: 24px;
   height: 24px;
 }
 
 /* ==========================================================================
-   ESTRUCTURA DEL CONTENEDOR PRINCIPAL ORIGINAL
+   ESTRUCTURA PRINCIPAL — ALINEACIÓN CORREGIDA
    ========================================================================== */
 .dashboard-container {
   display: grid;
   grid-template-columns: 280px 1fr;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
 }
 
-/* BARRA LATERAL (SIDEBAR) ORIGINAL */
+/* BARRA LATERAL */
 .sidebar {
   background-color: var(--bg-sidebar);
   color: var(--text-light);
   display: flex;
   flex-direction: column;
   padding: 1.5rem 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .sidebar-brand {
@@ -85,12 +87,15 @@ svg {
   align-items: center;
   gap: 0.75rem;
   padding: 0 1.5rem 1.5rem 1.5rem;
-  border-bottom: 1px solid #334155;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
 }
 
 .brand-logo {
   width: 32px;
   height: 32px;
+  border-radius: 6px;
+  object-fit: cover;
 }
 
 .brand-title {
@@ -98,6 +103,7 @@ svg {
   font-size: 1.1rem;
   font-weight: 800;
   letter-spacing: 0.5px;
+  color: var(--text-light);
 }
 
 .brand-subtitle {
@@ -108,16 +114,20 @@ svg {
   margin-top: -2px;
 }
 
-/* Perfil de la artesana */
 .sidebar-profile {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 1.5rem;
+  flex-shrink: 0;
 }
 
 .profile-avatar {
-  background-color: var(--color-active);
+  background: linear-gradient(
+    135deg,
+    var(--color-clay) 0%,
+    var(--color-clay-dark) 100%
+  );
   color: white;
   font-weight: 800;
   width: 44px;
@@ -127,11 +137,20 @@ svg {
   align-items: center;
   justify-content: center;
   font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.profile-info {
+  min-width: 0;
 }
 
 .profile-name {
   font-size: 0.95rem;
   font-weight: 700;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .profile-role {
@@ -145,6 +164,18 @@ svg {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  padding-bottom: 0.5rem;
+}
+
+.sidebar-menu::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-menu::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 2px;
 }
 
 .menu-category {
@@ -154,6 +185,7 @@ svg {
   font-weight: 700;
   padding: 1.25rem 1.5rem 0.5rem 1.5rem;
   letter-spacing: 1px;
+  flex-shrink: 0;
 }
 
 .menu-item {
@@ -172,17 +204,23 @@ svg {
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
+  flex-shrink: 0;
 }
 
 .menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: rgba(255, 255, 255, 0.06);
   color: var(--text-light);
 }
 
 .menu-item.active {
-  background-color: var(--color-active);
+  background: linear-gradient(
+    135deg,
+    var(--color-active) 0%,
+    var(--color-clay-dark) 100%
+  );
   color: var(--text-light);
   font-weight: 600;
+  box-shadow: 0 4px 12px rgba(196, 107, 45, 0.3);
 }
 
 .menu-item .badge {
@@ -207,17 +245,18 @@ svg {
 .logout-btn {
   margin-top: auto;
   padding-top: 1.5rem;
-  border-top: 1px solid #334155;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* ==========================================================================
-   CONTENIDO PRINCIPAL ORIGINAL
+   CONTENIDO PRINCIPAL
    ========================================================================== */
 .main-content {
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
+  min-width: 0;
 }
 
 .main-header {
@@ -226,22 +265,25 @@ svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+  gap: 1rem;
 }
 
 .main-header h2 {
   font-size: 1.25rem;
   font-weight: 800;
   color: #0f172a;
+  white-space: nowrap;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-shrink: 0;
 }
 
-/* Buscador */
 .search-bar {
   position: relative;
   width: 260px;
@@ -250,12 +292,18 @@ svg {
 .search-bar input {
   width: 100%;
   background-color: #f1f5f9;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 30px;
   padding: 0.5rem 1rem 0.5rem 2.25rem;
   font-family: inherit;
   font-size: 0.85rem;
   outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-bar input:focus {
+  border-color: var(--color-active);
+  background-color: white;
 }
 
 .search-icon {
@@ -280,6 +328,14 @@ svg {
   justify-content: center;
   color: #64748b;
   position: relative;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.notification-btn:hover,
+.home-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
 }
 
 .noti-indicator {
@@ -293,7 +349,11 @@ svg {
 }
 
 .avatar-header {
-  background-color: var(--color-active);
+  background: linear-gradient(
+    135deg,
+    var(--color-clay) 0%,
+    var(--color-clay-dark) 100%
+  );
   color: white;
   font-weight: 700;
   font-size: 0.8rem;
@@ -303,6 +363,8 @@ svg {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
 /* BODY SCROLLABLE */
@@ -312,8 +374,19 @@ svg {
   overflow-y: auto;
 }
 
+.content-body::-webkit-scrollbar {
+  width: 6px;
+}
+.content-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.content-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
 /* ==========================================================================
-   TARJETAS DE MÉTRICAS Y GRÁFICOS ORIGINALES
+   TARJETAS DE MÉTRICAS Y GRÁFICOS
    ========================================================================== */
 .metrics-row {
   display: grid;
@@ -333,6 +406,7 @@ svg {
   justify-content: space-between;
   height: 130px;
   border-top: 4px solid transparent;
+  border: 1px solid #f0f0f0;
 }
 
 .card-metric.orange {
@@ -404,7 +478,7 @@ svg {
   color: #ef4444;
 }
 
-/* REJILLA DE INFORMACIÓN Y GRÁFICO ORIGINAL */
+/* REJILLA DE INFORMACIÓN */
 .dashboard-grid {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
@@ -416,6 +490,7 @@ svg {
   border-radius: var(--border-radius);
   padding: 1.5rem;
   box-shadow: var(--shadow);
+  border: 1px solid #f0f0f0;
 }
 
 .card-title {
@@ -456,7 +531,11 @@ svg {
 
 .chart-bar {
   width: 45px;
-  background-color: var(--color-active);
+  background: linear-gradient(
+    180deg,
+    var(--color-clay-light) 0%,
+    var(--color-clay) 100%
+  );
   border-radius: 6px 6px 0 0;
   transition: height 0.5s ease;
 }
@@ -503,7 +582,7 @@ svg {
   font-weight: 700;
 }
 
-/* Formularios de Agregar Producto */
+/* Formularios */
 .form-group {
   margin-bottom: 1.25rem;
 }
@@ -524,25 +603,40 @@ svg {
   border-radius: 8px;
   font-family: inherit;
   outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--color-active);
+  box-shadow: 0 0 0 3px rgba(196, 107, 45, 0.1);
 }
 
 .btn-primary {
-  background-color: var(--color-active);
+  background: linear-gradient(
+    135deg,
+    var(--color-clay) 0%,
+    var(--color-clay-dark) 100%
+  );
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
+  font-family: inherit;
+  box-shadow: 0 2px 8px rgba(196, 107, 45, 0.25);
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(196, 107, 45, 0.35);
 }
 
 /* ==========================================================================
-   INTEGRACIÓN PREMIUM 1: TRANSICIÓN MAJESTUOSA (LA VASIJA DE BARRO)
+   TRANSICIÓN: LA VASIJA DE BARRO (CAE, SE ROMPE, EMERGE LA SECCIÓN)
    ========================================================================== */
 .clay-transition-overlay {
   position: fixed;
@@ -571,6 +665,7 @@ svg {
   pointer-events: auto;
 }
 
+/* Wrapper de la vasija */
 .clay-pot-wrapper {
   position: relative;
   width: 180px;
@@ -587,6 +682,78 @@ svg {
   opacity: 1;
 }
 
+/* === ANIMACIÓN DE CAÍDA (potDrop) === */
+.clay-pot-wrapper.dropping {
+  animation: potDrop 0.7s cubic-bezier(0.5, 0, 0.75, 0.85) forwards;
+}
+
+@keyframes potDrop {
+  0% {
+    transform: scale(1) translateY(-100vh) rotate(-5deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    transform: scale(1) translateY(20px) rotate(2deg);
+  }
+  92% {
+    transform: scale(1.05, 0.92) translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* === IMPACTO (rebote al tocar el suelo) === */
+.clay-pot-wrapper.impact {
+  animation: potImpact 0.15s ease-out forwards;
+}
+
+@keyframes potImpact {
+  0% {
+    transform: scale(1.05, 0.92) translateY(0);
+  }
+  50% {
+    transform: scale(0.95, 1.05) translateY(-5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* === SOMBRA EN EL SUELO === */
+.pot-ground-shadow {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 18px;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.35) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.clay-transition-overlay.active .pot-ground-shadow {
+  opacity: 0.5;
+  animation: shadowGrow 0.7s ease forwards;
+}
+
+@keyframes shadowGrow {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.3);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+/* === CUERPO DE LA VASIJA === */
 .clay-pot {
   width: 100%;
   height: 100%;
@@ -652,6 +819,7 @@ svg {
   opacity: 0.85;
 }
 
+/* === PEDAZOS (SHARDS) === */
 .clay-shard {
   position: absolute;
   background: radial-gradient(
@@ -663,49 +831,60 @@ svg {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   pointer-events: none;
   transform: translate(0, 0) scale(0.5) rotate(0deg);
+  z-index: 5;
 }
 
+/* === DESTELLO DE IMPACTO === */
 .shatter-flash {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: #ffffff;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.9) 0%,
+    transparent 60%
+  );
   opacity: 0;
   z-index: 10;
   pointer-events: none;
 }
 
 .clay-transition-overlay.shattering .shatter-flash {
-  animation: flashTrigger 0.2s ease-out;
+  animation: flashTrigger 0.25s ease-out;
 }
 
 @keyframes flashTrigger {
   0% {
     opacity: 0;
+    transform: scale(0.5);
   }
-  35% {
+  40% {
     opacity: 1;
+    transform: scale(1.3);
   }
   100% {
     opacity: 0;
+    transform: scale(1.8);
   }
 }
 
+/* === LA VASIJA DESAPARECE AL ROMPERSE === */
 .clay-transition-overlay.shattering .clay-pot {
-  transform: scale(0.6);
+  transform: scale(0.5);
   opacity: 0;
   transition:
-    transform 0.2s ease-out,
+    transform 0.15s ease-out,
     opacity 0.15s ease-out;
 }
 
+/* === LOS PEDAZOS VUELAN === */
 .clay-transition-overlay.shattering .clay-shard {
   opacity: 1;
   transition:
-    transform 0.5s cubic-bezier(0.1, 0.8, 0.25, 1),
-    opacity 0.4s ease-out;
+    transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.5s ease-out;
 }
 
 .clay-transition-overlay.shattering .shard-1 {
@@ -728,9 +907,126 @@ svg {
   transform: translate(0px, -180px) rotate(210deg) scale(0.9);
   opacity: 0;
 }
+.clay-transition-overlay.shattering .shard-6 {
+  transform: translate(-100px, 80px) rotate(-60deg) scale(0.8);
+  opacity: 0;
+}
+.clay-transition-overlay.shattering .shard-7 {
+  transform: translate(110px, -60px) rotate(140deg) scale(0.9);
+  opacity: 0;
+}
+.clay-transition-overlay.shattering .shard-8 {
+  transform: translate(20px, 160px) rotate(45deg) scale(0.7);
+  opacity: 0;
+}
+
+/* === NUBE DE POLVO === */
+.dust-cloud {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.dust-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(196, 107, 45, 0.4);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.clay-transition-overlay.shattering .dust-particle {
+  animation: dustScatter 0.8s ease-out forwards;
+}
+
+@keyframes dustScatter {
+  0% {
+    opacity: 0.8;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx, 0), var(--dy, -40px)) scale(2.5);
+  }
+}
+
+/* === SECCIÓN QUE EMERGE DE LOS PEDAZOS ROTOS === */
+.section-emerge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  text-align: center;
+}
+
+.section-emerge-card {
+  background: rgba(255, 255, 255, 0.97);
+  padding: 28px 44px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  border: 2px solid var(--color-clay);
+  text-align: center;
+}
+
+.section-emerge-label {
+  font-size: 14px;
+  color: var(--text-muted-body);
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.section-emerge-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-clay-dark);
+}
+
+.clay-transition-overlay.shattering .section-emerge {
+  animation: sectionEmerge 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+  animation-delay: 0.15s;
+}
+
+@keyframes sectionEmerge {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* === ANIMACIÓN DE REVELADO DE VISTA === */
+.view-reveal-active {
+  animation: viewReveal 0.4s ease forwards;
+}
+
+@keyframes viewReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* ==========================================================================
-   INTEGRACIÓN PREMIUM 2: MODALES COMPLEMENTARIOS VECTORIALES
+   MODALES COMPLEMENTARIOS VECTORIALES
    ========================================================================== */
 .craft-modal-overlay {
   position: fixed;
@@ -784,7 +1080,7 @@ svg {
 .craft-spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid var(--color-clay-light);
+  border: 4px solid rgba(196, 107, 45, 0.15);
   border-top-color: var(--color-clay);
   border-radius: 50%;
   margin: 0 auto 1.25rem;
@@ -856,7 +1152,7 @@ svg {
 }
 
 /* ==========================================================================
-   INTEGRACIÓN PREMIUM 3: CAMIÓN DE DESPACHO ANIMADO (5 SEGUNDOS EXACTOS)
+   CAMIÓN DE DESPACHO ANIMADO
    ========================================================================== */
 .dispatch-container {
   position: relative;
@@ -865,6 +1161,31 @@ svg {
   justify-content: flex-end;
   min-height: 40px;
   width: 100%;
+}
+
+.dispatch-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.dispatch-status-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  animation: statusFade 0.3s ease;
+}
+
+@keyframes statusFade {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .delivery-scene {
@@ -878,6 +1199,32 @@ svg {
   justify-content: flex-start;
   overflow: hidden;
   border: 1px solid #e2e8f0;
+}
+
+/* Cajita que representa la pieza, se empaca antes de subir al camión */
+.mini-package {
+  position: absolute;
+  bottom: 6px;
+  left: 30px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-clay, #c46b2d);
+  border: 1px solid #92400e;
+  border-radius: 1px;
+  z-index: 3;
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    left 0.35s ease,
+    bottom 0.35s ease,
+    transform 0.35s ease,
+    opacity 0.25s ease;
+}
+
+.mini-package.loaded {
+  left: 20px;
+  bottom: 7px;
+  transform: scale(0.85);
 }
 
 .mini-factory {
@@ -1027,7 +1374,7 @@ svg {
 }
 
 /* ==========================================================================
-   INTEGRACIÓN PREMIUM 4: SELLO "DESPACHADO ✓" IMPACTO SENSORIAL
+   SELLO "DESPACHADO"
    ========================================================================== */
 .dispatched-stamp {
   font-family: "Sora", sans-serif;
@@ -1060,4 +1407,158 @@ svg {
     transform: rotate(-8deg) scale(1);
     opacity: 1;
   }
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .search-bar {
+    width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 280px;
+    transform: translateX(-100%);
+    z-index: 200;
+    transition: transform 0.3s ease;
+  }
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  .metrics-row {
+    grid-template-columns: 1fr;
+  }
+  .search-bar {
+    display: none;
+  }
+  .main-header {
+    padding: 1rem;
+  }
+  .content-body {
+    padding: 1rem;
+  }
+}
+
+/* ==========================================================================
+   CAMPOS DE FORMULARIO REUTILIZABLES (Editar Producto / Configuración)
+   ========================================================================== */
+.aa-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.aa-form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 560px) {
+  .aa-form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aa-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 0.5rem;
+}
+
+.aa-hint {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-top: 0.35rem;
+}
+
+.aa-input,
+.aa-select,
+.aa-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: white;
+  color: #0f172a;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.aa-input:focus,
+.aa-select:focus,
+.aa-textarea:focus {
+  outline: none;
+  border-color: var(--color-active, #c46b2d);
+  box-shadow: 0 0 0 3px rgba(196, 107, 45, 0.12);
+}
+
+.aa-textarea {
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.5;
+}
+
+.aa-section-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 1.75rem 0 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.aa-section-title:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.aa-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0;
+  font-size: 0.85rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.aa-checkbox-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-active, #c46b2d);
+  cursor: pointer;
+}
+
+.aa-image-preview {
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid #e2e8f0;
+  margin-top: 0.6rem;
+  background: #f1f5f9;
 }

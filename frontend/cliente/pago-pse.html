@@ -10,11 +10,12 @@
       rel="stylesheet"
     />
     <title>PSE Portal Bancario - Artesanías Chigorodó</title>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/footer.css" />
-    <link rel="stylesheet" href="../css/carrito.css" />
-    <link rel="stylesheet" href="../css/checkout.css" />
+    <link rel="stylesheet" href="../css/components/styles.css" />
+    <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/footer.css" />
+    <link rel="stylesheet" href="../css/cliente/carrito.css" />
+    <link rel="stylesheet" href="../css/cliente/checkout.css" />
+    <link rel="stylesheet" href="../css/cliente/checkout-journey.css" />
   </head>
   <body>
     <div class="app-shell" style="background-color: #f6efe2">
@@ -150,10 +151,10 @@
       </div>
     </div>
 
-    <script src="../js/main.js"></script>
-    <script src="../js/productos.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/carrito.js"></script>
+    <script src="../js/core/main.js"></script>
+    <script src="../js/cliente/productos.js"></script>
+    <script src="../js/core/auth.js"></script>
+    <script src="../js/cliente/carrito.js"></script>
 
     <script>
       let grandTotal = 0;
@@ -162,12 +163,12 @@
       document.addEventListener("DOMContentLoaded", function () {
         // Extracción segura de items
         try {
-          const stored =
-            localStorage.getItem("cart") || localStorage.getItem("carrito");
-          if (stored) {
-            globalCartItems = JSON.parse(stored);
-          } else if (typeof getCartItems === "function") {
+          if (typeof getCartItems === "function") {
             globalCartItems = getCartItems();
+          } else {
+            globalCartItems = JSON.parse(
+              localStorage.getItem("cart_items") || "[]",
+            );
           }
         } catch (e) {
           console.error("Error cargando carrito:", e);
@@ -226,8 +227,9 @@
       function payWithPSE() {
         const check = document.getElementById("pse-terms");
         if (!check.checked) {
-          alert(
+          showModernToast(
             "Debes aceptar los términos y condiciones de la pasarela de pagos.",
+            "error",
           );
           return;
         }
@@ -352,5 +354,6 @@
         localStorage.setItem("seller_orders", JSON.stringify(sellerOrders));
       }
     </script>
+    <script src="../js/cliente/checkout.js"></script>
   </body>
 </html>

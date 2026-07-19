@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Categorías · Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap"
+    />
     <link rel="stylesheet" href="../css/admin/admin.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
@@ -21,17 +27,90 @@
         <div id="dash-topbar-container"></div>
 
         <div class="dash-content">
-          <div class="card">
-            <h2>Categorías de Productos</h2>
-            <p style="margin-top: 10px; color: #666">
-              Organiza tus piezas en categorías (cerámica, tejidos, madera,
-              etc.).
-            </p>
+          <div class="content-card">
+            <div style="margin-bottom: 20px">
+              <div class="card-title" style="margin-bottom: 4px">
+                Categorías de Productos
+              </div>
+              <div class="card-subtitle">
+                Organiza tus piezas en categorías (cerámica, tejidos, madera,
+                etc.).
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Categoría</th>
+                    <th>Productos asociados</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="font-semibold">Tejidos</td>
+                    <td>18</td>
+                    <td><span class="badge badge-success">Activa</span></td>
+                    <td class="row-actions">
+                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
+                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Cerámica</td>
+                    <td>11</td>
+                    <td><span class="badge badge-success">Activa</span></td>
+                    <td class="row-actions">
+                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
+                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Joyería</td>
+                    <td>7</td>
+                    <td><span class="badge badge-success">Activa</span></td>
+                    <td class="row-actions">
+                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
+                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Madera</td>
+                    <td>5</td>
+                    <td><span class="badge badge-warning">Sin productos activos</span></td>
+                    <td class="row-actions">
+                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
+                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Hogar y Decoración</td>
+                    <td>9</td>
+                    <td><span class="badge badge-success">Activa</span></td>
+                    <td class="row-actions">
+                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
+                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Accesorios</td>
+                    <td>13</td>
+                    <td><span class="badge badge-success">Activa</span></td>
+                    <td class="row-actions">
+                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
+                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <script src="../js/admin/dashboard-loader.js"></script>
+    <script src="../js/admin/admin-dashboard.js"></script>
+    <script src="../js/admin/main-admin.js"></script>
   </body>
 </html>

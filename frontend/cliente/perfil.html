@@ -10,10 +10,26 @@
       rel="stylesheet"
     />
     <title>Mi Cuenta - Artesanías Chigorodó</title>
-    <link class="page-css" rel="stylesheet" href="../css/styles.css" />
-    <link class="page-css" rel="stylesheet" href="../css/navbar.css" />
-    <link class="page-css" rel="stylesheet" href="../css/footer.css" />
-    <link class="page-css" rel="stylesheet" href="../css/dashboard.css" />
+    <link
+      class="page-css"
+      rel="stylesheet"
+      href="../css/components/styles.css"
+    />
+    <link
+      class="page-css"
+      rel="stylesheet"
+      href="../css/components/navbar.css"
+    />
+    <link
+      class="page-css"
+      rel="stylesheet"
+      href="../css/components/footer.css"
+    />
+    <link
+      class="page-css"
+      rel="stylesheet"
+      href="../css/components/dashboard.css"
+    />
   </head>
   <body>
     <!-- Protect Route -->
@@ -216,9 +232,9 @@
 
     <!-- Scripts -->
     <script src="../js/core/main.js"></script>
-    <script src="../js/components/productos.js"></script>
+    <script src="../js/cliente/productos.js"></script>
     <script src="../js/core/auth.js"></script>
-    <script src="../js/components/carrito.js"></script>
+    <script src="../js/cliente/carrito.js"></script>
     <script src="../js/components/navbar.js"></script>
     <script src="../js/components/footer.js"></script>
 
@@ -509,7 +525,7 @@
           localStorage.setItem("user", JSON.stringify(user));
         }
 
-        alert("Tus datos han sido guardados con éxito.");
+        showModernToast("Tus datos han sido guardados con éxito.", "success");
       }
 
       function renderAddresses(panel) {
@@ -528,7 +544,7 @@
               <span style="font-size: 0.85rem; color: var(--text-muted);">${profileData.city}, Colombia</span>
             </div>
             
-            <div onclick="alert('Funcionalidad de agregar nueva dirección simulada.')" style="padding: 1.25rem; border: 1px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 130px;">
+            <div onclick="showModernToast('Funcionalidad de agregar dirección disponible próximamente.', 'success')" style="padding: 1.25rem; border: 1px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 130px;">
               <span style="color: var(--primary); font-weight: 600; font-size: 0.95rem;">+ Agregar nueva dirección</span>
             </div>
           </div>
@@ -550,7 +566,7 @@
               </div>
             </div>
             
-            <div onclick="alert('Funcionalidad de agregar tarjeta simulada.')" style="padding: 1.25rem; border: 1px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 80px;">
+            <div onclick="showModernToast('Funcionalidad de agregar tarjeta disponible próximamente.', 'success')" style="padding: 1.25rem; border: 1px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 80px;">
               <span style="color: var(--primary); font-weight: 600; font-size: 0.95rem;">+ Agregar tarjeta</span>
             </div>
           </div>
@@ -577,9 +593,16 @@
       }
 
       function triggerLogout() {
-        logoutUser();
-        alert("Cerrando sesión de usuario...");
-        window.location.replace("../home/index.html");
+        showModernConfirm(
+          "¿Estás seguro de que deseas cerrar sesión?",
+          function () {
+            logoutUser();
+            showModernToast("Sesión cerrada. ¡Hasta pronto!", "success");
+            setTimeout(() => {
+              window.location.replace("../home/index.html");
+            }, 1200);
+          },
+        );
       }
     </script>
   </body>

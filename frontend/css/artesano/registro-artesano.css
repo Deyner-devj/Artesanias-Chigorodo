@@ -1,0 +1,235 @@
+/* ==========================================================================
+   Variables y Reset (Basados en Artesanías Chigorodó)
+   ========================================================================== */
+:root {
+  /* Alineado 1:1 con las variables oficiales de styles.css */
+  --primary-color: #c46b2d; /* = --primary */
+  --primary-hover: #b05c24; /* = --primary-hover */
+  --accent-green: #2e7d32; /* = --secondary */
+  --bg-app: #f8f6f2; /* = --bg-primary */
+  --card-bg: #ffffff; /* = --bg-card */
+  --text-dark: #111827; /* = --text-dark */
+  --text-light: #6b7280; /* = --text-muted */
+  --border-input: #e5e7eb; /* = --border-color */
+  --icon-bg: #f3efe9; /* = --bg-secondary */
+  --font-stack: "Poppins", sans-serif; /* = --font-sans */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-stack);
+  background-color: var(--bg-app);
+  background-image: radial-gradient(
+    rgba(196, 107, 45, 0.03) 1px,
+    transparent 0
+  );
+  background-size: 24px 24px;
+  color: var(--text-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+/* ==========================================================================
+   Contenedor de la Tarjeta
+   ========================================================================== */
+.main-container {
+  width: 100%;
+  max-width: 500px;
+}
+
+.register-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  padding: 2.5rem 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+/* ==========================================================================
+   Encabezado (Logo y Título)
+   ========================================================================== */
+.card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo-container {
+  margin-bottom: 1rem;
+}
+
+.main-logo {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
+}
+
+.card-header h1 {
+  font-size: 1.85rem;
+  color: var(--text-dark);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.card-header .subtitle {
+  font-size: 0.75rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  margin-top: 0.4rem;
+}
+
+/* ==========================================================================
+   Pestaña Indicadora de Registro
+   ========================================================================== */
+.tabs-indicator {
+  display: flex;
+  border-bottom: 2px solid var(--border-input);
+  margin-bottom: 2rem;
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent-green);
+  border-bottom: 3px solid var(--accent-green);
+  margin-bottom: -2.5px; /* Alínea exactamente con el borde del contenedor */
+}
+
+/* ==========================================================================
+   Estructura y Estilos del Formulario
+   ========================================================================== */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Contenedores de Inputs con Icono lateral */
+.input-group {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid var(--border-input);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #ffffff;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--icon-bg);
+  color: var(--text-light);
+  width: 48px;
+  border-right: 1.5px solid var(--border-input);
+}
+
+.input-group input,
+.input-group select {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-dark);
+  background-color: transparent;
+}
+
+.input-group input::placeholder {
+  color: #a3a3a3;
+}
+
+/* Estilo para los menús Select */
+.input-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236a6a6a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px;
+  padding-right: 2.5rem;
+}
+
+/* Efectos de Focus interactivo */
+.input-group:focus-within {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 0 4px rgba(56, 106, 69, 0.1);
+}
+
+.input-group:focus-within .input-icon {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+/* ==========================================================================
+   Botón de Envío y Footer de Tarjeta
+   ========================================================================== */
+.btn-submit {
+  background-color: var(--accent-green);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 12px rgba(56, 106, 69, 0.15);
+}
+
+.btn-submit:hover {
+  background-color: #236026; /* = --secondary-hover */
+}
+
+.btn-submit:active {
+  transform: scale(0.98);
+}
+
+.footer-link {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+
+.footer-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.footer-link a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Adaptabilidad para Móviles
+   ========================================================================== */
+@media (max-width: 480px) {
+  .register-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .card-header h1 {
+    font-size: 1.6rem;
+  }
+}

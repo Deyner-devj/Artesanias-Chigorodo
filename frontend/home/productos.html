@@ -14,10 +14,10 @@
       rel="stylesheet"
     />
     <title>Catálogo - Artesanías Chigorodó</title>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/footer.css" />
-    <link rel="stylesheet" href="../css/productos.css" />
+    <link rel="stylesheet" href="../css/components/styles.css" />
+    <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/footer.css" />
+    <link rel="stylesheet" href="../css/home/productos.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -472,9 +472,9 @@
 
     <!-- Scripts -->
     <script src="../js/core/main.js"></script>
-    <script src="../js/components/productos.js"></script>
+    <script src="../js/cliente/productos.js"></script>
     <script src="../js/core/auth.js"></script>
-    <script src="../js/components/carrito.js"></script>
+    <script src="../js/cliente/carrito.js"></script>
     <script src="../js/components/navbar.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/admin/mantenimiento.js"></script>
@@ -571,7 +571,7 @@
               <p class="catalog-product-desc">${product.description}</p>
               <div class="catalog-product-footer">
                 <span class="catalog-product-price">${formatCOP(product.price)}</span>
-                <a href="../home/producto.html?id=${product.id}" class="btn-add-catalog">Ver detalles</a>
+                <a href="../home/producto.html?id=${product.id}" onclick="event.preventDefault(); animateProductDetailTransition(this.closest('.catalog-product-card').querySelector('.catalog-product-img'), this.href);" class="btn-add-catalog">Ver detalles</a>
               </div>
             </div>
           </article>

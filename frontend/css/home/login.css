@@ -5,7 +5,7 @@
   min-height: calc(100vh - 120px);
   display: grid;
   place-items: center;
-  padding: 3rem 0;
+  padding: 2rem 0 3rem;
   position: relative;
 }
 
@@ -128,7 +128,9 @@
   justify-content: center;
   border-top-left-radius: var(--border-radius-input);
   border-bottom-left-radius: var(--border-radius-input);
-  transition: background-color 250ms ease, color 250ms ease;
+  transition:
+    background-color 250ms ease,
+    color 250ms ease;
 }
 
 .input-icon-wrapper.orange {
@@ -169,7 +171,9 @@
   border: none;
   cursor: pointer;
   font-size: 15px;
-  transition: background-color 250ms ease, transform 250ms ease;
+  transition:
+    background-color 250ms ease,
+    transform 250ms ease;
   color: white;
 }
 

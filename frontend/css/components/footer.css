@@ -1,7 +1,7 @@
 /* Footer Section */
 .main-footer {
-  background-color: #0F3D2E; /* Verde bosque oscuro */
-  color: #FAF6F0; /* Crema muy claro */
+  background-color: #0f3d2e; /* Verde bosque oscuro */
+  color: #faf6f0; /* Crema muy claro */
   flex-shrink: 0;
   margin-top: 4rem;
 }
@@ -20,11 +20,11 @@
 .newsletter-content h3 {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #FAF6F0;
+  color: #faf6f0;
 }
 
 .newsletter-content p {
-  color: #E5DFD6;
+  color: #e5dfd6;
   font-size: 0.9rem;
   margin-top: 0.25rem;
   opacity: 0.85;
@@ -45,7 +45,9 @@
   width: 100%;
   font-size: 16px;
   outline: none;
-  transition: border-color 250ms ease, background-color 250ms ease;
+  transition:
+    border-color 250ms ease,
+    background-color 250ms ease;
 }
 
 .newsletter-form input:focus {
@@ -61,7 +63,9 @@
   font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: background-color 250ms ease, transform 250ms ease;
+  transition:
+    background-color 250ms ease,
+    transform 250ms ease;
   white-space: nowrap;
 }
 
@@ -122,7 +126,7 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: #FAF6F0;
+  color: #faf6f0;
   opacity: 0.85;
 }
 
@@ -197,7 +201,7 @@
     gap: 1.5rem !important;
     text-align: center !important;
   }
-  
+
   .newsletter-form {
     width: 100% !important;
   }
@@ -208,7 +212,9 @@
     text-align: center !important;
   }
 
-  .footer-brand-title, .social-links, .payment-badges-grid {
+  .footer-brand-title,
+  .social-links,
+  .payment-badges-grid {
     justify-content: center !important;
   }
 }

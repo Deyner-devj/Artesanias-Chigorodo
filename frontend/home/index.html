@@ -14,12 +14,12 @@
       rel="stylesheet"
     />
     <title>Inicio - Artesanías Chigorodó</title>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/footer.css" />
-    <link rel="stylesheet" href="../css/home.css" />
+    <link rel="stylesheet" href="../css/components/styles.css" />
+    <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/footer.css" />
+    <link rel="stylesheet" href="../css/home/home.css" />
   </head>
-  <body>
+  <body class="navbar-overlay">
     <div class="app-shell">
       <!-- Navbar Header -->
       <div id="navbar-placeholder"></div>
@@ -31,52 +31,167 @@
      HERO SECTION
      ══════════════════════════════════════════ -->
           <section class="hero-section" aria-label="Bienvenida">
-            <!-- El contenido ahora está centrado dentro del contenedor hero -->
             <div class="hero-content">
-              <div class="hero-badge">
-                <span class="hero-badge-dot"></span>
+              <div
+                class="hero-badge"
+                style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  background-color: var(--primary-light);
+                  color: var(--primary);
+                  padding: 6px 14px;
+                  border-radius: 99px;
+                  font-size: 0.85rem;
+                  font-weight: 600;
+                  margin-bottom: 1.5rem;
+                "
+              >
+                <span
+                  class="hero-badge-dot"
+                  style="
+                    width: 8px;
+                    height: 8px;
+                    background-color: var(--primary);
+                    border-radius: 50%;
+                    display: inline-block;
+                  "
+                ></span>
                 Artesanías 100% colombianas
               </div>
-              <h1 class="hero-title">
-                Descubre el <span class="accent-text">arte</span><br />hecho a
-                mano
+              <h1
+                class="hero-title"
+                style="
+                  font-size: clamp(2.25rem, 3.5vw, 3.5rem);
+                  font-weight: 800;
+                  line-height: 1.12;
+                  margin-bottom: var(--space-2);
+                  color: var(--text-dark);
+                "
+              >
+                Descubre el
+                <span class="accent-text" style="color: var(--primary)"
+                  >arte</span
+                ><br /><span style="color: var(--secondary)">hecho a mano</span>
               </h1>
-              <p class="hero-description">
-                Apoya a nuestros artesanos locales y lleva a casa lo mejor de
-                Colombia. Cada pieza cuenta una historia única de tradición y
-                cultura.
+              <p
+                class="hero-description"
+                style="
+                  font-size: 1.2rem;
+                  color: var(--text-muted);
+                  line-height: 1.7;
+                  max-width: 480px;
+                  margin-bottom: var(--space-3);
+                  font-weight: 500;
+                "
+              >
+                Apoya a nuestros artesanos y lleva a casa lo mejor de Colombia.
               </p>
-              <div class="hero-actions">
-                <a href="productos.html" class="btn btn-primary"
+              <div
+                class="hero-actions"
+                style="
+                  display: flex;
+                  gap: 1rem;
+                  align-items: center;
+                  flex-wrap: wrap;
+                  margin-bottom: var(--space-4);
+                "
+              >
+                <a
+                  href="productos.html"
+                  class="btn btn-primary"
+                  style="
+                    padding: 12px 28px;
+                    font-weight: 600;
+                    border-radius: var(--border-radius-btn);
+                  "
                   >Comprar ahora</a
                 >
-                <a href="nuestros-artesanos.html" class="btn btn-outline-green"
-                  >Conocer artesanos</a
+                <a
+                  href="nuestros-artesanos.html"
+                  class="btn btn-outline-green"
+                  style="
+                    padding: 12px 28px;
+                    font-weight: 600;
+                    border-radius: var(--border-radius-btn);
+                    border: 2px solid var(--secondary);
+                    color: var(--secondary);
+                    background: transparent;
+                    text-decoration: none;
+                    display: inline-block;
+                    transition: all 250ms ease;
+                  "
+                  >Conocer más</a
                 >
               </div>
-              <div class="hero-stats">
-                <div class="hero-stat-item">
-                  <strong>120+</strong><span>Artesanos</span>
+              <div
+                class="hero-stats"
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 1.5rem;
+                  margin-top: 2rem;
+                "
+              >
+                <div
+                  class="hero-stat-item"
+                  style="display: flex; flex-direction: column"
+                >
+                  <strong style="font-size: 1.5rem; color: var(--text-dark)"
+                    >120+</strong
+                  ><span style="font-size: 0.85rem; color: var(--text-muted)"
+                    >Artesanos</span
+                  >
                 </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat-item">
-                  <strong>500+</strong><span>Productos</span>
+                <div
+                  class="hero-stat-divider"
+                  style="
+                    width: 1px;
+                    height: 30px;
+                    background-color: var(--border-color);
+                  "
+                ></div>
+                <div
+                  class="hero-stat-item"
+                  style="display: flex; flex-direction: column"
+                >
+                  <strong style="font-size: 1.5rem; color: var(--text-dark)"
+                    >500+</strong
+                  ><span style="font-size: 0.85rem; color: var(--text-muted)"
+                    >Productos</span
+                  >
                 </div>
-                <div class="hero-stat-divider"></div>
-                <div class="hero-stat-item">
-                  <strong>4.9 ⭐</strong><span>Calificación</span>
+                <div
+                  class="hero-stat-divider"
+                  style="
+                    width: 1px;
+                    height: 30px;
+                    background-color: var(--border-color);
+                  "
+                ></div>
+                <div
+                  class="hero-stat-item"
+                  style="display: flex; flex-direction: column"
+                >
+                  <strong style="font-size: 1.5rem; color: var(--text-dark)"
+                    >4.9 ⭐</strong
+                  ><span style="font-size: 0.85rem; color: var(--text-muted)"
+                    >Calificación</span
+                  >
                 </div>
               </div>
             </div>
 
-            <!-- Tarjetas flotantes -->
-            <div class="hero-floating-card hero-card-1">
-              <span>4.9 · Mochila Wayuu</span>
-            </div>
-            <div class="hero-floating-card hero-card-2">
-              <span>Envío seguro</span>
+            <!-- Columna derecha: Imagen real del Hero -->
+            <div class="hero-image-container">
+              <img
+                src="../img/home/Bienvenida-home.png"
+                alt="Artesanías Chigorodó"
+                class="hero-image"
+              />
             </div>
           </section>
+
           <!-- ══════════════════════════════════════════
              TRUST BADGES BAR
              ══════════════════════════════════════════ -->
@@ -84,7 +199,10 @@
             <div class="badge-item">
               <span
                 class="badge-icon"
-                style="background-color: #e0f2fe; color: #0284c7"
+                style="
+                  background-color: var(--primary-light);
+                  color: var(--primary);
+                "
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -104,13 +222,16 @@
               </span>
               <div class="badge-text">
                 <h4>Hecho a mano</h4>
-                <p>Por artesanos colombianos</p>
+                <p>por artesanos colombianos</p>
               </div>
             </div>
             <div class="badge-item">
               <span
                 class="badge-icon"
-                style="background-color: #ffedd5; color: #d97706"
+                style="
+                  background-color: var(--primary-light);
+                  color: var(--primary);
+                "
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -130,14 +251,17 @@
                 </svg>
               </span>
               <div class="badge-text">
-                <h4>Envíos a todo el país</h4>
+                <h4>Envíos a todo</h4>
                 <p>Colombia y el mundo</p>
               </div>
             </div>
             <div class="badge-item">
               <span
                 class="badge-icon"
-                style="background-color: #dcfce7; color: #16a34a"
+                style="
+                  background-color: var(--primary-light);
+                  color: var(--primary);
+                "
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -156,13 +280,16 @@
               </span>
               <div class="badge-text">
                 <h4>Pagos 100% seguros</h4>
-                <p>PSE, tarjetas, Nequi</p>
+                <p>PSE • Tarjetas • Otros</p>
               </div>
             </div>
             <div class="badge-item">
               <span
                 class="badge-icon"
-                style="background-color: #fef3c7; color: #b45309"
+                style="
+                  background-color: var(--primary-light);
+                  color: var(--primary);
+                "
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -182,7 +309,7 @@
               </span>
               <div class="badge-text">
                 <h4>Apoyo a comunidades</h4>
-                <p>Comercio justo directo</p>
+                <p>Comercio justo</p>
               </div>
             </div>
           </section>
@@ -206,7 +333,7 @@
               <a href="productos.html?category=Tejidos" class="category-card">
                 <div class="category-image-wrapper">
                   <img
-                    src="../img/categoria-tejidos.png"
+                    src="../img/home/categoria-tejidos.png"
                     alt="Tejidos artesanales colombianos"
                     class="category-img"
                     loading="lazy"
@@ -223,7 +350,7 @@
               >
                 <div class="category-image-wrapper">
                   <img
-                    src="../img/categoria-ceramica.png"
+                    src="../img/home/categoria-ceramica.png"
                     alt="Cerámica artesanal colombiana"
                     class="category-img"
                     loading="lazy"
@@ -240,7 +367,7 @@
               >
                 <div class="category-image-wrapper">
                   <img
-                    src="../img/categoria-joyeria.png"
+                    src="../img/home/categoria-joyeria.png"
                     alt="Joyería artesanal colombiana"
                     class="category-img"
                     loading="lazy"
@@ -254,7 +381,7 @@
               <a href="productos.html?category=Madera" class="category-card">
                 <div class="category-image-wrapper">
                   <img
-                    src="../img/categoria-madera.png"
+                    src="../img/home/categoria-madera.png"
                     alt="Artesanías en madera colombianas"
                     class="category-img"
                     loading="lazy"
@@ -271,7 +398,7 @@
               >
                 <div class="category-image-wrapper">
                   <img
-                    src="../img/categoria-hogar-decoracion.png"
+                    src="../img/home/categoria-hogar-decoracion.png"
                     alt="Hogar y decoración artesanal"
                     class="category-img"
                     loading="lazy"
@@ -288,7 +415,7 @@
               >
                 <div class="category-image-wrapper">
                   <img
-                    src="../img/categoria-accesorios.png"
+                    src="../img/home/categoria-accesorios.png"
                     alt="Accesorios artesanales colombianos"
                     class="category-img"
                     loading="lazy"
@@ -392,7 +519,7 @@
               </div>
               <div class="promo-banner-image">
                 <img
-                  src="../img/mochila_wayuu.png"
+                  src="../img/home/mochila_wayuu.png"
                   alt="Mochila Wayuu artesanal"
                   loading="lazy"
                 />
@@ -419,7 +546,7 @@
               <article class="artesano-card">
                 <div class="artesano-img-wrapper">
                   <img
-                    src="../img/login-bg-mochila-wayuu.png"
+                    src="../img/home/login-bg-mochila-wayuu.png"
                     alt="Artesana tejiendo mochila Wayuu"
                     class="artesano-img"
                     loading="lazy"
@@ -483,7 +610,7 @@
               <article class="artesano-card">
                 <div class="artesano-img-wrapper">
                   <img
-                    src="../img/login-bg-vasijas-barro.png"
+                    src="../img/home/login-bg-vasijas-barro.png"
                     alt="Artesano con vasijas de barro"
                     class="artesano-img"
                     loading="lazy"
@@ -547,7 +674,7 @@
               <article class="artesano-card">
                 <div class="artesano-img-wrapper">
                   <img
-                    src="../img/login-bg-sombrero-vueltiao.png"
+                    src="../img/home/login-bg-sombrero-vueltiao.png"
                     alt="Artesana con sombrero vueltiao"
                     class="artesano-img"
                     loading="lazy"
@@ -923,11 +1050,11 @@
     <!-- Scripts -->
     <script src="../js/core/main.js"></script>
     <script src="../js/core/auth.js"></script>
-    <script src="../js/components/productos.js"></script>
-    <script src="../js/components/carrito.js"></script>
+    <script src="../js/cliente/productos.js"></script>
+    <script src="../js/cliente/carrito.js"></script>
     <script src="../js/components/navbar.js"></script>
     <script src="../js/components/footer.js"></script>
-    <script src="../js/animaciones.js"></script>
+    <script src="../js/components/animaciones.js"></script>
     <script src="../js/admin/mantenimiento.js"></script>
 
     <script>
@@ -964,7 +1091,7 @@
               <span class="featured-product-price">${typeof formatCOP === "function" ? formatCOP(product.price) : "$" + product.price}</span>
               <div class="featured-product-actions">
                 
-                <a href="/frontend/home/producto.html?id=${product.id}" class="btn btn-secondary" style="padding:9px 16px;font-size:13px;">Ver</a>
+                <a href="/frontend/home/producto.html?id=${product.id}" onclick="event.preventDefault(); animateProductDetailTransition(this.closest('.featured-product-card').querySelector('img'), this.href);" class="btn btn-secondary" style="padding:9px 16px;font-size:13px;">Ver</a>
                 
                 <button type="button" onclick="addFeaturedToCart('${product.id}',this)" class="btn btn-primary" style="padding:9px 16px;font-size:13px;" title="Agregar al carrito">
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
@@ -1030,7 +1157,7 @@
             }, 2000);
           })
           .catch(() => {
-            alert("Código: CHIGORODO10");
+            showModernToast("Código: CHIGORODO10", "success");
           });
       }
     </script>

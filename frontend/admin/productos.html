@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Productos · Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap"
+    />
     <link rel="stylesheet" href="../css/admin/admin.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
@@ -21,16 +27,89 @@
         <div id="dash-topbar-container"></div>
 
         <div class="dash-content">
-          <div class="card">
-            <h2>Inventario de Productos</h2>
-            <p style="margin-top: 10px; color: #666">
-              Carga productos, edita detalles, actualiza el stock y los precios.
-            </p>
+          <div class="content-card">
+            <div style="margin-bottom: 20px">
+              <div class="card-title" style="margin-bottom: 4px">
+                Inventario de Productos
+              </div>
+              <div class="card-subtitle">
+                Carga productos, edita detalles, actualiza el stock y los
+                precios.
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Artesano</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="font-semibold">Mochila Wayuu Colores del Sol</td>
+                    <td>Tejidos</td>
+                    <td>Tejidos del Sol</td>
+                    <td>$280.000</td>
+                    <td>15</td>
+                    <td><span class="badge badge-success">Publicado</span></td>
+                    <td class="row-actions">
+                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
+                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Jarrón de Barro Negro</td>
+                    <td>Cerámica</td>
+                    <td>Barro Ancestral</td>
+                    <td>$120.000</td>
+                    <td>8</td>
+                    <td><span class="badge badge-success">Publicado</span></td>
+                    <td class="row-actions">
+                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
+                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Hamaca San Jacinto</td>
+                    <td>Tejidos</td>
+                    <td>Tejedoras de San Jacinto</td>
+                    <td>$350.000</td>
+                    <td>0</td>
+                    <td><span class="badge badge-danger">Agotado</span></td>
+                    <td class="row-actions">
+                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
+                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Aretes de Filigrana Momposina</td>
+                    <td>Joyería</td>
+                    <td>Orfebrería Momposina</td>
+                    <td>$150.000</td>
+                    <td>10</td>
+                    <td>
+                      <span class="badge badge-warning">En revisión</span>
+                    </td>
+                    <td class="row-actions">
+                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
+                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <script src="../js/admin/dashboard-loader.js"></script>
+    <script src="../js/admin/admin-dashboard.js"></script>
+    <script src="../js/admin/main-admin.js"></script>
   </body>
 </html>

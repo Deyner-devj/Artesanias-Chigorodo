@@ -10,14 +10,15 @@
       rel="stylesheet"
     />
     <title>Información de Compra - Artesanías Chigorodó</title>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/footer.css" />
-    <link rel="stylesheet" href="../css/carrito.css" />
+    <link rel="stylesheet" href="../css/components/styles.css" />
+    <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/footer.css" />
+    <link rel="stylesheet" href="../css/cliente/carrito.css" />
     <link rel="stylesheet" href="../css/cliente/checkout.css" />
+    <link rel="stylesheet" href="../css/cliente/checkout-journey.css" />
   </head>
   <body>
-    <script src="../js/protected-routes.js"></script>
+    <script src="../js/core/protected-routes.js"></script>
 
     <div class="app-shell">
       <div id="navbar-placeholder"></div>
@@ -294,14 +295,30 @@
       <div id="footer-placeholder"></div>
     </div>
 
-    <script src="../js/main.js"></script>
-    <script src="../js/productos.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/carrito.js"></script>
-    <script src="../js/navbar.js"></script>
-    <script src="../js/footer.js"></script>
+    <script src="../js/core/main.js"></script>
+    <script src="../js/cliente/productos.js"></script>
+    <script src="../js/core/auth.js"></script>
+    <script src="../js/cliente/carrito.js"></script>
+    <script src="../js/components/navbar.js"></script>
+    <script src="../js/components/footer.js"></script>
 
     <script>
+      // Escapa caracteres especiales de HTML para evitar XSS al insertar
+      // datos dinámicos (nombre/imagen de producto) dentro de innerHTML.
+      function escapeHtml(value) {
+        return String(value ?? "").replace(
+          /[&<>"']/g,
+          (ch) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[ch],
+        );
+      }
+
       document.addEventListener("DOMContentLoaded", function () {
         if (typeof renderCheckoutSummary === "function")
           renderCheckoutSummary();
@@ -316,12 +333,10 @@
         // Bypass directo al LocalStorage para evitar fallos si carrito.js no cargó
         let items = [];
         try {
-          const stored =
-            localStorage.getItem("cart") || localStorage.getItem("carrito");
-          if (stored) {
-            items = JSON.parse(stored);
-          } else if (typeof getCartItems === "function") {
+          if (typeof getCartItems === "function") {
             items = getCartItems();
+          } else {
+            items = JSON.parse(localStorage.getItem("cart_items") || "[]");
           }
         } catch (e) {
           console.error("Error recuperando el carrito", e);
@@ -356,9 +371,9 @@
         items.forEach((item) => {
           itemsHtml += `
           <div class="checkout-summary-item-card" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-            <img src="${item.product.image}" alt="${item.product.name}" class="checkout-summary-item-img" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;" onerror="this.src='img/mochila_wayuu.png'" />
+            <img src="${escapeHtml(item.product.image)}" alt="${escapeHtml(item.product.name)}" class="checkout-summary-item-img" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;" onerror="this.onerror=null;this.src='../img/mochila_wayuu.png'" />
             <div class="checkout-summary-item-info" style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
-              <span class="checkout-summary-item-name" style="font-weight: 600; font-size: 0.9rem;">${item.product.name}</span>
+              <span class="checkout-summary-item-name" style="font-weight: 600; font-size: 0.9rem;">${escapeHtml(item.product.name)}</span>
               <span class="checkout-summary-item-qty" style="font-size: 0.8rem; color: var(--text-muted);">Cantidad: ${item.quantity}</span>
               <span class="checkout-summary-item-price" style="font-weight: 500;">${formatMoney(item.product.price * item.quantity)}</span>
             </div>
@@ -417,21 +432,17 @@
           }
         }
 
+        // No hay datos guardados: solo se precargan nombre/correo si el
+        // usuario está realmente logueado. El resto de campos se dejan
+        // vacíos para que el comprador ingrese su información real (antes
+        // se rellenaban con datos de prueba fijos, lo que podía llevar a
+        // enviar compras a una dirección de prueba por error).
         const user =
           typeof getLoggedInUser === "function" ? getLoggedInUser() : null;
         if (user) {
-          document.getElementById("name").value = user.name || "Juan Pérez";
-          document.getElementById("email").value =
-            user.email || "cliente@chigorodo.test";
-        } else {
-          document.getElementById("name").value = "Juan Pérez";
-          document.getElementById("email").value = "cliente@chigorodo.test";
+          document.getElementById("name").value = user.name || "";
+          document.getElementById("email").value = user.email || "";
         }
-        document.getElementById("phone").value = "3001234567";
-        document.getElementById("department").value = "Antioquia";
-        document.getElementById("city").value = "Medellín";
-        document.getElementById("address").value = "Calle 12 #45-67";
-        document.getElementById("zipCode").value = "050004";
       }
 
       function bindFormSubmit() {
@@ -521,5 +532,6 @@
         }
       }
     </script>
+    <script src="../js/cliente/checkout.js"></script>
   </body>
 </html>

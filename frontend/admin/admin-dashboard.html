@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pedidos · Admin</title>
+    <title>Dashboard · Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -11,9 +11,10 @@
       href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap"
     />
     <link rel="stylesheet" href="../css/admin/admin.css" />
+    <!-- Íconos Inteligentes -->
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
-  <body data-page-title="Pedidos">
+  <body data-page-title="Dashboard">
     <div
       class="sidebar-overlay"
       id="sidebar-overlay"
@@ -27,13 +28,53 @@
         <div id="dash-topbar-container"></div>
 
         <div class="dash-content">
-          <div class="content-card">
-            <div style="margin-bottom: 20px">
-              <div class="card-title" style="margin-bottom: 4px">
-                Seguimiento de Pedidos
+          <div class="dashboard-grid">
+            <div class="card">
+              <div class="card-icon-box orange">
+                <i data-lucide="banknote"></i>
               </div>
-              <div class="card-subtitle">
-                Gestiona órdenes, despachos y estados de entrega.
+              <div class="card-title">Ventas Totales</div>
+              <div class="card-value">$4.250.000</div>
+            </div>
+            <div class="card">
+              <div class="card-icon-box blue">
+                <i data-lucide="clipboard-list"></i>
+              </div>
+              <div class="card-title">Pedidos Pendientes</div>
+              <div class="card-value">12</div>
+            </div>
+            <div class="card">
+              <div class="card-icon-box green">
+                <i data-lucide="shopping-bag"></i>
+              </div>
+              <div class="card-title">Productos Activos</div>
+              <div class="card-value">148</div>
+            </div>
+            <div class="card">
+              <div class="card-icon-box purple">
+                <i data-lucide="user-check"></i>
+              </div>
+              <div class="card-title">Artesanos Registrados</div>
+              <div class="card-value">34</div>
+            </div>
+          </div>
+
+          <div class="content-card" style="margin-top: 24px">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 18px;
+              "
+            >
+              <div>
+                <div class="card-title" style="margin-bottom: 4px">
+                  Actividad reciente
+                </div>
+                <div class="card-subtitle">
+                  Últimos pedidos registrados en la plataforma
+                </div>
               </div>
             </div>
             <div class="table-wrap">
@@ -42,53 +83,29 @@
                   <tr>
                     <th>Pedido</th>
                     <th>Cliente</th>
-                    <th>Fecha</th>
                     <th>Total</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td class="font-mono">#AC-2024-000125</td>
                     <td>Juan Pérez</td>
-                    <td>28 may. 2024</td>
-                    <td class="font-semibold">$505.000</td>
+                    <td>$505.000</td>
                     <td><span class="badge badge-success">Entregado</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="eye"></i></button>
-                    </td>
                   </tr>
                   <tr>
                     <td class="font-mono">#AC-2024-000098</td>
                     <td>Laura Gómez</td>
-                    <td>14 abr. 2024</td>
-                    <td class="font-semibold">$320.000</td>
+                    <td>$320.000</td>
                     <td><span class="badge badge-info">En tránsito</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="eye"></i></button>
-                    </td>
                   </tr>
                   <tr>
-                    <td class="font-mono">#AC-2024-000112</td>
+                    <td class="font-mono">#AC-2024-000075</td>
                     <td>Andrés Ruiz</td>
-                    <td>02 may. 2024</td>
-                    <td class="font-semibold">$118.000</td>
+                    <td>$118.000</td>
                     <td>
                       <span class="badge badge-warning">Pendiente</span>
-                    </td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="eye"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="font-mono">#AC-2024-000101</td>
-                    <td>Camila Torres</td>
-                    <td>29 abr. 2024</td>
-                    <td class="font-semibold">$96.000</td>
-                    <td><span class="badge badge-danger">Cancelado</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="eye"></i></button>
                     </td>
                   </tr>
                 </tbody>
@@ -99,6 +116,7 @@
       </div>
     </div>
 
+    <script src="../js/core/main.js"></script>
     <script src="../js/admin/admin-dashboard.js"></script>
     <script src="../js/admin/main-admin.js"></script>
   </body>

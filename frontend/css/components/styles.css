@@ -20,6 +20,7 @@
   --secondary: #2e7d32; /* verde naturaleza */
   --secondary-hover: #236026;
   --secondary-light: rgba(46, 125, 50, 0.08);
+  --primary-dark: #0f3d2e; /* verde bosque oscuro principal */
 
   --accent: #c46b2d;
   --accent-hover: #b05c24;
@@ -54,6 +55,12 @@
   --space-7: 64px;
   --space-8: 80px;
   --space-9: 96px;
+
+  /* Espacio reservado para el navbar flotante (position: absolute en navbar.css).
+     Úsalo como padding-top en cualquier página SIN hero debajo del navbar
+     (catálogo, detalle de producto, checkout, etc.). El home NO lo necesita
+     porque su .hero-section está pensado para que el navbar flote encima. */
+  --navbar-clearance: 190px;
 }
 
 /* Global Typography Hierarchy & Consistency */
@@ -168,7 +175,7 @@ select {
   width: 90%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: var(--space-4) 0;
+  padding: var(--navbar-clearance, 190px) 0 var(--space-4);
 }
 
 /* Button Utilities */

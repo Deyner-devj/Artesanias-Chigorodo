@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reportes · Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap"
+    />
     <link rel="stylesheet" href="../css/admin/admin.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
@@ -21,17 +27,90 @@
         <div id="dash-topbar-container"></div>
 
         <div class="dash-content">
-          <div class="card">
-            <h2>Análisis y Reportes</h2>
-            <p style="margin-top: 10px; color: #666">
+          <div style="margin-bottom: 20px">
+            <div class="card-title" style="margin-bottom: 4px">
+              Análisis y Reportes
+            </div>
+            <div class="card-subtitle">
               Consulta estadísticas de rendimiento mensual y productos más
               populares.
-            </p>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="card">
+              <div class="card-icon-box orange">
+                <i data-lucide="trending-up"></i>
+              </div>
+              <div class="card-title">Crecimiento mensual</div>
+              <div class="card-value">+18,4%</div>
+            </div>
+            <div class="card">
+              <div class="card-icon-box blue">
+                <i data-lucide="package"></i>
+              </div>
+              <div class="card-title">Pedidos este mes</div>
+              <div class="card-value">86</div>
+            </div>
+            <div class="card">
+              <div class="card-icon-box green">
+                <i data-lucide="banknote"></i>
+              </div>
+              <div class="card-title">Ingresos del mes</div>
+              <div class="card-value">$12.480.000</div>
+            </div>
+            <div class="card">
+              <div class="card-icon-box purple"><i data-lucide="star"></i></div>
+              <div class="card-title">Calificación promedio</div>
+              <div class="card-value">4,8 / 5</div>
+            </div>
+          </div>
+
+          <div class="content-card" style="margin-top: 24px">
+            <div class="card-title" style="margin-bottom: 4px">
+              Productos más vendidos
+            </div>
+            <div class="card-subtitle" style="margin-bottom: 18px">
+              Basado en unidades vendidas este mes
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Unidades vendidas</th>
+                    <th>Ingresos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="font-semibold">Mochila Wayuu Colores del Sol</td>
+                    <td>Tejidos</td>
+                    <td>42</td>
+                    <td>$11.760.000</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Sombrero Vueltiao Zenú</td>
+                    <td>Accesorios</td>
+                    <td>31</td>
+                    <td>$5.580.000</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold">Jarrón de Barro Negro</td>
+                    <td>Cerámica</td>
+                    <td>27</td>
+                    <td>$3.240.000</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <script src="../js/admin/dashboard-loader.js"></script>
+    <script src="../js/admin/admin-dashboard.js"></script>
+    <script src="../js/admin/main-admin.js"></script>
   </body>
 </html>

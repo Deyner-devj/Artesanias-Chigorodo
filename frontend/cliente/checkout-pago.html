@@ -10,14 +10,15 @@
       rel="stylesheet"
     />
     <title>Método de Pago - Artesanías Chigorodó</title>
-    <link rel="stylesheet" href="../css/styles.css" />
-    <link rel="stylesheet" href="../css/navbar.css" />
-    <link rel="stylesheet" href="../css/footer.css" />
-    <link rel="stylesheet" href="../css/carrito.css" />
+    <link rel="stylesheet" href="../css/components/styles.css" />
+    <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/footer.css" />
+    <link rel="stylesheet" href="../css/cliente/carrito.css" />
     <link rel="stylesheet" href="../css/cliente/checkout.css" />
+    <link rel="stylesheet" href="../css/cliente/checkout-journey.css" />
   </head>
   <body>
-    <script src="../js/protected-routes.js"></script>
+    <script src="../js/core/protected-routes.js"></script>
 
     <div class="app-shell">
       <div id="navbar-placeholder"></div>
@@ -310,12 +311,12 @@
       <div id="footer-placeholder"></div>
     </div>
 
-    <script src="../js/main.js"></script>
-    <script src="../js/productos.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/carrito.js"></script>
-    <script src="../js/navbar.js"></script>
-    <script src="../js/footer.js"></script>
+    <script src="../js/core/main.js"></script>
+    <script src="../js/cliente/productos.js"></script>
+    <script src="../js/core/auth.js"></script>
+    <script src="../js/cliente/carrito.js"></script>
+    <script src="../js/components/navbar.js"></script>
+    <script src="../js/components/footer.js"></script>
 
     <script>
       let selectedMethod = "PSE";
@@ -383,12 +384,10 @@
 
         let items = [];
         try {
-          const stored =
-            localStorage.getItem("cart") || localStorage.getItem("carrito");
-          if (stored) {
-            items = JSON.parse(stored);
-          } else if (typeof getCartItems === "function") {
+          if (typeof getCartItems === "function") {
             items = getCartItems();
+          } else {
+            items = JSON.parse(localStorage.getItem("cart_items") || "[]");
           }
         } catch (e) {
           console.error("Error recuperando el carrito", e);
@@ -429,7 +428,7 @@
         items.forEach((item) => {
           itemsHtml += `
           <div class="checkout-summary-item-card" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-            <img src="${item.product.image}" alt="${item.product.name}" class="checkout-summary-item-img" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;" onerror="this.src='img/mochila_wayuu.png'" />
+            <img src="${item.product.image}" alt="${item.product.name}" class="checkout-summary-item-img" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;" onerror="this.onerror=null;this.src='../img/mochila_wayuu.png'" />
             <div class="checkout-summary-item-info" style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
               <span class="checkout-summary-item-name" style="font-weight: 600; font-size: 0.9rem;">${item.product.name}</span>
               <span class="checkout-summary-item-qty" style="font-size: 0.8rem; color: #666;">Cantidad: ${item.quantity}</span>
@@ -471,7 +470,10 @@
           if (selectedMethod === "PSE") {
             const bank = document.getElementById("pseBank").value;
             if (!bank) {
-              alert("Por favor selecciona tu banco para continuar con PSE.");
+              showModernToast(
+                "Por favor selecciona tu banco para continuar con PSE.",
+                "error",
+              );
               return;
             }
             sessionStorage.setItem("checkout_pse_bank", bank);
@@ -485,18 +487,6 @@
       }
 
       function processLocalOrder() {
-        const orderNum = Math.floor(Math.random() * 1000000);
-        sessionStorage.setItem("checkout_order_number", orderNum);
-
-        // Limpiar carrito después de pagar
-        localStorage.removeItem("cart");
-        localStorage.removeItem("carrito");
-
-        // CORRECCIÓN: Nombre correcto del archivo final
-        window.location.href = "confirmacion-compra.html";
-      }
-
-      function processLocalOrder() {
         const orderNum =
           typeof generateOrderNumber === "function"
             ? generateOrderNumber()
@@ -507,9 +497,13 @@
 
         if (typeof clearCart === "function") {
           clearCart();
+        } else {
+          localStorage.setItem("cart_items", "[]");
         }
+        localStorage.removeItem("cart");
+        localStorage.removeItem("carrito");
 
-        window.location.href = "confirmacion.html";
+        window.location.href = "confirmacion-compra.html";
       }
 
       function saveOrderToHistory(orderNum, paymentMethod) {
@@ -612,5 +606,6 @@
         localStorage.setItem("seller_orders", JSON.stringify(sellerOrders));
       }
     </script>
+    <script src="../js/cliente/checkout.js"></script>
   </body>
 </html>

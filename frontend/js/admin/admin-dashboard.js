@@ -64,7 +64,7 @@ function configurarBotonesTopbar() {
     // Acción para el botón Home (Casita)
     btnHome.onclick = function (e) {
       e.preventDefault();
-      window.location.href = "dashboard.html"; // Redirige al inicio
+      window.location.href = "admin-dashboard.html"; // Redirige al inicio
     };
   }
 
@@ -85,7 +85,7 @@ function configurarBotonesTopbar() {
       if (e.key === "Enter") {
         e.preventDefault();
         const termino = this.value.trim();
-        if (termino) alert(`Buscando: "${termino}"`);
+        if (termino) showModernToast(`Buscando: "${termino}"`, "success");
       }
     };
   }
@@ -161,7 +161,7 @@ function toggleNotificationsPanel(buttonEl) {
 // ==========================================================================
 function resaltarMenuActivo() {
   const rutaActual =
-    window.location.pathname.split("/").pop() || "dashboard.html";
+    window.location.pathname.split("/").pop() || "admin-dashboard.html";
   const itemsMenu = document.querySelectorAll(".account-menu-item");
   itemsMenu.forEach((item) => {
     if (item.getAttribute("href") === rutaActual) {
@@ -181,12 +181,15 @@ function actualizarTituloTopbar() {
 }
 
 // Controladores para menú móvil
-function toggleSidebar() {
+function toggleMobileSidebar() {
   const sidebar = document.getElementById("dash-sidebar");
   const overlay = document.getElementById("sidebar-overlay");
   if (sidebar && overlay) {
-    sidebar.classList.toggle("open");
-    overlay.classList.toggle("active");
+    sidebar.classList.toggle("mobile-open");
+    overlay.classList.toggle("mobile-open");
+    document.body.style.overflow = sidebar.classList.contains("mobile-open")
+      ? "hidden"
+      : "";
   }
 }
 
@@ -194,41 +197,36 @@ function closeMobileSidebar() {
   const sidebar = document.getElementById("dash-sidebar");
   const overlay = document.getElementById("sidebar-overlay");
   if (sidebar && overlay) {
-    sidebar.classList.remove("open");
-    overlay.classList.remove("active");
+    sidebar.classList.remove("mobile-open");
+    overlay.classList.remove("mobile-open");
+    document.body.style.overflow = "";
   }
 }
 
-// Cerrar Sesión usando Modales Profesionales (SweetAlert2)
+// Cerrar Sesión usando el modal de confirmación propio del sitio (main.js),
+// en vez de confirm()/alert() nativos, para que se vea igual en todo el sitio.
 function cerrarSesion(event) {
   event.preventDefault();
 
-  if (window.Swal) {
-    Swal.fire({
-      title: "¿Cerrar Sesión, Deyner?",
-      text: "Tendrás que ingresar tus datos de nuevo para acceder al panel.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d37135",
-      cancelButtonColor: "#4b5563",
-      confirmButtonText: "Sí, salir",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Cerrando sesión...",
-          text: "¡Hasta pronto!",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          window.location.href = "../home/index.html";
-        });
-      }
-    });
-  } else {
-    if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
-      window.location.href = "../home/index.html";
+  const doLogout = () => {
+    sessionStorage.removeItem("user");
+    localStorage.removeItem("user");
+    localStorage.removeItem("auth_token");
+    localStorage.removeItem("user_role");
+    if (typeof showModernToast === "function") {
+      showModernToast("Sesión cerrada con éxito. ¡Vuelve pronto!", "success");
     }
+    setTimeout(() => {
+      window.location.href = "../home/index.html";
+    }, 1200);
+  };
+
+  if (typeof showModernConfirm === "function") {
+    showModernConfirm(
+      "¿Seguro que deseas cerrar sesión? Tendrás que ingresar tus datos de nuevo para acceder al panel.",
+      doLogout,
+    );
+  } else {
+    doLogout();
   }
 }

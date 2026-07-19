@@ -1,0 +1,312 @@
+.checkout-journey-visible {
+  padding-bottom: 142px;
+}
+
+.checkout-journey {
+  --journey-progress: 18%;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 900;
+  height: 132px;
+  overflow: hidden;
+  pointer-events: none;
+  color: #3f2a1f;
+  font-family: Poppins, sans-serif;
+  filter: drop-shadow(0 -5px 12px rgba(52, 34, 22, 0.12));
+}
+
+.checkout-journey__sky {
+  position: absolute;
+  inset: 0 0 38px;
+  background: rgba(255, 250, 242, 0.97);
+  border-top: 1px solid rgba(126, 82, 49, 0.16);
+}
+
+.checkout-journey__label {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(57, 37, 24, 0.12);
+  color: #765035;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.checkout-journey__belt {
+  position: absolute;
+  right: 0;
+  bottom: 14px;
+  left: 0;
+  height: 36px;
+  border-top: 5px solid #4f5558;
+  border-bottom: 5px solid #303538;
+  background: repeating-linear-gradient(
+    90deg,
+    #899195 0,
+    #899195 34px,
+    #c3c9cc 34px,
+    #c3c9cc 40px
+  );
+  animation: checkoutBeltMove 0.85s linear infinite;
+}
+
+.checkout-journey__belt::before,
+.checkout-journey__belt::after {
+  content: "";
+  position: absolute;
+  bottom: -18px;
+  width: 8px;
+  height: 16px;
+  border-radius: 0 0 3px 3px;
+  background: #303538;
+}
+
+.checkout-journey__belt::before {
+  left: 12%;
+}
+.checkout-journey__belt::after {
+  right: 12%;
+}
+
+.checkout-journey__package {
+  position: absolute;
+  bottom: 45px;
+  left: var(--journey-progress);
+  z-index: 4;
+  width: 76px;
+  height: 56px;
+  transform: translateX(-50%);
+  transition:
+    left 1.1s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s ease,
+    opacity 0.5s ease;
+}
+
+.checkout-journey__box-body {
+  position: absolute;
+  inset: 9px 0 0;
+  overflow: hidden;
+  border: 2px solid #8c5a31;
+  border-radius: 2px 2px 5px 5px;
+  background: linear-gradient(
+    90deg,
+    #c9894f 0 48%,
+    #b8753d 48% 52%,
+    #d29558 52%
+  );
+  box-shadow:
+    inset 0 -8px 0 rgba(113, 67, 31, 0.08),
+    0 7px 8px rgba(56, 34, 18, 0.18);
+}
+
+.checkout-journey__box-body::after {
+  content: "ARTESANÍAS";
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  padding: 2px 4px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(91, 52, 25, 0.42);
+  color: rgba(91, 52, 25, 0.78);
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.checkout-journey__flap {
+  position: absolute;
+  top: 4px;
+  width: 39px;
+  height: 14px;
+  border: 2px solid #8c5a31;
+  background: #d59659;
+  transition: transform 0.45s ease;
+}
+
+.checkout-journey__flap--left {
+  left: 0;
+  transform: skewY(-16deg);
+  transform-origin: right bottom;
+}
+.checkout-journey__flap--right {
+  right: 0;
+  transform: skewY(16deg);
+  transform-origin: left bottom;
+}
+.checkout-journey__package.is-open .checkout-journey__flap--left {
+  transform: translate(-8px, -10px) rotate(-25deg) skewY(-16deg);
+}
+.checkout-journey__package.is-open .checkout-journey__flap--right {
+  transform: translate(8px, -10px) rotate(25deg) skewY(16deg);
+}
+.checkout-journey__package.is-bouncing {
+  animation: checkoutBoxBounce 0.48s ease;
+}
+
+.checkout-journey__product {
+  position: fixed;
+  z-index: 1002;
+  width: 52px;
+  height: 52px;
+  margin: 0;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(44, 28, 18, 0.25);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.checkout-journey__truck {
+  --truck-scale: 1;
+  position: absolute;
+  right: 3%;
+  bottom: 42px;
+  z-index: 3;
+  width: 112px;
+  height: 62px;
+}
+
+.checkout-journey__truck-cargo {
+  position: absolute;
+  left: 0;
+  bottom: 11px;
+  width: 72px;
+  height: 43px;
+  border: 2px solid #844d2c;
+  border-radius: 5px 2px 2px 5px;
+  background: #bf6d35;
+}
+
+.checkout-journey__truck-cargo::after {
+  content: "CHIGORODÓ";
+  position: absolute;
+  top: 14px;
+  left: 8px;
+  color: #fff7e9;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.checkout-journey__truck-cab {
+  position: absolute;
+  right: 3px;
+  bottom: 11px;
+  width: 38px;
+  height: 35px;
+  border: 2px solid #844d2c;
+  border-radius: 4px 8px 3px 2px;
+  background: #e29a45;
+}
+
+.checkout-journey__truck-cab::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 4px;
+  width: 20px;
+  height: 12px;
+  border-radius: 2px 5px 2px 2px;
+  background: #cde8ed;
+}
+
+.checkout-journey__wheel {
+  position: absolute;
+  bottom: 3px;
+  width: 18px;
+  height: 18px;
+  border: 5px solid #34383a;
+  border-radius: 50%;
+  background: #aeb5b8;
+}
+
+.checkout-journey__wheel--back {
+  left: 15px;
+}
+.checkout-journey__wheel--front {
+  right: 10px;
+}
+.checkout-journey__truck.is-driving {
+  animation: checkoutTruckDrive 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.checkout-journey.is-finished {
+  animation: checkoutJourneyLeave 0.45s ease 2.15s forwards;
+}
+
+@keyframes checkoutBeltMove {
+  to {
+    background-position-x: 40px;
+  }
+}
+@keyframes checkoutBoxBounce {
+  50% {
+    transform: translateX(-50%) translateY(-7px) rotate(-2deg);
+  }
+}
+@keyframes checkoutTruckDrive {
+  0% {
+    transform: translateX(0) scale(var(--truck-scale));
+  }
+  20% {
+    transform: translateX(-8px) scale(var(--truck-scale));
+  }
+  100% {
+    transform: translateX(125vw) scale(var(--truck-scale));
+  }
+}
+@keyframes checkoutJourneyLeave {
+  to {
+    transform: translateY(105%);
+  }
+}
+
+@media (max-width: 640px) {
+  .checkout-journey-visible {
+    padding-bottom: 122px;
+  }
+  .checkout-journey {
+    height: 114px;
+  }
+  .checkout-journey__sky {
+    bottom: 32px;
+  }
+  .checkout-journey__belt {
+    bottom: 10px;
+    height: 30px;
+  }
+  .checkout-journey__package {
+    bottom: 39px;
+    width: 64px;
+    height: 48px;
+  }
+  .checkout-journey__truck {
+    --truck-scale: 0.82;
+    right: -9px;
+    bottom: 36px;
+    transform: scale(var(--truck-scale));
+    transform-origin: right bottom;
+  }
+  .checkout-journey__label {
+    top: 5px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout-journey__belt,
+  .checkout-journey__package,
+  .checkout-journey__truck,
+  .checkout-journey {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

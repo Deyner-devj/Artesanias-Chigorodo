@@ -10,12 +10,13 @@
   const rootPrefix = isSubfolder ? "../" : "";
 
   const path = window.location.pathname;
-  const userStr = localStorage.getItem("user");
+  const userStr =
+    sessionStorage.getItem("user") || localStorage.getItem("user");
   const user = userStr ? JSON.parse(userStr) : null;
 
   // Define las rutas que requieren un rol específico
-  const adminRoutes = ["/admin/"];
-  const vendorRoutes = ["/artesano/", "dashboard.html"];
+  const adminRoutes = ["/admin/", "admin-dashboard"];
+  const vendorRoutes = ["/artesano/", "artesano-dashboard.html"];
 
   // Rutas exclusivas para clientes registrados (requieren cuenta obligatoria)
   const strictClientRoutes = ["mi-cuenta.html", "mis-pedidos.html"];
