@@ -546,6 +546,7 @@
 
     <!-- Scripts -->
     <script src="../js/core/main.js"></script>
+    <script src="../js/core/api.js"></script>
     <script src="../js/core/auth.js"></script>
     <script src="../js/cliente/productos.js"></script>
     <script src="../js/cliente/carrito.js"></script>
@@ -609,15 +610,23 @@
           }
 
           if (isValid) {
-            const user = loginUser(email.value, password.value);
-            if (user) {
-              redirectUser(user);
-            } else {
-              showModernToast(
-                "Credenciales incorrectas. Verifica tu correo y contraseña.",
-                "error",
-              );
-            }
+            // loginUser es async — deshabilitar botón mientras espera
+            const loginBtn = loginForm.querySelector('button[type="submit"]');
+            if (loginBtn) { loginBtn.disabled = true; loginBtn.textContent = 'Entrando...'; }
+            loginUser(email.value, password.value).then(function (user) {
+              if (user) {
+                redirectUser(user);
+              } else {
+                showModernToast(
+                  'Credenciales incorrectas. Verifica tu correo y contraseña.',
+                  'error',
+                );
+              }
+            }).catch(function () {
+              showModernToast('Error al conectar con el servidor.', 'error');
+            }).finally(function () {
+              if (loginBtn) { loginBtn.disabled = false; loginBtn.textContent = 'Iniciar sesión'; }
+            });
           }
         });
 
@@ -657,30 +666,35 @@
           }
 
           if (isValid) {
-            const success = registerUser(
+            const registerBtn = registerForm.querySelector('button[type="submit"]');
+            if (registerBtn) { registerBtn.disabled = true; registerBtn.textContent = 'Creando cuenta...'; }
+            registerUser(
               name.value.trim(),
               email.value.trim(),
               password.value,
-            );
-            if (success) {
-              showModernToast(
-                "¡Cuenta creada con éxito! Ahora puedes iniciar sesión.",
-                "success",
-              );
-
-              document.getElementById("login-email").value = email.value.trim();
-              toggleColumn("login");
-
-              name.value = "";
-              email.value = "";
-              password.value = "";
-              confirm.value = "";
-            } else {
-              showModernToast(
-                "El correo electrónico ya está registrado.",
-                "error",
-              );
-            }
+            ).then(function (success) {
+              if (success) {
+                showModernToast(
+                  '¡Cuenta creada con éxito! Ahora puedes iniciar sesión.',
+                  'success',
+                );
+                document.getElementById('login-email').value = email.value.trim();
+                toggleColumn('login');
+                name.value = '';
+                email.value = '';
+                password.value = '';
+                confirm.value = '';
+              } else {
+                showModernToast(
+                  'El correo electrónico ya está registrado.',
+                  'error',
+                );
+              }
+            }).catch(function () {
+              showModernToast('Error al conectar con el servidor.', 'error');
+            }).finally(function () {
+              if (registerBtn) { registerBtn.disabled = false; registerBtn.textContent = 'Crear cuenta'; }
+            });
           }
         });
       }

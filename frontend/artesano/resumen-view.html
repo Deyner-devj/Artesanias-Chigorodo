@@ -17,12 +17,290 @@
       color: #0f172a;
     "
   >
-    ¡Hola de nuevo, Artesano! ✨
+    ¡Hola de nuevo, <span id="dash-seller-name">Artesano</span>! ✨
   </h1>
   <p style="color: var(--text-muted-body); font-size: 0.9rem">
     Esto es lo que está pasando hoy en tu tienda de Chigorodó.
   </p>
 </div>
+
+<!-- Métricas Clave -->
+<div
+  style="
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  "
+>
+  <div
+    style="
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border-left: 5px solid var(--color-active);
+    "
+  >
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        color: #64748b;
+        font-size: 0.85rem;
+        font-weight: 600;
+      "
+    >
+      <span>Ventas del Mes</span>
+      <span>💰</span>
+    </div>
+    <h2
+      id="dash-monthly-sales"
+      style="
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0.5rem 0;
+      "
+    >
+      $0
+    </h2>
+    <span id="dash-sales-trend" style="font-size: 0.75rem; color: #10b981; font-weight: 700"
+      >Cargando...</span
+    >
+  </div>
+
+  <div
+    style="
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border-left: 5px solid #10b981;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        color: #64748b;
+        font-size: 0.85rem;
+        font-weight: 600;
+      "
+    >
+      <span>Productos Activos</span>
+      <span>📦</span>
+    </div>
+    <h2
+      id="dash-product-count"
+      style="
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0.5rem 0;
+      "
+    >
+      —
+    </h2>
+    <span style="font-size: 0.75rem; color: #64748b"
+      >Listos en vitrina pública</span
+    >
+  </div>
+
+  <div
+    style="
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border-left: 5px solid #3b82f6;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        color: #64748b;
+        font-size: 0.85rem;
+        font-weight: 600;
+      "
+    >
+      <span>Pedidos Pendientes</span>
+      <span>🔔</span>
+    </div>
+    <h2
+      id="dash-pending-orders"
+      style="
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0.5rem 0;
+      "
+    >
+      —
+    </h2>
+    <span id="dash-pending-label" style="font-size: 0.75rem; color: #ef4444; font-weight: 700"
+      >Cargando...</span
+    >
+  </div>
+</div>
+
+<!-- Actividad Reciente -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem">
+  <div
+    style="
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    "
+  >
+    <h3
+      style="
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 1rem;
+      "
+    >
+      Últimos Pedidos
+    </h3>
+    <div id="dash-recent-orders" style="display: flex; flex-direction: column; gap: 1rem">
+      <p style="color:#64748b; font-size:0.9rem">Cargando pedidos...</p>
+    </div>
+  </div>
+
+  <div
+    style="
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    "
+  >
+    <div
+      style="
+        width: 60px;
+        height: 60px;
+        background: #fff7ed;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+      "
+    >
+      <span style="font-size: 1.5rem">🌟</span>
+    </div>
+    <h4 style="font-weight: 800; color: #0f172a">Tu Calificación</h4>
+    <p style="font-size: 0.8rem; color: #64748b; margin: 0.25rem 0 0.75rem">
+      Promedio de reseñas
+    </p>
+    <h2 id="dash-rating" style="font-size: 2rem; font-weight: 800; color: var(--color-active)">
+      — / 5.0
+    </h2>
+  </div>
+</div>
+
+<script>
+(async function loadDashboard() {
+  // Mostrar nombre del usuario en el saludo
+  const user = typeof getLoggedInUser === 'function' ? getLoggedInUser() : null;
+  if (user) {
+    const nameEl = document.getElementById('dash-seller-name');
+    if (nameEl) nameEl.textContent = user.name || 'Artesano';
+  }
+
+  // Helper de formato COP
+  const fmt = (v) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(v || 0);
+
+  // Intentar cargar datos del backend
+  if (window.API) {
+    try {
+      const data = await window.API.dashboard.getSummary();
+      // data = { totalSales, totalProducts, pendingOrders, averageRating, recentOrders }
+      const salesEl = document.getElementById('dash-monthly-sales');
+      const trendEl = document.getElementById('dash-sales-trend');
+      const prodEl  = document.getElementById('dash-product-count');
+      const pendEl  = document.getElementById('dash-pending-orders');
+      const pendLbl = document.getElementById('dash-pending-label');
+      const rateEl  = document.getElementById('dash-rating');
+
+      if (salesEl) salesEl.textContent = fmt(data.totalSales);
+      if (trendEl) trendEl.textContent = data.salesTrend ? `↗ ${data.salesTrend}` : 'Ver historial de ventas';
+      if (prodEl)  prodEl.textContent  = data.totalProducts != null ? `${data.totalProducts} piezas` : '—';
+      if (pendEl)  pendEl.textContent  = data.pendingOrders != null ? `${data.pendingOrders} nuevos` : '—';
+      if (pendLbl) pendLbl.textContent  = data.pendingOrders > 0 ? '⚠ Requieren atención' : 'Sin pedidos urgentes';
+      if (rateEl)  rateEl.textContent   = data.averageRating != null ? `${Number(data.averageRating).toFixed(1)} / 5.0` : '— / 5.0';
+
+      // Pedidos recientes
+      const ordersContainer = document.getElementById('dash-recent-orders');
+      if (ordersContainer && Array.isArray(data.recentOrders) && data.recentOrders.length > 0) {
+        ordersContainer.innerHTML = data.recentOrders.map((o) => {
+          const statusColor = o.orderStatus === 'DELIVERED' ? '#d1fae5' : '#fef3c7';
+          const statusText  = o.orderStatus === 'DELIVERED' ? '#065f46' : '#d97706';
+          const label       = o.orderStatus === 'DELIVERED' ? 'Enviado' : 'Pendiente';
+          return `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:0.75rem;border-bottom:1px solid #f1f5f9;">
+              <div>
+                <h4 style="font-size:0.9rem;font-weight:700">${o.userFullName || 'Cliente'}</h4>
+                <p style="font-size:0.75rem;color:#64748b">${fmt(o.total)} · ${o.orderNumber}</p>
+              </div>
+              <span style="background:${statusColor};color:${statusText};padding:4px 8px;border-radius:20px;font-size:0.75rem;font-weight:700;">${label}</span>
+            </div>`;
+        }).join('');
+      } else if (ordersContainer) {
+        ordersContainer.innerHTML = '<p style="color:#64748b;font-size:0.9rem">No hay pedidos recientes.</p>';
+      }
+      return;
+    } catch (err) {
+      console.warn('[dashboard] No se pudo cargar desde API:', err.message);
+    }
+  }
+
+  // Fallback: datos de localStorage (orders_history)
+  const salesEl = document.getElementById('dash-monthly-sales');
+  const prodEl  = document.getElementById('dash-product-count');
+  const pendEl  = document.getElementById('dash-pending-orders');
+  const pendLbl = document.getElementById('dash-pending-label');
+  const trendEl = document.getElementById('dash-sales-trend');
+
+  try {
+    const history = JSON.parse(localStorage.getItem('orders_history') || '[]');
+    const total = history.reduce((s, o) => s + (o.total || 0), 0);
+    if (salesEl) salesEl.textContent = fmt(total);
+    if (trendEl) trendEl.textContent = `${history.length} pedido(s) registrado(s)`;
+    if (pendEl)  pendEl.textContent  = `${history.filter(o => o.status === 'transit').length} en tránsito`;
+    if (pendLbl) pendLbl.textContent  = 'Basado en historial local';
+    const customProds = JSON.parse(localStorage.getItem('custom_products') || '[]');
+    if (prodEl) prodEl.textContent = `${customProds.length} piezas`;
+
+    const ordersContainer = document.getElementById('dash-recent-orders');
+    if (ordersContainer) {
+      if (history.length === 0) {
+        ordersContainer.innerHTML = '<p style="color:#64748b;font-size:0.9rem">No hay pedidos registrados.</p>';
+      } else {
+        ordersContainer.innerHTML = history.slice(0, 3).map((o) => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:0.75rem;border-bottom:1px solid #f1f5f9;">
+            <div>
+              <h4 style="font-size:0.9rem;font-weight:700">${o.id}</h4>
+              <p style="font-size:0.75rem;color:#64748b">${fmt(o.total)}</p>
+            </div>
+            <span style="background:#fef3c7;color:#d97706;padding:4px 8px;border-radius:20px;font-size:0.75rem;font-weight:700;">
+              ${o.statusText || o.status}
+            </span>
+          </div>`).join('');
+      }
+    }
+  } catch (_) {}
+})();
+</script>
+
 
 <!-- Métricas Clave -->
 <div

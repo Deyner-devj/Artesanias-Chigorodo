@@ -89,40 +89,148 @@ const MOCK_PRODUCTS = [
   },
 ];
 
-// Helper functions for products
+// ─── Mapa de categorías: enum backend → nombre visible ───────────────────────
+const CATEGORY_LABEL_MAP = {
+  TEXTILES:   'Tejidos',
+  CERAMICS:   'Cerámica',
+  JEWELRY:    'Joyería',
+  WOODWORK:   'Madera',
+  HOME_DECOR: 'Hogar y Decoración',
+  ACCESSORIES:'Accesorios',
+};
+
+// ─── Cache en memoria de los productos del backend ────────────────────────────
+let _apiProductsCache = null;      // null = no cargado; [] = vacío; [...] = datos
+let _apiProductsLoading = false;
+let _apiProductsListeners = [];    // callbacks esperando la carga
+
+/**
+ * Convierte la respuesta del backend al formato que usa el frontend.
+ */
+function _mapApiProduct(p) {
+  const imageUrl = Array.isArray(p.imageUrls) && p.imageUrls.length > 0
+    ? p.imageUrls[0]
+    : `${_imgPrefix}mochila_wayuu.png`;
+  const categoryLabel = CATEGORY_LABEL_MAP[p.category] || p.category || 'Artesanías';
+  return {
+    id: String(p.id),
+    name: p.name,
+    description: p.description,
+    price: p.price,
+    image: imageUrl,
+    category: categoryLabel,
+    sellerName: p.sellerName || 'Artesano Local',
+    sellerId: p.sellerId,
+    stock: p.stock != null ? p.stock : 10,
+    rating: p.rating != null ? p.rating : 5.0,
+    reviewsCount: p.reviewsCount != null ? p.reviewsCount : 0,
+  };
+}
+
+/**
+ * Carga los productos desde el backend y llena el cache.
+ * Llama a los listeners pendientes cuando termina.
+ */
+async function _loadProductsFromAPI() {
+  if (_apiProductsLoading) return;
+  _apiProductsLoading = true;
+  try {
+    const apiProducts = await window.API.products.getAll();
+    _apiProductsCache = apiProducts.map(_mapApiProduct);
+  } catch (err) {
+    console.warn('[productos] Backend no disponible, usando MOCK_PRODUCTS. Error:', err.message);
+    _apiProductsCache = null; // quedará en null → getProducts() devolverá MOCK
+  } finally {
+    _apiProductsLoading = false;
+    _apiProductsListeners.forEach((fn) => fn());
+    _apiProductsListeners = [];
+  }
+}
+
+/**
+ * Inicia la carga de productos en background.
+ * Llama a `callback` cuando los productos estén disponibles (o ya lo están).
+ */
+function initProducts(callback) {
+  if (_apiProductsCache !== null) {
+    if (callback) callback();
+    return;
+  }
+  if (callback) _apiProductsListeners.push(callback);
+  if (!window.API) {
+    if (callback) callback();
+    return;
+  }
+  _loadProductsFromAPI();
+}
+window.initProducts = initProducts;
+
+// ─── Helpers públicos ─────────────────────────────────────────────────────────
+
+/**
+ * Devuelve el array de productos (sincrónico).
+ * Si el cache del backend está listo, lo usa; si no, devuelve MOCK_PRODUCTS.
+ */
 function getProducts() {
-  // If we have custom added products in localStorage, load them too
-  const localProducts = localStorage.getItem("custom_products");
+  if (_apiProductsCache !== null && _apiProductsCache.length > 0) {
+    return _apiProductsCache;
+  }
+  // Fallback: MOCK_PRODUCTS + custom locales
+  const localProducts = localStorage.getItem('custom_products');
   if (localProducts) {
-    try {
-      return [...MOCK_PRODUCTS, ...JSON.parse(localProducts)];
-    } catch (e) {
-      console.error("Error parsing custom products", e);
-    }
+    try { return [...MOCK_PRODUCTS, ...JSON.parse(localProducts)]; } catch (_) {}
   }
   return MOCK_PRODUCTS;
 }
 
 // Obtener un producto por ID
 function getProductById(id) {
-  const products = getProducts();
-  return products.find((p) => String(p.id) === String(id)) || null;
+  const list = getProducts();
+  return list.find((p) => String(p.id) === String(id)) || null;
 }
 
-// Agregar producto customizado
-function addCustomProduct(product) {
-  const localProducts = localStorage.getItem("custom_products");
-  let customList = [];
-  if (localProducts) {
+// Busca un producto por ID directamente en la API (más preciso)
+async function getProductByIdAsync(id) {
+  if (window.API) {
     try {
-      customList = JSON.parse(localProducts);
-    } catch (e) {
-      console.error("Error parsing custom products from localStorage", e);
+      const p = await window.API.products.getById(id);
+      return _mapApiProduct(p);
+    } catch (_) {}
+  }
+  return getProductById(id);
+}
+
+// Agregar producto customizado (sigue funcionando en modo offline/artesano)
+async function addCustomProduct(product) {
+  // Intentar API primero si el usuario está autenticado
+  if (window.API) {
+    const token = sessionStorage.getItem('auth_token');
+    if (token) {
+      try {
+        const created = await window.API.products.create(product);
+        // Actualizar cache
+        if (_apiProductsCache !== null) {
+          _apiProductsCache.unshift(_mapApiProduct(created));
+        }
+        return created;
+      } catch (err) {
+        console.warn('[productos] No se pudo crear via API, guardando local.', err.message);
+      }
     }
   }
+  // Fallback localStorage
+  const localProducts = localStorage.getItem('custom_products');
+  let customList = [];
+  try { customList = JSON.parse(localProducts || '[]'); } catch (_) {}
   customList.push(product);
-  localStorage.setItem("custom_products", JSON.stringify(customList));
+  localStorage.setItem('custom_products', JSON.stringify(customList));
 }
+
+// ─── Auto-carga al inicio ─────────────────────────────────────────────────────
+// Se ejecuta cuando api.js está disponible (que carga antes que este script).
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.API) initProducts();
+});
 
 // ──────────────────────────────────────────────────────────────────────────
 // SÚPER INTEGRACIÓN GLOBAL: Clics y animaciones en CUALQUIER imagen de producto del sitio

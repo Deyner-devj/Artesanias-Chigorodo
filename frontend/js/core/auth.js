@@ -1,136 +1,182 @@
-// js/auth.js
+// js/core/auth.js
+// Autenticación real contra el backend Spring Boot.
+// Fallback a DEV_USERS cuando el backend no está disponible (modo offline/dev).
 //
-// AVISO IMPORTANTE:
-// Este archivo simula autenticación 100% en el navegador porque el
-// proyecto todavía no tiene un backend real. Esto es *inherentemente*
-// inseguro (cualquiera puede leer/editar localStorage con las devtools),
-// así que NO debe usarse tal cual en producción. Lo correcto es que
-// loginUser/registerUser llamen a una API que verifique las credenciales
-// contra una base de datos con contraseñas cifradas (bcrypt/argon2) y
-// devuelva una sesión mediante cookie HttpOnly o JWT firmado.
-//
-// Mientras tanto, se aplican dos mitigaciones dentro de lo que permite
-// el frontend:
-//   1. Las contraseñas ya no se guardan en texto plano: se guarda un
-//      hash SHA-256 (ver hashPassword). Sigue sin ser tan seguro como un
-//      backend real (SHA-256 es rápido y no lleva "salt" por usuario),
-//      pero ya no expone la contraseña real al inspeccionar localStorage.
-//   2. Las cuentas de prueba (DEV_USERS) quedan claramente marcadas como
-//      solo para desarrollo. Bórralas por completo antes de desplegar a
-//      producción.
+// Mapeo de roles backend → frontend:
+//   CLIENT  → "cliente"
+//   VENDOR  → "vendedor"
+//   ADMIN   → "admin"
 
-const DEV_USERS_ENABLED = true; // <-- Poner en `false` (o borrar el bloque) antes de producción.
+const DEV_USERS_ENABLED = true; // poner false en producción
 
 const DEV_USERS = DEV_USERS_ENABLED
   ? [
       {
-        email: "cliente@chigorodo.test",
-        password: "Cliente123",
-        name: "Juan Pérez",
-        role: "cliente",
-        id: "client-test",
+        email: 'cliente@chigorodo.test',
+        password: 'Cliente123',
+        name: 'Juan Pérez',
+        role: 'cliente',
+        id: 'client-test',
       },
       {
-        email: "vendedor@chigorodo.test",
-        password: "Vendedor123",
-        name: "María Elena",
-        role: "vendedor",
-        id: "seller-test",
+        email: 'vendedor@chigorodo.test',
+        password: 'Vendedor123',
+        name: 'María Elena',
+        role: 'vendedor',
+        id: 'seller-test',
       },
       {
-        email: "admin@chigorodo.test",
-        password: "Admin123",
-        name: "Deyner Chaverra",
-        role: "admin",
-        id: "admin-test",
+        email: 'admin@chigorodo.test',
+        password: 'Admin123',
+        name: 'Deyner Chaverra',
+        role: 'admin',
+        id: 'admin-test',
       },
     ]
   : [];
 
-// Hash simple con SubtleCrypto (SHA-256). Solo para no guardar la
-// contraseña en texto plano en localStorage; no reemplaza un hash con
-// salt hecho en servidor (bcrypt/argon2).
-async function hashPassword(password) {
-  const data = new TextEncoder().encode(password);
-  const digest = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(digest))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+// Mapea el rol del backend (ADMIN/VENDOR/CLIENT) al rol del frontend
+function _mapRole(backendRole) {
+  switch ((backendRole || '').toUpperCase()) {
+    case 'ADMIN':  return 'admin';
+    case 'VENDOR': return 'vendedor';
+    case 'CLIENT': return 'cliente';
+    default:       return 'cliente';
+  }
 }
 
+// Guarda la sesión del usuario en sessionStorage
+function _setSession(sessionUser) {
+  sessionStorage.setItem('user', JSON.stringify(sessionUser));
+}
+
+// ─── Funciones públicas ───────────────────────────────────────────────────────
+
+/**
+ * Intenta login contra el backend; fallback a DEV_USERS si el backend no responde.
+ * @returns {Promise<{id, name, email, role}|null>}
+ */
 async function loginUser(email, password) {
   const normalizedEmail = email.toLowerCase().trim();
-  const hashedInput = await hashPassword(password);
 
-  // 1. Buscar usuario (dev o registrado)
-  let foundUser = DEV_USERS.find(
-    (u) => u.email === normalizedEmail && u.password === password,
-  );
-
-  if (!foundUser) {
-    const registeredUsersStr = localStorage.getItem("registered_users");
-    if (registeredUsersStr) {
-      const users = JSON.parse(registeredUsersStr);
-      foundUser = users.find(
-        (u) =>
-          u.email.toLowerCase().trim() === normalizedEmail &&
-          u.passwordHash === hashedInput,
-      );
+  // 1. Intentar API real
+  if (window.API) {
+    try {
+      const data = await window.API.auth.login(normalizedEmail, password);
+      // data = { token, email, fullName, role }
+      const sessionUser = {
+        id: data.id || data.email,
+        name: data.fullName,
+        email: data.email,
+        role: _mapRole(data.role),
+        token: data.token,
+      };
+      _setSession(sessionUser);
+      sessionStorage.setItem('auth_token', data.token);
+      return sessionUser;
+    } catch (err) {
+      // Si es 401, credenciales incorrectas → no hacer fallback
+      if (err.status === 401 || err.status === 403) return null;
+      // Otro error (backend caído, CORS, etc.) → intentar DEV_USERS
+      console.warn('[auth] Backend no disponible, usando DEV_USERS. Error:', err.message);
     }
   }
 
-  // Si no coincide con ningún usuario (de prueba o registrado), las
-  // credenciales son inválidas: NO se crea sesión de invitado.
-  // Antes esto siempre devolvía un usuario "guest-..." con rol "cliente"
-  // aunque el correo/contraseña estuvieran mal, así que login.html nunca
-  // mostraba el error y terminabas logueado (y redirigido) como cliente
-  // sin importar qué hubieras escrito.
-  if (!foundUser) {
-    return null;
+  // 2. Fallback DEV_USERS
+  const devUser = DEV_USERS.find(
+    (u) => u.email === normalizedEmail && u.password === password,
+  );
+  if (devUser) {
+    const sessionUser = { id: devUser.id, name: devUser.name, email: devUser.email, role: devUser.role };
+    _setSession(sessionUser);
+    return sessionUser;
   }
 
-  // 2. Establecer sesión en sessionStorage (esencial para que nueva pestaña = nueva sesión)
-  const sessionUser = {
-    id: foundUser.id,
-    name: foundUser.name,
-    email: foundUser.email,
-    role: foundUser.role || "cliente",
-  };
+  // 3. Fallback usuarios registrados localmente (modo offline)
+  try {
+    const registered = JSON.parse(localStorage.getItem('registered_users') || '[]');
+    const hashedInput = await _hashPassword(password);
+    const found = registered.find(
+      (u) => u.email.toLowerCase() === normalizedEmail && u.passwordHash === hashedInput,
+    );
+    if (found) {
+      const sessionUser = { id: found.id, name: found.name, email: found.email, role: found.role || 'cliente' };
+      _setSession(sessionUser);
+      return sessionUser;
+    }
+  } catch (_) {}
 
-  sessionStorage.setItem("user", JSON.stringify(sessionUser));
-  return sessionUser;
+  return null;
 }
 
-function getLoggedInUser() {
-  const userStr = sessionStorage.getItem("user");
-  return userStr ? JSON.parse(userStr) : null;
-}
-
-function logoutUser() {
-  sessionStorage.removeItem("user");
-  localStorage.removeItem("user");
-  localStorage.removeItem("auth_token");
-  localStorage.removeItem("user_role");
-}
-
+/**
+ * Registra un nuevo usuario. Intenta API real; fallback a localStorage.
+ * @returns {Promise<boolean>}
+ */
 async function registerUser(name, email, password) {
-  const registeredUsersStr = localStorage.getItem("registered_users");
-  let users = registeredUsersStr ? JSON.parse(registeredUsersStr) : [];
+  const normalizedEmail = email.toLowerCase().trim();
 
-  if (
-    users.some(
-      (u) => u.email.toLowerCase().trim() === email.toLowerCase().trim(),
-    )
-  )
+  // 1. Intentar API real
+  if (window.API) {
+    try {
+      await window.API.auth.register(name, normalizedEmail, password, 'CLIENT');
+      return true;
+    } catch (err) {
+      if (err.status === 409 || err.status === 400) {
+        // Correo ya registrado o validación fallida
+        return false;
+      }
+      console.warn('[auth] Backend no disponible para registro. Usando localStorage. Error:', err.message);
+    }
+  }
+
+  // 2. Fallback localStorage (modo offline)
+  try {
+    const registered = JSON.parse(localStorage.getItem('registered_users') || '[]');
+    if (registered.some((u) => u.email.toLowerCase() === normalizedEmail)) return false;
+    registered.push({
+      id: 'user-' + Date.now(),
+      name,
+      email: normalizedEmail,
+      passwordHash: await _hashPassword(password),
+      role: 'cliente',
+    });
+    localStorage.setItem('registered_users', JSON.stringify(registered));
+    return true;
+  } catch (_) {
     return false;
+  }
+}
 
-  users.push({
-    id: "user-" + Date.now(),
-    name,
-    email: email.toLowerCase().trim(),
-    passwordHash: await hashPassword(password),
-    role: "cliente",
-  });
-  localStorage.setItem("registered_users", JSON.stringify(users));
-  return true;
+/**
+ * Devuelve el usuario de la sesión actual o null.
+ */
+function getLoggedInUser() {
+  const userStr = sessionStorage.getItem('user') || localStorage.getItem('user');
+  try {
+    return userStr ? JSON.parse(userStr) : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+/**
+ * Cierra la sesión.
+ */
+function logoutUser() {
+  sessionStorage.removeItem('user');
+  sessionStorage.removeItem('auth_token');
+  localStorage.removeItem('user');
+  localStorage.removeItem('auth_token');
+  localStorage.removeItem('user_role');
+  if (window._API_clearToken) window._API_clearToken();
+}
+
+// ─── Hash SHA-256 (solo para fallback offline; backend usa BCrypt) ───────────
+async function _hashPassword(password) {
+  const data = new TextEncoder().encode(password);
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
 }
