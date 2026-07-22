@@ -12,8 +12,10 @@
     <title>Rastrear Pedido - Artesanías Chigorodó</title>
     <link rel="stylesheet" href="../css/components/styles.css" />
     <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/cart-fx.css" />
     <link rel="stylesheet" href="../css/components/footer.css" />
     <link rel="stylesheet" href="../css/cliente/checkout.css" />
+    <link rel="stylesheet" href="../css/cliente/order-tracking.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -128,29 +130,49 @@
                     margin-bottom: 0.5rem;
                   "
                 >
-                  <div
-                    style="
-                      width: 12px;
-                      height: 12px;
-                      border-radius: 50%;
-                      background-color: var(--secondary);
-                    "
-                  ></div>
-                  <strong style="font-size: 1.1rem" id="result-order-status"
-                    >En tránsito</strong
-                  >
+                  <span class="tracking-status-pill" id="result-order-status">
+                    <span class="dot"></span>
+                    <span class="text">En tránsito</span>
+                  </span>
                 </div>
                 <p
                   style="
                     font-size: 0.9rem;
                     color: var(--text-muted);
-                    margin-left: 1.75rem;
+                    margin-left: 0.1rem;
                   "
                 >
-                  Tu paquete está en camino a
+                  Destino:
                   <strong id="result-order-city">Ciudad</strong>. Te
                   notificaremos cuando esté próximo a ser entregado.
                 </p>
+
+                <div class="tracking-scene" id="tracking-scene" data-stage="warehouse">
+                  <span class="tracking-scene__caption">Cargando estado...</span>
+                  <div class="tracking-scene__ground"></div>
+                  <div class="tracking-scene__road"></div>
+                  <div class="tracking-scene__warehouse">
+                    <div class="tracking-scene__warehouse-body"></div>
+                    <div class="tracking-scene__warehouse-door"></div>
+                    <span class="tracking-scene__warehouse-label">ARTESANÍAS CHIGORODÓ</span>
+                  </div>
+                  <div class="tracking-scene__house">
+                    <div class="tracking-scene__house-roof"></div>
+                    <div class="tracking-scene__house-body"></div>
+                    <div class="tracking-scene__house-door"></div>
+                  </div>
+                  <div class="tracking-scene__truck" id="tracking-truck">
+                    <div class="tracking-scene__truck-cargo"></div>
+                    <div class="tracking-scene__truck-cab"></div>
+                    <div class="tracking-scene__wheel tracking-scene__wheel--a"></div>
+                    <div class="tracking-scene__wheel tracking-scene__wheel--b"></div>
+                  </div>
+                  <div class="tracking-scene__car" id="tracking-car">
+                    <div class="tracking-scene__car-body"></div>
+                    <div class="tracking-scene__wheel tracking-scene__wheel--a"></div>
+                    <div class="tracking-scene__wheel tracking-scene__wheel--b"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -163,7 +185,9 @@
     <script src="../js/core/main.js"></script>
     <script src="../js/core/api.js"></script><script src="../js/core/auth.js"></script>
     <script src="../js/components/navbar.js"></script>
+    <script src="../js/components/cart-fx.js"></script>
     <script src="../js/components/footer.js"></script>
+    <script src="../js/cliente/order-tracking.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -203,13 +227,19 @@
               foundOrder.id;
             document.getElementById("result-order-date").textContent =
               foundOrder.date;
-            document.getElementById("result-order-status").textContent =
-              foundOrder.statusText || "En preparación";
             document.getElementById("result-order-city").textContent =
               foundOrder.city || "tu dirección";
 
             // Mostramos el resultado
             trackResult.style.display = "block";
+
+            // Escena de rastreo: bodega -> tránsito -> reparto -> entregado,
+            // según el tiempo transcurrido desde que se creó el pedido.
+            if (window.OrderTracking) {
+              const scene = document.getElementById("tracking-scene");
+              const pill = document.getElementById("result-order-status");
+              window.OrderTracking.watchOrder(scene, pill, foundOrder);
+            }
           } else {
             // Mostramos error
             trackError.style.display = "block";

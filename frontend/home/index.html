@@ -16,6 +16,7 @@
     <title>Inicio - Artesanías Chigorodó</title>
     <link rel="stylesheet" href="../css/components/styles.css" />
     <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/cart-fx.css" />
     <link rel="stylesheet" href="../css/components/footer.css" />
     <link rel="stylesheet" href="../css/home/home.css" />
   </head>
@@ -1053,6 +1054,7 @@
     <script src="../js/cliente/productos.js"></script>
     <script src="../js/cliente/carrito.js"></script>
     <script src="../js/components/navbar.js"></script>
+    <script src="../js/components/cart-fx.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/components/animaciones.js"></script>
     <script src="../js/admin/mantenimiento.js"></script>
@@ -1076,7 +1078,7 @@
             (product) => `
         <article class="featured-product-card">
           <div class="featured-product-img-wrapper">
-            <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.src='img/mochila_wayuu.png'" />
+            <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.onerror=null;this.src='img/mochila_wayuu.png'" />
             <span class="featured-product-category">${product.category}</span>
           </div>
           <div class="featured-product-info">

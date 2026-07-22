@@ -12,6 +12,7 @@
     <title>Detalle de Producto - Artesanías Chigorodó</title>
     <link rel="stylesheet" href="../css/components/styles.css" />
     <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/cart-fx.css" />
     <link rel="stylesheet" href="../css/components/footer.css" />
     <link rel="stylesheet" href="../css/cliente/carrito.css" />
     <style>
@@ -202,7 +203,7 @@
                   id="detail-img"
                   src=""
                   alt="Producto"
-                  onerror="this.src = '../img/mochila_wayuu.png'"
+                  onerror="this.onerror=null;this.src='../img/mochila_wayuu.png'"
                 />
               </div>
 
@@ -358,6 +359,7 @@
     <script src="../js/core/api.js"></script><script src="../js/core/auth.js"></script>
     <script src="../js/cliente/carrito.js"></script>
     <script src="../js/components/navbar.js"></script>
+    <script src="../js/components/cart-fx.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/admin/mantenimiento.js"></script>
 
@@ -414,11 +416,8 @@
           document.getElementById("detail-desc").textContent =
             currentProduct.description;
 
-          document
-            .getElementById("btn-add-cart")
-            .addEventListener("click", function () {
-              animateProductToCart(currentProduct);
-            });
+          const addCartBtn = document.getElementById("btn-add-cart");
+          addCartBtn.setAttribute("data-add-to-cart", currentProduct.id);
 
           loader.style.display = "none";
           productUI.style.display = "block";
@@ -428,81 +427,18 @@
         }
       }
 
-      // --- ANIMACIÓN ---
-      function animateProductToCart(productObj) {
-        const imgOriginal = document.getElementById("detail-img");
-
-        // Buscar el icono del carrito en el navbar
-        const cartIcon =
-          document.querySelector('a[href*="carrito.html"]') ||
-          document.querySelector(".cart-badge") ||
-          document.querySelector(".cart-icon-container");
-
-        if (!imgOriginal || !cartIcon) {
-          addSingleProductToCart(productObj);
-          return;
-        }
-
-        const rectOriginal = imgOriginal.getBoundingClientRect();
-        const rectCart = cartIcon.getBoundingClientRect();
-
-        const clone = imgOriginal.cloneNode(true);
-        clone.classList.add("flying-product");
-
-        clone.style.top = `${rectOriginal.top}px`;
-        clone.style.left = `${rectOriginal.left}px`;
-        clone.style.width = `${rectOriginal.width}px`;
-        clone.style.height = `${rectOriginal.height}px`;
-
-        document.body.appendChild(clone);
-
-        clone.getBoundingClientRect();
-
-        clone.style.top = `${rectCart.top}px`;
-        clone.style.left = `${rectCart.left}px`;
-        clone.style.width = "25px";
-        clone.style.height = "25px";
-        clone.style.opacity = "0.2";
-
-        clone.addEventListener(
-          "transitionend",
-          function () {
-            clone.remove();
-            cartIcon.classList.add("cart-bounce");
-            setTimeout(() => cartIcon.classList.remove("cart-bounce"), 500);
-            addSingleProductToCart(productObj);
-          },
-          { once: true },
-        );
-      }
-
       // --- AGREGADO Y NOTIFICACIÓN MODERNA ---
-      // IMPORTANTE: usamos SIEMPRE addProductToCart() de carrito.js, que es la
-      // única fuente de verdad y guarda bajo la clave "cart_items" (la misma
-      // que lee carrito.html, el navbar y el checkout). Antes esta función
-      // escribía en las claves "cart"/"carrito", que nadie más leía, por eso
-      // los productos "desaparecían" al entrar al carrito.
-      function addSingleProductToCart(productObj) {
-        if (typeof addProductToCart === "function") {
-          addProductToCart(productObj, 1);
-        } else {
-          // Fallback ultra defensivo por si carrito.js no cargó
-          const items = JSON.parse(localStorage.getItem("cart_items") || "[]");
-          const existing = items.find(
-            (item) => String(item.product.id) === String(productObj.id),
+      // La animación de "volar al carrito" ahora la maneja cart-fx.js de forma
+      // centralizada (mismo efecto que en el catálogo de productos.html), a
+      // través del atributo data-add-to-cart en #btn-add-cart. cart-fx.js es
+      // quien llama a addProductToCart() y dispara el evento itemAddedToCart.
+      window.addEventListener("itemAddedToCart", function () {
+        if (currentProduct) {
+          showModernToast(
+            `<strong>${currentProduct.name}</strong> agregado a tu carrito`,
           );
-          if (existing) existing.quantity += 1;
-          else items.push({ product: productObj, quantity: 1 });
-          localStorage.setItem("cart_items", JSON.stringify(items));
-          window.dispatchEvent(new Event("cartChanged"));
         }
-
-        if (typeof updateCartBadge === "function") updateCartBadge();
-
-        showModernToast(
-          `<strong>${productObj.name}</strong> agregado a tu carrito`,
-        );
-      }
+      });
 
       function showModernToast(message) {
         const oldToast = document.getElementById("custom-toast");

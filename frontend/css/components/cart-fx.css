@@ -1,0 +1,245 @@
+/* ==========================================================================
+   CART-FX: Animación "deleite" de agregar al carrito + transición al ver carrito
+   Archivo independiente para no interferir con las animaciones simples que
+   ya existían (flying-product / cart-bounce en styles.css).
+   ========================================================================== */
+
+/* ─── Overlay a pantalla completa ────────────────────────────────────────── */
+#cartfx-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  background: rgba(17, 24, 39, 0);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.35s ease,
+    background 0.35s ease,
+    visibility 0s linear 0.35s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(0px);
+}
+
+#cartfx-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  background: rgba(17, 24, 39, 0.5);
+  backdrop-filter: blur(3px);
+  transition:
+    opacity 0.35s ease,
+    background 0.35s ease;
+}
+
+/* Variante "sólida": se usa en la transición hacia carrito.html, donde
+   queremos que el fondo quede bien cubierto justo antes de navegar. */
+#cartfx-overlay.cartfx-overlay-solid.active {
+  background: rgba(15, 61, 46, 0.92);
+  backdrop-filter: blur(6px);
+}
+
+/* ─── Escenario central (contenedor con perspectiva para el giro 3D) ────── */
+.cartfx-stage {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  perspective: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+}
+
+.cartfx-cart-wrap {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: none;
+  opacity: 0;
+  transform-style: preserve-3d;
+  transform-origin: center 75%;
+  filter: drop-shadow(0 18px 30px rgba(17, 24, 39, 0.35));
+}
+
+.cartfx-cart-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.cfx-wheel {
+  fill: none;
+  stroke: var(--text-dark, #111827);
+  stroke-width: 6;
+  opacity: 0.85;
+}
+.cfx-wheel-hub {
+  fill: var(--text-dark, #111827);
+}
+.cfx-frame {
+  fill: none;
+  stroke: var(--primary, #c46b2d);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cfx-handle {
+  fill: none;
+  stroke: var(--primary, #c46b2d);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.cfx-basket-outline {
+  fill: var(--primary-light, rgba(196, 107, 45, 0.08));
+  stroke: var(--text-dark, #111827);
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+.cfx-mesh {
+  stroke: var(--text-dark, #111827);
+  stroke-width: 2;
+  opacity: 0.35;
+}
+
+/* ─── Check de confirmación que aparece sobre la canasta ─────────────────── */
+.cartfx-check {
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  width: 56px;
+  height: 56px;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  background: var(--secondary, #0f3d2e);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.25s ease;
+}
+.cartfx-check.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+.cartfx-check svg {
+  width: 28px;
+  height: 28px;
+  stroke: #fff;
+}
+
+/* ─── Clon de la imagen del producto que "vuela" hasta el carrito ────────── */
+.cartfx-flyer {
+  position: fixed;
+  z-index: 20001;
+  background-size: cover;
+  background-position: center;
+  border-radius: 14px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  will-change: top, left, width, height, transform, opacity;
+}
+
+/* Evita el scroll de la página mientras la animación central está activa */
+body.cartfx-lock {
+  overflow: hidden;
+}
+
+/* ─── Botón "Agregar al carrito" en las tarjetas del catálogo ────────────── */
+.catalog-product-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn-add-catalog-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--primary, #c46b2d);
+  background: var(--primary-light, rgba(196, 107, 45, 0.08));
+  color: var(--primary, #c46b2d);
+  cursor: pointer;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn-add-catalog-cart svg {
+  width: 19px;
+  height: 19px;
+  pointer-events: none;
+}
+
+.btn-add-catalog-cart:hover:not(:disabled) {
+  background: var(--primary, #c46b2d);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(196, 107, 45, 0.35);
+  transform: translateY(-2px) scale(1.05);
+}
+
+.btn-add-catalog-cart:active:not(:disabled) {
+  transform: translateY(0) scale(0.92);
+}
+
+.btn-add-catalog-cart:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Pequeño "pop" que confirma el click, independiente de la animación grande */
+@keyframes cartfxButtonPop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(0.86);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.btn-add-catalog-cart.cartfx-pop {
+  animation: cartfxButtonPop 0.35s ease;
+}
+
+/* ─── Revelado del contenido de carrito.html tras la transición ──────────── */
+html.cartfx-pending .cart-page-container {
+  opacity: 0 !important;
+}
+
+.cartfx-pre-reveal {
+  opacity: 0;
+  transform: translateY(22px) scale(0.98);
+}
+
+.cartfx-reveal {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (max-width: 640px) {
+  .cartfx-stage {
+    width: 200px;
+    height: 200px;
+  }
+  .cartfx-cart-wrap {
+    width: 170px;
+    height: 170px;
+  }
+}

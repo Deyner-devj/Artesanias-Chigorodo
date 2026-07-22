@@ -20,7 +20,7 @@ function renderProductCatalog(products) {
         <h3 class="product-title">${p.name}</h3>
         <p class="product-artisan">Por: ${p.sellerName}</p>
         <div class="product-price">$${p.price.toLocaleString("es-CO")} COP</div>
-        <button class="btn btn-primary btn-add-cart" onclick="addToCart('${p.id}')">Añadir al Carrito</button>
+        <button class="btn btn-primary btn-add-cart" data-add-to-cart="${p.id}">Añadir al Carrito</button>
       </div>
     </div>
   `).join("");

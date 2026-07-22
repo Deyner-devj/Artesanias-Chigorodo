@@ -1,0 +1,356 @@
+/* ==========================================================================
+   ORDER TRACKING SCENE
+   Escena visual que muestra en qué etapa va el pedido: en bodega, en
+   tránsito hacia el destino, o en reparto llegando a la casa del cliente.
+   ========================================================================== */
+
+.tracking-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(200, 120, 40, 0.12);
+  color: #8a4b1d;
+}
+
+.tracking-status-pill .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.tracking-status-pill.is-delivered {
+  background: rgba(46, 140, 82, 0.14);
+  color: #226b41;
+}
+
+.tracking-scene {
+  --tprogress: 0%;
+  position: relative;
+  margin-top: 1.25rem;
+  height: 168px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fdf6ea 0%, #fbeed9 62%, #f3ddb8 100%);
+  border: 1px solid rgba(140, 90, 49, 0.18);
+  font-family: Poppins, sans-serif;
+}
+
+.tracking-scene__road {
+  position: absolute;
+  left: 78px;
+  right: 78px;
+  bottom: 34px;
+  height: 10px;
+  background: #545a5d;
+  border-radius: 4px;
+}
+.tracking-scene__road::after {
+  content: "";
+  position: absolute;
+  inset: 4px 0;
+  background: repeating-linear-gradient(
+    90deg,
+    #d9dcdd 0,
+    #d9dcdd 16px,
+    transparent 16px,
+    transparent 30px
+  );
+}
+
+.tracking-scene__ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 34px;
+  background: #d8c19a;
+}
+
+/* ---- Warehouse (origin) ---- */
+.tracking-scene__warehouse {
+  position: absolute;
+  left: 12px;
+  bottom: 34px;
+  width: 78px;
+  height: 84px;
+}
+.tracking-scene__warehouse-body {
+  position: absolute;
+  inset: 22px 0 0;
+  background: #b8753d;
+  border: 2px solid #7c4a24;
+  border-radius: 3px 3px 0 0;
+}
+.tracking-scene__warehouse-body::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: -4px;
+  right: -4px;
+  height: 22px;
+  background: #8c5a31;
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+.tracking-scene__warehouse-door {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 26px;
+  height: 38px;
+  transform: translateX(-50%);
+  background: #5c3a1e;
+  border-radius: 3px 3px 0 0;
+}
+.tracking-scene__warehouse-label {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #7c4a24;
+}
+
+/* ---- House (destination) ---- */
+.tracking-scene__house {
+  position: absolute;
+  right: 10px;
+  bottom: 34px;
+  width: 70px;
+  height: 74px;
+}
+.tracking-scene__house-roof {
+  position: absolute;
+  top: 0;
+  left: -6px;
+  right: -6px;
+  height: 26px;
+  background: #7c4a3a;
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+.tracking-scene__house-body {
+  position: absolute;
+  inset: 24px 0 0;
+  background: #f2ddb0;
+  border: 2px solid #8c5a31;
+  border-radius: 0 0 2px 2px;
+}
+.tracking-scene__house-door {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 20px;
+  height: 30px;
+  transform: translateX(-50%);
+  background: #8c5a31;
+  border-radius: 3px 3px 0 0;
+  transition: background 0.3s ease;
+}
+.tracking-scene[data-stage="delivered"] .tracking-scene__house-door {
+  background: #2e8c52;
+}
+
+/* ---- Truck ---- */
+.tracking-scene__truck {
+  --truck-scale: 0.72;
+  position: absolute;
+  bottom: 40px;
+  left: 96px;
+  width: 112px;
+  height: 62px;
+  transform: scale(var(--truck-scale));
+  transform-origin: left bottom;
+  transition: left 2.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tracking-scene__truck-cargo {
+  position: absolute;
+  left: 0;
+  bottom: 11px;
+  width: 72px;
+  height: 43px;
+  border: 2px solid #844d2c;
+  border-radius: 5px 2px 2px 5px;
+  background: #bf6d35;
+}
+.tracking-scene__truck-cargo::after {
+  content: "CHIGORODÓ";
+  position: absolute;
+  top: 14px;
+  left: 8px;
+  color: #fff7e9;
+  font-size: 8px;
+  font-weight: 800;
+}
+.tracking-scene__truck-cab {
+  position: absolute;
+  right: 3px;
+  bottom: 11px;
+  width: 38px;
+  height: 35px;
+  border: 2px solid #844d2c;
+  border-radius: 4px 8px 3px 2px;
+  background: #e29a45;
+}
+.tracking-scene__truck-cab::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 4px;
+  width: 20px;
+  height: 12px;
+  border-radius: 2px 5px 2px 2px;
+  background: #cde8ed;
+}
+.tracking-scene__truck .tracking-scene__wheel {
+  bottom: 3px;
+}
+.tracking-scene__truck .tracking-scene__wheel--a {
+  left: 15px;
+}
+.tracking-scene__truck .tracking-scene__wheel--b {
+  right: 10px;
+}
+
+.tracking-scene__wheel {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 5px solid #34383a;
+  border-radius: 50%;
+  background: #aeb5b8;
+}
+
+/* ---- Car (last-mile delivery) ---- */
+.tracking-scene__car {
+  --car-scale: 0.66;
+  position: absolute;
+  bottom: 40px;
+  left: 96px;
+  width: 88px;
+  height: 46px;
+  transform: scale(var(--car-scale));
+  transform-origin: left bottom;
+  transition: left 2.2s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+}
+.tracking-scene__car-body {
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+  width: 88px;
+  height: 26px;
+  background: #d2762f;
+  border: 2px solid #844d2c;
+  border-radius: 10px 10px 4px 4px;
+}
+.tracking-scene__car-body::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 16px;
+  width: 46px;
+  height: 18px;
+  background: #e6924a;
+  border: 2px solid #844d2c;
+  border-radius: 10px 10px 0 0;
+}
+.tracking-scene__car-body::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 22px;
+  width: 34px;
+  height: 12px;
+  background: #cde8ed;
+  border-radius: 6px 6px 0 0;
+}
+.tracking-scene__car .tracking-scene__wheel {
+  width: 15px;
+  height: 15px;
+  border-width: 4px;
+  bottom: 2px;
+}
+.tracking-scene__car .tracking-scene__wheel--a {
+  left: 12px;
+}
+.tracking-scene__car .tracking-scene__wheel--b {
+  right: 10px;
+}
+
+/* ---- Stage visibility rules ---- */
+.tracking-scene__truck,
+.tracking-scene__car {
+  display: none;
+}
+.tracking-scene[data-stage="warehouse"] .tracking-scene__truck {
+  display: block;
+  left: 96px !important;
+}
+.tracking-scene[data-stage="transit"] .tracking-scene__truck {
+  display: block;
+}
+.tracking-scene[data-stage="delivering"] .tracking-scene__car,
+.tracking-scene[data-stage="delivered"] .tracking-scene__car {
+  display: block;
+  opacity: 1;
+}
+
+.tracking-scene[data-stage="transit"] .tracking-scene__wheel,
+.tracking-scene[data-stage="delivering"] .tracking-scene__wheel {
+  animation: trackingWheelSpin 0.5s linear infinite;
+}
+
+@keyframes trackingWheelSpin {
+  to {
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+  }
+}
+
+.tracking-scene__caption {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(57, 37, 24, 0.14);
+  color: #765035;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+@media (max-width: 520px) {
+  .tracking-scene {
+    height: 148px;
+  }
+  .tracking-scene__warehouse {
+    left: 4px;
+  }
+  .tracking-scene__house {
+    right: 2px;
+  }
+  .tracking-scene__road {
+    left: 60px;
+    right: 60px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tracking-scene__truck,
+  .tracking-scene__car {
+    transition-duration: 0.01ms !important;
+  }
+  .tracking-scene__wheel {
+    animation: none !important;
+  }
+}

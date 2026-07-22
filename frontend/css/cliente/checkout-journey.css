@@ -14,31 +14,57 @@
   pointer-events: none;
   color: #3f2a1f;
   font-family: Poppins, sans-serif;
-  filter: drop-shadow(0 -5px 12px rgba(52, 34, 22, 0.12));
+  box-shadow: 0 -8px 24px rgba(52, 34, 22, 0.16);
+  border-top: 1px solid rgba(140, 90, 49, 0.22);
 }
 
 .checkout-journey__sky {
   position: absolute;
   inset: 0 0 38px;
-  background: rgba(255, 250, 242, 0.97);
-  border-top: 1px solid rgba(126, 82, 49, 0.16);
+  background: linear-gradient(180deg, #fffaf2 0%, #fdf1de 55%, #f8e4c4 100%);
+}
+
+.checkout-journey__sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 22%, rgba(255, 255, 255, 0.55) 0 10px, transparent 11px),
+    radial-gradient(circle at 34% 40%, rgba(255, 255, 255, 0.4) 0 7px, transparent 8px),
+    radial-gradient(circle at 80% 18%, rgba(255, 255, 255, 0.5) 0 9px, transparent 10px);
+  opacity: 0.9;
 }
 
 .checkout-journey__label {
   position: absolute;
-  top: 8px;
+  top: 9px;
   left: 50%;
   z-index: 2;
   transform: translateX(-50%);
-  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
   border-radius: 999px;
   background: #ffffff;
-  box-shadow: 0 2px 8px rgba(57, 37, 24, 0.12);
-  color: #765035;
-  font-size: 11px;
+  box-shadow:
+    0 3px 10px rgba(57, 37, 24, 0.16),
+    0 0 0 1px rgba(140, 90, 49, 0.08);
+  color: #6b4326;
+  font-size: 11.5px;
   font-weight: 700;
-  line-height: 1.2;
+  letter-spacing: 0.01em;
   white-space: nowrap;
+}
+
+.checkout-journey__label::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--secondary, #e07a2c);
+  box-shadow: 0 0 0 4px rgba(224, 122, 44, 0.18);
+  flex-shrink: 0;
 }
 
 .checkout-journey__belt {
@@ -47,34 +73,36 @@
   bottom: 14px;
   left: 0;
   height: 36px;
-  border-top: 5px solid #4f5558;
-  border-bottom: 5px solid #303538;
-  background: repeating-linear-gradient(
-    90deg,
-    #899195 0,
-    #899195 34px,
-    #c3c9cc 34px,
-    #c3c9cc 40px
-  );
-  animation: checkoutBeltMove 0.85s linear infinite;
-}
-
-.checkout-journey__belt::before,
-.checkout-journey__belt::after {
-  content: "";
-  position: absolute;
-  bottom: -18px;
-  width: 8px;
-  height: 16px;
-  border-radius: 0 0 3px 3px;
-  background: #303538;
+  background: linear-gradient(180deg, #6b6560 0%, #4f4a46 100%);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.25);
 }
 
 .checkout-journey__belt::before {
-  left: 12%;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(
+    90deg,
+    #f3e2c2 0,
+    #f3e2c2 26px,
+    transparent 26px,
+    transparent 48px
+  );
+  animation: checkoutBeltMove 0.9s linear infinite;
+  opacity: 0.85;
 }
+
 .checkout-journey__belt::after {
-  right: 12%;
+  content: "";
+  position: absolute;
+  inset: 0 0 -8px;
+  background: linear-gradient(180deg, rgba(63, 42, 22, 0.14), transparent);
 }
 
 .checkout-journey__package {
