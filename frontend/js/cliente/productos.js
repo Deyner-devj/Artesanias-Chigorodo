@@ -1,4 +1,3 @@
-// --- Lógica de Rutas para Imágenes ---
 const _path = window.location.pathname;
 const _isSubfolder =
   _path.includes("/home/") ||
@@ -7,6 +6,18 @@ const _isSubfolder =
   _path.includes("/artesano/");
 const _rootPrefix = _isSubfolder ? "../" : "";
 const _imgPrefix = `${_rootPrefix}img/`;
+
+// Auto-carga de submódulos de la subcarpeta productos/
+(function loadProductosSubmodules() {
+  const currentScript = document.currentScript ? document.currentScript.src : "";
+  if (!currentScript) return;
+  const basePath = currentScript.substring(0, currentScript.lastIndexOf("/")) + "/productos/";
+  ["productos-listado.js", "productos-filtros.js", "productos-busqueda.js", "productos-paginacion.js"].forEach(file => {
+    const s = document.createElement("script");
+    s.src = basePath + file;
+    document.head.appendChild(s);
+  });
+})();
 
 const MOCK_PRODUCTS = [
   {

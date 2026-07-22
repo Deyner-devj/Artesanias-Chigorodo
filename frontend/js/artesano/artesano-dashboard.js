@@ -1,3 +1,14 @@
+(function loadDashboardSubmodules() {
+  const currentScript = document.currentScript ? document.currentScript.src : "";
+  if (!currentScript) return;
+  const basePath = currentScript.substring(0, currentScript.lastIndexOf("/")) + "/dashboard/";
+  ["dashboard-metrics.js", "dashboard-charts.js", "dashboard-recent-orders.js", "dashboard-init.js"].forEach(file => {
+    const s = document.createElement("script");
+    s.src = basePath + file;
+    document.head.appendChild(s);
+  });
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
   loadView("resumen", true);
   createClayOverlayDOM();
