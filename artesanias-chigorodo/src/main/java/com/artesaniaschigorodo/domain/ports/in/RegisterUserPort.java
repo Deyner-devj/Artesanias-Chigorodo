@@ -1,5 +1,5 @@
 package com.artesaniaschigorodo.domain.ports.in;
 
-public class RegisterUserPortIn {
+public class RegisterUserPort {
     
 }

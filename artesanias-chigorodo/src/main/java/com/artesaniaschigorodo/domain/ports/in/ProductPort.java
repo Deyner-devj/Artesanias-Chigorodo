@@ -5,7 +5,7 @@ import com.artesaniaschigorodo.domain.models.user.User;
 
 import java.util.List;
 
-public interface ProductPortIn {
+public interface ProductPort {
     Product getProductById(Long id);
     List<Product> getAllProducts();
     List<Product> getFilteredProducts(String category, Double minPrice, Double maxPrice, String search);

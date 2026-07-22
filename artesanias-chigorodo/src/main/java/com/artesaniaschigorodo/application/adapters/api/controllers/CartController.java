@@ -8,7 +8,7 @@ import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.models.cart.Cart;
 import com.artesaniaschigorodo.domain.models.cart.CartItem;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
+import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class CartController {
 
 	private final ManageCartUseCase manageCartUseCase;
-	private final UserPortOut userPersistencePort;
+	private final UserPort userPersistencePort;
 
 	@GetMapping
 	public ResponseEntity<CartResponse> getCart() {

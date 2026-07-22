@@ -4,7 +4,7 @@ import com.artesaniaschigorodo.domain.models.review.Review;
 
 import java.util.List;
 
-public interface ReviewPortOut {
+public interface ReviewPort {
     Review save(Review review);
     List<Review> findByProductId(Long productId);
 }

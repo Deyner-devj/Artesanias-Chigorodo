@@ -6,26 +6,24 @@ import com.artesaniaschigorodo.domain.exceptions.BusinessException;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.models.enums.UserStatus;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.in.AuthPortIn;
+import com.artesaniaschigorodo.domain.ports.in.AuthPort;
 import com.artesaniaschigorodo.domain.ports.out.JwtTokenPort;
 import com.artesaniaschigorodo.domain.ports.out.PasswordEncoderPort;
-import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
+import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthUseCase implements AuthPortIn {
+public class AuthUseCase implements AuthPort {
 
-    private final UserPortOut userPersistencePort;
+    private final UserPort userPersistencePort;
     private final PasswordEncoderPort passwordEncoderPort;
     private final JwtTokenPort jwtTokenPort;
 
     @Override
     public User register(User user) {
-        if (userPersistencePort.existsByEmail(user.getEmail())) {
-            throw new ConflictException("El correo electrónico ya está en uso.");
-        }
+        new com.artesaniaschigorodo.domain.services.ValidateUniqueEmail().validate(userPersistencePort.existsByEmail(user.getEmail()));
 
         user.setPassword(passwordEncoderPort.encode(user.getPassword()));
         

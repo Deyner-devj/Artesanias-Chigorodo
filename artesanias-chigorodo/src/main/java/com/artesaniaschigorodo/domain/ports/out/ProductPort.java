@@ -5,7 +5,7 @@ import com.artesaniaschigorodo.domain.models.product.Product;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductPortOut {
+public interface ProductPort {
     Optional<Product> findById(Long id);
     Optional<Product> findByIdForUpdate(Long id);
     List<Product> findAll();

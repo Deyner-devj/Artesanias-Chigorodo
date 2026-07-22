@@ -5,8 +5,8 @@ import com.artesaniaschigorodo.application.adapters.api.request.RegisterRequest;
 import com.artesaniaschigorodo.application.adapters.api.response.AuthResponse;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.in.AuthPortIn;
-import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
+import com.artesaniaschigorodo.domain.ports.in.AuthPort;
+import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthPortIn authUseCase;
-    private final UserPortOut userPersistencePort;
+    private final AuthPort authUseCase;
+    private final UserPort userPersistencePort;
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@Valid @RequestBody RegisterRequest request) {
-        Role role = Role.CLIENT;
-        if (request.getRole() != null) {
-            try {
-                role = Role.valueOf(request.getRole().toUpperCase());
-            } catch (IllegalArgumentException e) {
-                // Default to CLIENT if invalid role name provided
-            }
-        }
+        Role role = Role.CLIENT; // Always enforce CLIENT role on public registration to prevent privilege escalation
 
         User user = User.builder()
                 .fullName(request.getFullName())

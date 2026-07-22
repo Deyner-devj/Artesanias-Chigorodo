@@ -13,9 +13,9 @@ import com.artesaniaschigorodo.domain.models.payment.PaymentDetails;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.ports.out.ElectronicInvoicingPort;
-import com.artesaniaschigorodo.domain.ports.out.InvoicePortOut;
-import com.artesaniaschigorodo.domain.ports.out.OrderPortOut;
-import com.artesaniaschigorodo.domain.ports.out.PaymentPortOut;
+import com.artesaniaschigorodo.domain.ports.out.InvoicePort;
+import com.artesaniaschigorodo.domain.ports.out.OrderPort;
+import com.artesaniaschigorodo.domain.ports.out.PaymentPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +26,10 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequiredArgsConstructor
 public class ProcessPaymentUseCase {
 
-    private final OrderPortOut orderPersistencePort;
+    private final OrderPort orderPersistencePort;
     private final ElectronicInvoicingPort electronicInvoicingPort;
-    private final InvoicePortOut invoicePersistencePort;
-    private final PaymentPortOut paymentPersistencePort;
+    private final InvoicePort invoicePersistencePort;
+    private final PaymentPort paymentPersistencePort;
     private final AtomicLong sequence = new AtomicLong(1L);
 
     public Payment processPayment(PaymentRequest request, User currentUser) {

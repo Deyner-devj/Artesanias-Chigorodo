@@ -4,7 +4,7 @@ import com.artesaniaschigorodo.domain.models.cart.Cart;
 
 import java.util.Optional;
 
-public interface CartPortOut {
+public interface CartPort {
     Optional<Cart> findByUserEmail(String userEmail);
     Cart save(Cart cart);
     void deleteByUserEmail(String userEmail);

@@ -6,8 +6,8 @@ import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.review.Review;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.out.ProductPortOut;
-import com.artesaniaschigorodo.domain.ports.out.ReviewPortOut;
+import com.artesaniaschigorodo.domain.ports.out.ProductPort;
+import com.artesaniaschigorodo.domain.ports.out.ReviewPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CreateReviewUseCase {
 
-    private final ProductPortOut productPersistencePort;
-    private final ReviewPortOut reviewPersistencePort;
+    private final ProductPort productPersistencePort;
+    private final ReviewPort reviewPersistencePort;
 
     public Review createReview(ReviewRequest request, User currentUser) {
         Product product = productPersistencePort.findById(request.getProductId())

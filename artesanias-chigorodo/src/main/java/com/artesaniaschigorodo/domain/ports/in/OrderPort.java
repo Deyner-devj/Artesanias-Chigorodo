@@ -5,7 +5,7 @@ import com.artesaniaschigorodo.domain.models.user.User;
 
 import java.util.List;
 
-public interface OrderPortIn {
+public interface OrderPort {
     Order createOrder(Order order, User currentUser);
     Order getOrderByOrderNumber(String orderNumber, User currentUser);
     List<Order> getOrdersForUser(User currentUser);

@@ -2,7 +2,7 @@ package com.artesaniaschigorodo.application.adapters.api.controllers;
 
 import com.artesaniaschigorodo.application.adapters.api.response.CategoryResponse;
 import com.artesaniaschigorodo.domain.models.enums.Category;
-import com.artesaniaschigorodo.domain.ports.out.CategoryPortOut;
+import com.artesaniaschigorodo.domain.ports.out.CategoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CategoryController {
 
-    private final CategoryPortOut categoryPortOut;
+    private final CategoryPort CategoryPort;
 
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> listCategories() {
-        List<CategoryResponse> categories = categoryPortOut.findAll().stream()
+        List<CategoryResponse> categories = CategoryPort.findAll().stream()
                 .map(category -> CategoryResponse.builder()
                         .code(category.getCode())
                         .name(category.getName())

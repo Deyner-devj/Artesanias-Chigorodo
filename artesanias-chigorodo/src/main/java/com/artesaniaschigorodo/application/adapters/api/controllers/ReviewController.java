@@ -7,7 +7,7 @@ import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.models.review.Review;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
+import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class ReviewController {
 
 	private final CreateReviewUseCase createReviewUseCase;
-	private final UserPortOut userPersistencePort;
+	private final UserPort userPersistencePort;
 
 	@PostMapping
 	public ResponseEntity<ReviewResponse> createReview(@Valid @RequestBody ReviewRequest request) {

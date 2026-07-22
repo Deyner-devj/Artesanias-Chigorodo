@@ -4,10 +4,10 @@ import com.artesaniaschigorodo.domain.models.category.Category;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.in.AuthPortIn;
-import com.artesaniaschigorodo.domain.ports.out.CategoryPortOut;
-import com.artesaniaschigorodo.domain.ports.out.ProductPortOut;
-import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
+import com.artesaniaschigorodo.domain.ports.in.AuthPort;
+import com.artesaniaschigorodo.domain.ports.out.CategoryPort;
+import com.artesaniaschigorodo.domain.ports.out.ProductPort;
+import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -18,26 +18,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
-    private final UserPortOut userPortOut;
-    private final AuthPortIn authPortIn;
-    private final ProductPortOut productPortOut;
-    private final CategoryPortOut categoryPortOut;
+    private final UserPort UserPort;
+    private final AuthPort AuthPort;
+    private final ProductPort ProductPort;
+    private final CategoryPort CategoryPort;
 
     @Override
     public void run(String... args) throws Exception {
         String adminEmail = "admin@example.com";
         User admin;
-        if (!userPortOut.existsByEmail(adminEmail)) {
+        if (!UserPort.existsByEmail(adminEmail)) {
             admin = User.builder()
                     .fullName("Admin Test")
                     .email(adminEmail)
                     .password("Admin123!")
                     .role(Role.ADMIN)
                     .build();
-            admin = authPortIn.register(admin);
+            admin = AuthPort.register(admin);
             System.out.println("DataInitializer: usuario admin creado -> " + adminEmail);
         } else {
-            admin = userPortOut.findByEmail(adminEmail).orElseThrow();
+            admin = UserPort.findByEmail(adminEmail).orElseThrow();
             System.out.println("DataInitializer: usuario admin ya existe -> " + adminEmail);
         }
 
@@ -46,7 +46,7 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void seedProducts(User admin) {
-        if (!productPortOut.findAll().isEmpty()) {
+        if (!ProductPort.findAll().isEmpty()) {
             return;
         }
 
@@ -92,12 +92,12 @@ public class DataInitializer implements CommandLineRunner {
                         .build()
         );
 
-        products.forEach(productPortOut::save);
+        products.forEach(ProductPort::save);
         System.out.println("DataInitializer: productos iniciales sembrados -> " + products.size());
     }
 
     private void seedCategories() {
-        if (!categoryPortOut.findAll().isEmpty()) {
+        if (!CategoryPort.findAll().isEmpty()) {
             return;
         }
 
@@ -134,7 +134,7 @@ public class DataInitializer implements CommandLineRunner {
                         .build()
         );
 
-        categories.forEach(categoryPortOut::save);
+        categories.forEach(CategoryPort::save);
         System.out.println("DataInitializer: categorías iniciales sembradas -> " + categories.size());
     }
 }

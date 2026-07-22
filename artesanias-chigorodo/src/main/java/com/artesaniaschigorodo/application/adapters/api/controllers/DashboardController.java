@@ -5,7 +5,7 @@ import com.artesaniaschigorodo.application.useCases.GetArtisanDashboardUseCase;
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
+import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DashboardController {
 
 	private final GetArtisanDashboardUseCase dashboardUseCase;
-	private final UserPortOut userPersistencePort;
+	private final UserPort userPersistencePort;
 
 	@GetMapping("/resumen")
 	public ResponseEntity<DashboardResponse> getDashboardSummary() {

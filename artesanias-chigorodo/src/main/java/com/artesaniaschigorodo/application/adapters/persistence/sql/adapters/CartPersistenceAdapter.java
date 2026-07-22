@@ -4,7 +4,7 @@ import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.Car
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.CartMapper;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.CartRepository;
 import com.artesaniaschigorodo.domain.models.cart.Cart;
-import com.artesaniaschigorodo.domain.ports.out.CartPortOut;
+import com.artesaniaschigorodo.domain.ports.out.CartPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class CartPersistenceAdapter implements CartPortOut {
+public class CartPersistenceAdapter implements CartPort {
 
     private final CartRepository cartRepository;
 

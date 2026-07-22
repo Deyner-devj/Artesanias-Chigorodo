@@ -1,5 +1,5 @@
 package com.artesaniaschigorodo.domain.ports.in;
 
-public class GetProductDetailsPortIn {
+public class GetProductDetailsPort {
     
 }

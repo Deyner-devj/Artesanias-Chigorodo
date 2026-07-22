@@ -6,8 +6,8 @@ import com.artesaniaschigorodo.domain.models.cart.Cart;
 import com.artesaniaschigorodo.domain.models.cart.CartItem;
 import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.out.CartPortOut;
-import com.artesaniaschigorodo.domain.ports.out.ProductPortOut;
+import com.artesaniaschigorodo.domain.ports.out.CartPort;
+import com.artesaniaschigorodo.domain.ports.out.ProductPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +18,8 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class ManageCartUseCase {
 
-    private final ProductPortOut productPersistencePort;
-    private final CartPortOut cartPersistencePort;
+    private final ProductPort productPersistencePort;
+    private final CartPort cartPersistencePort;
 
     public Cart getCart(User currentUser) {
         Cart cart = cartPersistencePort.findByUserEmail(currentUser.getEmail().toLowerCase())
@@ -32,19 +32,19 @@ public class ManageCartUseCase {
     }
 
     public Cart addItem(User currentUser, Long productId, Integer quantity) {
-        if (quantity == null || quantity < 1) {
-            throw new BusinessException("La cantidad debe ser mayor o igual a 1.");
-        }
         Cart cart = getCart(currentUser);
         Product product = productPersistencePort.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("El producto no existe."));
+        new com.artesaniaschigorodo.domain.services.ValidateProductAvailability().validate(product, quantity != null ? quantity : 0);
         CartItem existing = findItem(cart, productId);
         if (existing == null) {
-            cart.getItems().add(CartItem.builder()
+            CartItem newItem = CartItem.builder()
                     .product(product)
                     .quantity(quantity)
                     .unitPrice(product.getPrice())
-                    .build());
+                    .build();
+            new com.artesaniaschigorodo.domain.services.ValidateCartItem().validate(newItem);
+            cart.getItems().add(newItem);
         } else {
             existing.setQuantity(existing.getQuantity() + quantity);
             existing.setProduct(product);

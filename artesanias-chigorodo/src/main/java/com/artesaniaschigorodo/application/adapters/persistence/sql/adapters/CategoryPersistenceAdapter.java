@@ -4,7 +4,7 @@ import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.Cat
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.CategoryMapper;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.CategoryRepository;
 import com.artesaniaschigorodo.domain.models.category.Category;
-import com.artesaniaschigorodo.domain.ports.out.CategoryPortOut;
+import com.artesaniaschigorodo.domain.ports.out.CategoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class CategoryPersistenceAdapter implements CategoryPortOut {
+public class CategoryPersistenceAdapter implements CategoryPort {
 
     private final CategoryRepository categoryRepository;
 

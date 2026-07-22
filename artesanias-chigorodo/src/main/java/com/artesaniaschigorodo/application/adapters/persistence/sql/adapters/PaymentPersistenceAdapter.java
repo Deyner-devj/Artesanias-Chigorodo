@@ -4,7 +4,7 @@ import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.Pay
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.PaymentMapper;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.PaymentRepository;
 import com.artesaniaschigorodo.domain.models.payment.Payment;
-import com.artesaniaschigorodo.domain.ports.out.PaymentPortOut;
+import com.artesaniaschigorodo.domain.ports.out.PaymentPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class PaymentPersistenceAdapter implements PaymentPortOut {
+public class PaymentPersistenceAdapter implements PaymentPort {
 
     private final PaymentRepository paymentRepository;
 

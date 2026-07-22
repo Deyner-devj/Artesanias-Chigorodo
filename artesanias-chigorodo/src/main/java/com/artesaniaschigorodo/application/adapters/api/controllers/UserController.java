@@ -5,7 +5,7 @@ import com.artesaniaschigorodo.application.adapters.api.response.UserResponse;
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
+import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserPortOut userPersistencePort;
+    private final UserPort userPersistencePort;
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getProfile() {

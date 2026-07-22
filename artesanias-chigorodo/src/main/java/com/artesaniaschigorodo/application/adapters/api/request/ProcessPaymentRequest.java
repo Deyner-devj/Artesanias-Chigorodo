@@ -1,4 +1,4 @@
-package com.artesaniaschigorodo.application.adapters.api.requests;
+package com.artesaniaschigorodo.application.adapters.api.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;

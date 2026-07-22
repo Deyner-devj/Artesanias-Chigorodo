@@ -9,12 +9,12 @@ import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.models.enums.OrderStatus;
 import com.artesaniaschigorodo.domain.models.enums.Role;
-import com.artesaniaschigorodo.domain.ports.in.OrderPortIn;
+import com.artesaniaschigorodo.domain.ports.in.OrderPort;
 import com.artesaniaschigorodo.domain.models.order.Invoice;
 import com.artesaniaschigorodo.domain.ports.out.ElectronicInvoicingPort;
-import com.artesaniaschigorodo.domain.ports.out.InvoicePortOut;
-import com.artesaniaschigorodo.domain.ports.out.OrderPortOut;
-import com.artesaniaschigorodo.domain.ports.out.ProductPortOut;
+import com.artesaniaschigorodo.domain.ports.out.InvoicePort;
+import com.artesaniaschigorodo.domain.ports.out.OrderPort;
+import com.artesaniaschigorodo.domain.ports.out.ProductPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,20 +25,17 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class OrderUseCase implements OrderPortIn {
+public class OrderUseCase implements OrderPort {
 
-    private final OrderPortOut orderPersistencePort;
-    private final ProductPortOut productPersistencePort;
+    private final OrderPort orderPersistencePort;
+    private final ProductPort productPersistencePort;
     private final ElectronicInvoicingPort electronicInvoicingPort;
-    private final InvoicePortOut invoicePersistencePort;
+    private final InvoicePort invoicePersistencePort;
     private final Random random = new Random();
 
     @Override
     @Transactional
-    public Order createOrder(Order order, User currentUser) {
-        if (order.getItems() == null || order.getItems().isEmpty()) {
-            throw new BusinessException("La orden debe contener al menos un ítem.");
-        }
+        new com.artesaniaschigorodo.domain.services.CreateOrder().validateAndCalculate(order);
 
         order.setUser(currentUser);
         order.setCreatedAt(LocalDateTime.now());

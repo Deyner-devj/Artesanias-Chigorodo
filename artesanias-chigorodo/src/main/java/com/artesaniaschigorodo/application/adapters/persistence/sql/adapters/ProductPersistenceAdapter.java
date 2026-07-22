@@ -1,7 +1,7 @@
 package com.artesaniaschigorodo.application.adapters.persistence.sql.adapters;
 
 import com.artesaniaschigorodo.domain.models.product.Product;
-import com.artesaniaschigorodo.domain.ports.out.ProductPortOut;
+import com.artesaniaschigorodo.domain.ports.out.ProductPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 @RequiredArgsConstructor
-public class ProductPersistenceAdapter implements ProductPortOut {
+public class ProductPersistenceAdapter implements ProductPort {
 
 	private final Map<Long, Product> products = new LinkedHashMap<>();
 	private final AtomicLong sequence = new AtomicLong(1L);

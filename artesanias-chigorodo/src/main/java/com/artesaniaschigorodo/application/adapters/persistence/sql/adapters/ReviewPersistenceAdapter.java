@@ -4,7 +4,7 @@ import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.Rev
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.ReviewMapper;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.ReviewRepository;
 import com.artesaniaschigorodo.domain.models.review.Review;
-import com.artesaniaschigorodo.domain.ports.out.ReviewPortOut;
+import com.artesaniaschigorodo.domain.ports.out.ReviewPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class ReviewPersistenceAdapter implements ReviewPortOut {
+public class ReviewPersistenceAdapter implements ReviewPort {
 
     private final ReviewRepository reviewRepository;
 

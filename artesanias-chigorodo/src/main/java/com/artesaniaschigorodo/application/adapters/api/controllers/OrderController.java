@@ -13,10 +13,10 @@ import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
 import com.artesaniaschigorodo.domain.models.enums.ShippingMethod;
-import com.artesaniaschigorodo.domain.ports.in.OrderPortIn;
-import com.artesaniaschigorodo.domain.ports.out.InvoicePortOut;
+import com.artesaniaschigorodo.domain.ports.in.OrderPort;
+import com.artesaniaschigorodo.domain.ports.out.InvoicePort;
 import com.artesaniaschigorodo.domain.models.order.Invoice;
-import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
+import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final OrderPortIn orderUseCase;
-    private final UserPortOut userPersistencePort;
-    private final InvoicePortOut invoicePersistencePort;
+    private final OrderPort orderUseCase;
+    private final UserPort userPersistencePort;
+    private final InvoicePort invoicePersistencePort;
 
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody OrderRequest request) {

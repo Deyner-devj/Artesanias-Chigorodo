@@ -4,7 +4,7 @@ import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.Use
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.UserMapper;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.UserRepository;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
+import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class UserPersistenceAdapter implements UserPortOut {
+public class UserPersistenceAdapter implements UserPort {
 
     private final UserRepository userJpaRepository;
 

@@ -7,8 +7,8 @@ import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.models.enums.Category;
-import com.artesaniaschigorodo.domain.ports.in.ProductPortIn;
-import com.artesaniaschigorodo.domain.ports.out.UserPortOut;
+import com.artesaniaschigorodo.domain.ports.in.ProductPort;
+import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductPortIn productUseCase;
-    private final UserPortOut userPersistencePort;
+    private final ProductPort productUseCase;
+    private final UserPort userPersistencePort;
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProducts(

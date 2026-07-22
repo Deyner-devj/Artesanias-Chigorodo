@@ -1,5 +1,5 @@
 package com.artesaniaschigorodo.domain.ports.in;
 
-public class ManageCartPortIn {
+public class ManageCartPort {
     
 }

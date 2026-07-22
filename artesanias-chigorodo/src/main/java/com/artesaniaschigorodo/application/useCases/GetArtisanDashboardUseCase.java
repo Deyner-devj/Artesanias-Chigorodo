@@ -7,8 +7,8 @@ import com.artesaniaschigorodo.domain.models.order.Order;
 import com.artesaniaschigorodo.domain.models.order.OrderItem;
 import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.ports.out.OrderPortOut;
-import com.artesaniaschigorodo.domain.ports.out.ProductPortOut;
+import com.artesaniaschigorodo.domain.ports.out.OrderPort;
+import com.artesaniaschigorodo.domain.ports.out.ProductPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GetArtisanDashboardUseCase {
 
-	private final OrderPortOut orderPersistencePort;
-	private final ProductPortOut productPersistencePort;
+	private final OrderPort orderPersistencePort;
+	private final ProductPort productPersistencePort;
 
 	public DashboardResponse getDashboard(User currentUser) {
 		List<Product> products = loadProductsForUser(currentUser);

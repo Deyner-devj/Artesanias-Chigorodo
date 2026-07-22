@@ -5,8 +5,8 @@ import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.models.enums.Role;
-import com.artesaniaschigorodo.domain.ports.in.ProductPortIn;
-import com.artesaniaschigorodo.domain.ports.out.ProductPortOut;
+import com.artesaniaschigorodo.domain.ports.in.ProductPort;
+import com.artesaniaschigorodo.domain.ports.out.ProductPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProductUseCase implements ProductPortIn {
+public class ProductUseCase implements ProductPort {
 
-    private final ProductPortOut productPersistencePort;
+    private final ProductPort productPersistencePort;
 
     @Override
     public Product getProductById(Long id) {
