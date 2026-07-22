@@ -13,8 +13,9 @@ import java.util.Enumeration;
 import java.util.UUID;
 
 @Component
-@Slf4j
 public class RequestResponseLoggingFilter extends OncePerRequestFilter {
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(RequestResponseLoggingFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

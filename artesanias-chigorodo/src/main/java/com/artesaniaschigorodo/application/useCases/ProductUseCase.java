@@ -6,7 +6,6 @@ import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.ports.in.ProductPort;
-import com.artesaniaschigorodo.domain.ports.out.ProductPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductUseCase implements ProductPort {
 
-    private final ProductPort productPersistencePort;
+    private final com.artesaniaschigorodo.domain.ports.out.ProductPort productPersistencePort;
 
     @Override
     public Product getProductById(Long id) {

@@ -1,5 +1,8 @@
-function initDashboardBootstrap() {
-  if (typeof initDashboardMetrics === "function") initDashboardMetrics();
-  if (typeof initDashboardCharts === "function") initDashboardCharts();
-  if (typeof initRecentOrdersTable === "function") initRecentOrdersTable();
-}
+// ==========================================================================
+// DASHBOARD INIT: Bootstrap de la página del artesano
+// ==========================================================================
+document.addEventListener("DOMContentLoaded", () => {
+  if (typeof loadDashboardMetrics === "function") loadDashboardMetrics();
+  if (typeof renderDashboardCharts === "function") renderDashboardCharts();
+  if (typeof loadRecentOrdersTable === "function") loadRecentOrdersTable();
+});

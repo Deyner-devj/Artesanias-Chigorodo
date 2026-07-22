@@ -1,12 +1,19 @@
-function filtrarProductosPorCategoria(products, category) {
-  if (!category || category === "Todas") return products;
-  return products.filter((p) => p.category === category);
+// ==========================================================================
+// PRODUCTOS FILTROS: Filtros por categoría y rango de precio
+// ==========================================================================
+function filterProducts(category = "ALL", maxPrice = Infinity) {
+  const allProducts = typeof getProducts === "function" ? getProducts() : [];
+  const filtered = allProducts.filter(p => {
+    const matchCategory = category === "ALL" || p.category.toUpperCase() === category.toUpperCase();
+    const matchPrice = p.price <= maxPrice;
+    return matchCategory && matchPrice;
+  });
+
+  if (typeof renderProductCatalog === "function") {
+    renderProductCatalog(filtered);
+  }
 }
 
-function filtrarProductosPorPrecio(products, minPrice, maxPrice) {
-  return products.filter((p) => {
-    const minMatch = minPrice == null || p.price >= minPrice;
-    const maxMatch = maxPrice == null || p.price <= maxPrice;
-    return minMatch && maxMatch;
-  });
+if (typeof window !== "undefined") {
+  window.filterProducts = filterProducts;
 }

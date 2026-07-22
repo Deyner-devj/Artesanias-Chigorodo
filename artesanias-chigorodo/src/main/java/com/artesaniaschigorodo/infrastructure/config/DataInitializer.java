@@ -9,11 +9,20 @@ import com.artesaniaschigorodo.domain.ports.out.CategoryPort;
 import com.artesaniaschigorodo.domain.ports.out.ProductPort;
 import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * DataInitializer: Siembra datos iniciales para desarrollo y pruebas.
+ * Las credenciales del admin se cargan desde variables de entorno:
+ *   ADMIN_EMAIL    (defecto: admin@example.com - solo para desarrollo local)
+ *   ADMIN_PASSWORD (defecto: Admin123!       - solo para desarrollo local)
+ *
+ * En producción SIEMPRE inyectar ADMIN_EMAIL y ADMIN_PASSWORD como variables de entorno.
+ */
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
@@ -23,15 +32,20 @@ public class DataInitializer implements CommandLineRunner {
     private final ProductPort ProductPort;
     private final CategoryPort CategoryPort;
 
+    @Value("${ADMIN_EMAIL:admin@example.com}")
+    private String adminEmail;
+
+    @Value("${ADMIN_PASSWORD:Admin123!}")
+    private String adminPassword;
+
     @Override
     public void run(String... args) throws Exception {
-        String adminEmail = "admin@example.com";
         User admin;
         if (!UserPort.existsByEmail(adminEmail)) {
             admin = User.builder()
                     .fullName("Admin Test")
                     .email(adminEmail)
-                    .password("Admin123!")
+                    .password(adminPassword)
                     .role(Role.ADMIN)
                     .build();
             admin = AuthPort.register(admin);

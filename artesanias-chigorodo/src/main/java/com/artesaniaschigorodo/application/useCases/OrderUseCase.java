@@ -13,7 +13,6 @@ import com.artesaniaschigorodo.domain.ports.in.OrderPort;
 import com.artesaniaschigorodo.domain.models.order.Invoice;
 import com.artesaniaschigorodo.domain.ports.out.ElectronicInvoicingPort;
 import com.artesaniaschigorodo.domain.ports.out.InvoicePort;
-import com.artesaniaschigorodo.domain.ports.out.OrderPort;
 import com.artesaniaschigorodo.domain.ports.out.ProductPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class OrderUseCase implements OrderPort {
 
-    private final OrderPort orderPersistencePort;
+    private final com.artesaniaschigorodo.domain.ports.out.OrderPort orderPersistencePort;
     private final ProductPort productPersistencePort;
     private final ElectronicInvoicingPort electronicInvoicingPort;
     private final InvoicePort invoicePersistencePort;
@@ -35,6 +34,7 @@ public class OrderUseCase implements OrderPort {
 
     @Override
     @Transactional
+    public Order createOrder(Order order, User currentUser) {
         new com.artesaniaschigorodo.domain.services.CreateOrder().validateAndCalculate(order);
 
         order.setUser(currentUser);
