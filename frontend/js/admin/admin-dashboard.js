@@ -85,7 +85,7 @@ function configurarBotonesTopbar() {
       if (e.key === "Enter") {
         e.preventDefault();
         const termino = this.value.trim();
-        if (termino) showModernToast(`Buscando: "${termino}"`, "success");
+        if (termino) window.location.href = `../home/productos.html?search=${encodeURIComponent(termino)}`;
       }
     };
   }

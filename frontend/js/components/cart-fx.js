@@ -226,7 +226,7 @@
     // Este es el momento real en que el producto "entra" al carrito:
     // ahora sí lo guardamos en el carrito de datos.
     if (typeof addProductToCart === "function" && product) {
-      addProductToCart(product, 1);
+      await addProductToCart(product, 1);
     }
     if (typeof window.dispatchEvent === "function") {
       window.dispatchEvent(new Event("itemAddedToCart"));

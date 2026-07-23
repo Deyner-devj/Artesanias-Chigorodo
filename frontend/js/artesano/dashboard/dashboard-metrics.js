@@ -10,7 +10,7 @@ async function loadDashboardMetrics() {
     try {
       const data = await window.API.dashboard.getArtisan();
       if (kpiVentas) kpiVentas.textContent = "$" + (data.totalSales || 0).toLocaleString("es-CO") + " COP";
-      if (kpiGanancias) kpiGanancias.textContent = "$" + (data.netEarnings || 0).toLocaleString("es-CO") + " COP";
+      if (kpiGanancias) kpiGanancias.textContent = "No disponible";
       if (kpiPedidos) kpiPedidos.textContent = (data.totalOrders || 0) + " pedidos";
       return;
     } catch (err) {
@@ -18,10 +18,9 @@ async function loadDashboardMetrics() {
     }
   }
 
-  // Fallback inicial cuando no hay datos
-  if (kpiVentas) kpiVentas.textContent = "$0 COP";
-  if (kpiGanancias) kpiGanancias.textContent = "$0 COP";
-  if (kpiPedidos) kpiPedidos.textContent = "0 pedidos";
+  if (kpiVentas) kpiVentas.textContent = "No disponible";
+  if (kpiGanancias) kpiGanancias.textContent = "No disponible";
+  if (kpiPedidos) kpiPedidos.textContent = "No disponible";
 }
 
 if (typeof window !== "undefined") {

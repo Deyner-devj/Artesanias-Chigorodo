@@ -195,7 +195,7 @@
         const trackError = document.getElementById("track-error");
         const trackResult = document.getElementById("track-result");
 
-        trackForm.addEventListener("submit", function (e) {
+        trackForm.addEventListener("submit", async function (e) {
           e.preventDefault();
 
           // Limpiamos errores previos
@@ -206,6 +206,24 @@
           let inputId = document.getElementById("track-id").value.trim();
           if (!inputId.startsWith("#")) {
             inputId = "#" + inputId;
+          }
+
+          try {
+            const order = await window.API.orders.getByOrderNumber(inputId.slice(1));
+            document.getElementById("result-order-num").textContent = order.orderNumber;
+            document.getElementById("result-order-date").textContent = new Date(order.createdAt).toLocaleDateString("es-CO");
+            document.getElementById("result-order-city").textContent = order.shippingDetails.city;
+            trackResult.style.display = "block";
+            if (window.OrderTracking) {
+              const scene = document.getElementById("tracking-scene");
+              const pill = document.getElementById("result-order-status");
+              const stage = window.OrderTracking.renderScene(scene, order);
+              window.OrderTracking.renderStatusPill(pill, stage, order);
+            }
+            return;
+          } catch (_) {
+            trackError.style.display = "block";
+            return;
           }
 
           // Buscamos en el historial de la máquina

@@ -65,6 +65,8 @@ const auth = {
     });
     return data;
   },
+  async forgotPassword(email) { return apiFetch("/api/auth/forgot-password", { method: "POST", body: JSON.stringify({ email }) }); },
+  async resetPassword(token, password) { return apiFetch("/api/auth/reset-password", { method: "POST", body: JSON.stringify({ token, password }) }); },
 };
 
 // ─── Products ────────────────────────────────────────────────────────────────
@@ -184,6 +186,9 @@ const dashboard = {
   async getSummary() {
     return apiFetch("/api/dashboard/resumen");
   },
+  async getArtisan() {
+    return apiFetch("/api/dashboard/resumen");
+  },
 };
 
 // ─── Users ───────────────────────────────────────────────────────────────────
@@ -219,6 +224,12 @@ const artisans = {
   },
 };
 
+const favorites = {
+  async getAll() { return apiFetch("/api/favorites"); },
+  async add(productId) { return apiFetch(`/api/favorites/${productId}`, { method: "POST" }); },
+  async remove(productId) { return apiFetch(`/api/favorites/${productId}`, { method: "DELETE" }); },
+};
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
 window.API = {
   auth,
@@ -231,5 +242,6 @@ window.API = {
   dashboard,
   users,
   artisans,
+  favorites,
 };
 window._API_clearToken = _clearToken;

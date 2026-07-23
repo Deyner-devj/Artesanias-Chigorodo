@@ -62,19 +62,13 @@
 
         // 2. Renderizado forzado al cargar
         renderCart();
+        window.addEventListener("cartChanged", renderCart);
       });
 
       function renderCart() {
         const container = document.getElementById("cart-main-container");
 
-        // Lectura directa y sin rodeos del LocalStorage
-        const rawData = localStorage.getItem("cart_items");
-        let items = [];
-        try {
-          items = rawData ? JSON.parse(rawData) : [];
-        } catch (e) {
-          items = [];
-        }
+        const items = typeof getCartItems === "function" ? getCartItems() : [];
 
         // Estado vacío
         if (!items || items.length === 0) {
@@ -139,14 +133,12 @@
         if (typeof updateCartBadge === "function") updateCartBadge();
       }
 
-      function changeItemQty(productId, delta) {
-        let items = JSON.parse(localStorage.getItem("cart_items") || "[]");
-        let item = items.find((i) => i.product.id === productId);
-        if (item) {
-          item.quantity += delta;
-          if (item.quantity <= 0)
-            items = items.filter((i) => i.product.id !== productId);
-          localStorage.setItem("cart_items", JSON.stringify(items));
+      async function changeItemQty(productId, delta) {
+        if (delta > 0) {
+          const item = getCartItems().find((entry) => entry.product.id === productId);
+          if (item) await addProductToCart(item.product, 1);
+        } else {
+          await decreaseProductInCart(productId);
         }
         renderCart();
       }
@@ -154,11 +146,8 @@
       function removeCartItem(productId, btnEl) {
         const cardEl = btnEl ? btnEl.closest(".cart-item-card") : null;
 
-        const doRemoval = () => {
-          let items = JSON.parse(localStorage.getItem("cart_items") || "[]");
-          items = items.filter((i) => i.product.id !== productId);
-          localStorage.setItem("cart_items", JSON.stringify(items));
-          window.dispatchEvent(new Event("cartChanged"));
+        const doRemoval = async () => {
+          await removeProductFromCart(productId);
           renderCart();
         };
 

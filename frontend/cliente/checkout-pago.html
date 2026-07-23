@@ -317,6 +317,7 @@
     <script src="../js/core/api.js"></script>
     <script src="../js/core/auth.js"></script>
     <script src="../js/cliente/carrito.js"></script>
+    <script src="../js/cliente/checkout-order.js"></script>
     <script src="../js/components/navbar.js"></script>
     <script src="../js/components/cart-fx.js"></script>
     <script src="../js/components/footer.js"></script>
@@ -325,7 +326,8 @@
       let selectedMethod = "PSE";
       let shippingCost = 15000;
 
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", async function () {
+        await syncCartFromAPI();
         // Settle cart constraints
         if (typeof getCartItems === "function" && getCartItems().length === 0) {
           window.location.href = "carrito.html";
@@ -484,7 +486,9 @@
             // Si no tienes simulador de PSE, cambia "pago-pse.html" por "confirmacion-compra.html"
             window.location.href = "pago-pse.html";
           } else {
-            processLocalOrder();
+            completeCheckoutOrder(selectedMethod)
+              .then(() => { window.location.href = "confirmacion-compra.html"; })
+              .catch((error) => showModernToast(error.message || "No fue posible crear la orden.", "error"));
           }
         });
       }

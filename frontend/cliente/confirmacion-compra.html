@@ -184,7 +184,7 @@
     <script src="../js/components/footer.js"></script>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", async function () {
         renderInvoice();
       });
 
@@ -219,8 +219,22 @@
         }).format(val);
       }
 
-      function renderInvoice() {
+      async function renderInvoice() {
         const container = document.getElementById("invoice-details-container");
+        const apiOrderNumber = sessionStorage.getItem("checkout_order_number");
+        if (apiOrderNumber && window.API) {
+          try {
+            const order = await window.API.orders.getByOrderNumber(apiOrderNumber);
+            const lines = order.items.map((item) => `<div style="display:flex;justify-content:space-between"><span>${item.productName} (x${item.quantity})</span><span>${safeFormatCOP(item.subtotal)}</span></div>`).join("");
+            container.innerHTML = `<h3>Resumen del pedido</h3><p><strong>Orden:</strong> ${order.orderNumber}</p><p><strong>Entrega:</strong> ${order.shippingDetails.address}, ${order.shippingDetails.city}</p>${lines}<hr><div style="display:flex;justify-content:space-between;font-weight:700"><span>Total</span><span>${safeFormatCOP(order.total)}</span></div>`;
+            return;
+          } catch (error) {
+            container.innerHTML = '<p>No fue posible cargar la orden. Intenta nuevamente desde Mis pedidos.</p>';
+            return;
+          }
+        }
+        container.innerHTML = '<p>No hay una orden para mostrar.</p>';
+        return;
         const orderNum = sessionStorage.getItem("checkout_order_number");
         const info = JSON.parse(
           sessionStorage.getItem("checkout_info") || "{}",

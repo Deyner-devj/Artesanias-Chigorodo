@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es">
-  <>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -169,6 +169,10 @@
                   body: JSON.stringify({ name, email, subject, message })
                 });
                 if (response.ok) {
+                  const data = await response.json();
+                  if (!data.whatsappUrl) throw new Error("No fue posible preparar el mensaje de WhatsApp.");
+                  window.location.assign(data.whatsappUrl);
+                  return;
                   showModernToast("¡Gracias por contactarnos! Te responderemos en breve.", "success");
                   form.reset();
                 } else {
@@ -178,6 +182,8 @@
                 throw new Error("API no disponible");
               }
             } catch (err) {
+              showModernToast(err.message || "No fue posible enviar el mensaje. Intenta nuevamente.", "error");
+              return;
               // Fallback: simular envio exitoso localmente
               showModernToast("¡Gracias por contactarnos! Te responderemos en breve.", "success");
               form.reset();

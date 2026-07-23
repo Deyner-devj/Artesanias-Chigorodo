@@ -28,7 +28,7 @@ async function loadRecentOrdersTable() {
   tableBody.innerHTML = orders.slice(0, 5).map(o => `
     <tr>
       <td><strong>${o.orderNumber || o.id}</strong></td>
-      <td>${o.user ? o.user.fullName : 'Cliente'}</td>
+      <td>${o.userFullName || 'Cliente'}</td>
       <td>$${(o.total || 0).toLocaleString("es-CO")} COP</td>
       <td><span class="badge badge-info">${o.orderStatus || 'PENDING'}</span></td>
     </tr>

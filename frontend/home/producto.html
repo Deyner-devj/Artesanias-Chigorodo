@@ -481,7 +481,7 @@
         }).format(val);
       }
 
-      function loadProductDetails() {
+      async function loadProductDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get("id");
 
@@ -489,16 +489,17 @@
         const notFound = document.getElementById("not-found-state");
         const productUI = document.getElementById("product-state");
 
-        if (!productId || typeof getProducts !== "function") {
+        if (!productId || typeof getProductByIdAsync !== "function") {
           loader.style.display = "none";
           notFound.style.display = "block";
           return;
         }
 
-        const products = getProducts();
-        currentProduct = products.find(
-          (p) => String(p.id) === String(productId),
-        );
+        try {
+          currentProduct = await getProductByIdAsync(productId);
+        } catch (_) {
+          currentProduct = null;
+        }
 
         if (currentProduct) {
           document.getElementById("detail-img").src = currentProduct.image;
@@ -565,38 +566,14 @@
       }
 
       // ─── RESENAS ────────────────────────────────────────────────
-      function renderReviews(productId) {
+      async function renderReviews(productId) {
         const list = document.getElementById("reviews-list");
-        // Intentar cargar desde localStorage (simulado) o API
         let reviews = [];
         try {
-          const stored = JSON.parse(
-            localStorage.getItem("product_reviews") || "[]",
-          );
-          reviews = stored.filter(
-            (r) => String(r.productId) === String(productId),
-          );
-        } catch (e) {}
+          reviews = await window.API.reviews.getByProduct(productId);
+        } catch (e) { reviews = []; }
 
         // Si no hay resenas, mostrar placeholder
-        if (reviews.length === 0) {
-          reviews = [
-            {
-              userName: "Cliente Verificado",
-              rating: 5,
-              comment:
-                "Excelente calidad y detalle artesanal. Muy recomendado.",
-              createdAt: "2025-01-15",
-            },
-            {
-              userName: "Comprador Frecuente",
-              rating: 4,
-              comment:
-                "Hermoso producto, llego bien empacado y en excelente estado.",
-              createdAt: "2025-02-20",
-            },
-          ];
-        }
 
         // Calcular distribucion
         const dist = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };

@@ -91,24 +91,15 @@
         let artisans = [];
         if (window.API) {
           try {
-            const users = await window.API.products.getAll();
-            // Filtrar vendedores unicos de los productos
-            const sellerMap = {};
+            const users = await window.API.artisans.getAll();
             if (Array.isArray(users)) {
-              users.forEach((p) => {
-                if (p.sellerName && !sellerMap[p.sellerName]) {
-                  sellerMap[p.sellerName] = {
-                    name: p.sellerName,
-                    specialty: p.category || "Artesania",
-                    bio: "Artesano registrado en nuestra plataforma.",
-                    productCount: 0,
-                  };
-                }
-                if (p.sellerName && sellerMap[p.sellerName]) {
-                  sellerMap[p.sellerName].productCount++;
-                }
-              });
-              artisans = Object.values(sellerMap);
+              artisans = users.map((user) => ({
+                id: user.id,
+                name: user.fullName,
+                specialty: "Artesano registrado",
+                bio: "Conoce sus piezas y su trabajo en nuestra plataforma.",
+                productCount: 0,
+              }));
             }
           } catch (e) {
             console.warn(
@@ -120,6 +111,10 @@
 
         // Si no hay datos del backend, usar informacion estatica
         if (artisans.length === 0) {
+          grid.innerHTML = '<p style="color: var(--text-muted);">No hay artesanos publicados todavia.</p>';
+          return;
+        }
+        if (false) {
           artisans = [
             {
               name: "Maria Luz Valdes",

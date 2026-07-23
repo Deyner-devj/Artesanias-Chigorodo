@@ -1,121 +1,56 @@
-// js/carrito.js
-// Carrito local (localStorage) + sincronización al backend para usuarios autenticados.
+// Carrito real: los productos y cantidades pertenecen al usuario autenticado.
+// Se conserva una cache en memoria para renderizar la interfaz, nunca en localStorage.
+let cartItems = [];
 
-function getCartItems() {
-  const itemsStr = localStorage.getItem('cart_items');
-  try {
-    return itemsStr ? JSON.parse(itemsStr) : [];
-  } catch (_) {
-    return [];
-  }
+function isAuthenticated() { return Boolean(sessionStorage.getItem('auth_token')); }
+function getCartItems() { return [...cartItems]; }
+function notifyCartChanged() { window.dispatchEvent(new Event('cartChanged')); }
+function mapCartItem(item) {
+  return { product: { id: String(item.productId), name: item.productName, price: item.unitPrice, image: '../img/mochila_wayuu.png', stock: 99 }, quantity: item.quantity };
 }
 
-function saveCartItems(items) {
-  localStorage.setItem('cart_items', JSON.stringify(items));
-  window.dispatchEvent(new Event('cartChanged'));
-}
-
-// ─── Sync helpers (fire-and-forget) ─────────────────────────────────────────
-function _isAuthenticated() {
-  return !!(sessionStorage.getItem('auth_token') || localStorage.getItem('auth_token'));
-}
-
-async function _syncAddToAPI(productId, quantity) {
-  if (!window.API || !_isAuthenticated()) return;
-  try {
-    await window.API.cart.addItem(Number(productId), quantity);
-  } catch (err) {
-    console.warn('[carrito] sync addItem falló:', err.message);
-  }
-}
-
-async function _syncRemoveFromAPI(productId) {
-  if (!window.API || !_isAuthenticated()) return;
-  try {
-    await window.API.cart.removeItem(Number(productId));
-  } catch (err) {
-    console.warn('[carrito] sync removeItem falló:', err.message);
-  }
-}
-
-async function _syncClearAPI() {
-  if (!window.API || !_isAuthenticated()) return;
-  try {
-    await window.API.cart.clear();
-  } catch (err) {
-    console.warn('[carrito] sync clear falló:', err.message);
-  }
-}
-
-// ─── API pública ─────────────────────────────────────────────────────────────
-
-function addProductToCart(product, qty = 1) {
-  const items = getCartItems();
-  const existing = items.find((item) => item.product.id === product.id);
-  if (existing) {
-    existing.quantity += qty;
-  } else {
-    items.push({ product, quantity: qty });
-  }
-  saveCartItems(items);
-  _syncAddToAPI(product.id, qty);
-}
-
-function removeProductFromCart(productId) {
-  const items = getCartItems();
-  const filtered = items.filter((item) => item.product.id !== productId);
-  saveCartItems(filtered);
-  _syncRemoveFromAPI(productId);
-}
-
-function clearCart() {
-  saveCartItems([]);
-  _syncClearAPI();
-}
-
-function getCartQuantity() {
-  return getCartItems().reduce((sum, item) => sum + item.quantity, 0);
-}
-
-function getCartTotal() {
-  return getCartItems().reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0,
-  );
-}
-
-/**
- * Para usuarios autenticados: carga el carrito del backend y lo sincroniza
- * con el localStorage. Se llama opcionalmente al iniciar sesión.
- */
 async function syncCartFromAPI() {
-  if (!window.API || !_isAuthenticated()) return;
-  try {
-    const apiCart = await window.API.cart.get();
-    // apiCart = { userEmail, items: [{productId, productName, quantity, unitPrice, subtotal}], ... }
-    if (!apiCart || !Array.isArray(apiCart.items) || apiCart.items.length === 0) return;
-
-    // Solo sincronizar si el carrito local está vacío
-    const localItems = getCartItems();
-    if (localItems.length > 0) return;
-
-    const mapped = apiCart.items.map((item) => ({
-      product: {
-        id: String(item.productId),
-        name: item.productName,
-        price: item.unitPrice,
-        image: '../img/mochila_wayuu.png', // placeholder
-        category: '',
-        sellerName: '',
-        stock: 99,
-        rating: 5.0,
-        reviewsCount: 0,
-      },
-      quantity: item.quantity,
-    }));
-    saveCartItems(mapped);
-  } catch (err) {
-    console.warn('[carrito] syncCartFromAPI falló:', err.message);
-  }
+  if (!isAuthenticated() || !window.API) { cartItems = []; notifyCartChanged(); return cartItems; }
+  const response = await window.API.cart.get();
+  cartItems = (response.items || []).map(mapCartItem);
+  notifyCartChanged();
+  return getCartItems();
 }
+
+async function addProductToCart(product, quantity = 1) {
+  if (!isAuthenticated()) throw new Error('Debes iniciar sesion para agregar productos al carrito.');
+  const response = await window.API.cart.addItem(Number(product.id), quantity);
+  cartItems = (response.items || []).map(mapCartItem);
+  notifyCartChanged();
+  return getCartItems();
+}
+
+async function removeProductFromCart(productId) {
+  const response = await window.API.cart.removeItem(Number(productId));
+  cartItems = (response.items || []).map(mapCartItem);
+  notifyCartChanged();
+  return getCartItems();
+}
+
+async function decreaseProductInCart(productId) {
+  const response = await window.API.cart.decreaseItem(Number(productId));
+  cartItems = (response.items || []).map(mapCartItem);
+  notifyCartChanged();
+  return getCartItems();
+}
+
+async function clearCart() {
+  const response = await window.API.cart.clear();
+  cartItems = (response.items || []).map(mapCartItem);
+  notifyCartChanged();
+}
+
+function getCartQuantity() { return cartItems.reduce((total, item) => total + item.quantity, 0); }
+function getCartTotal() { return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0); }
+window.getCartTotalItems = getCartQuantity;
 window.syncCartFromAPI = syncCartFromAPI;
+window.decreaseProductInCart = decreaseProductInCart;
+
+document.addEventListener('DOMContentLoaded', () => {
+  syncCartFromAPI().catch((error) => console.error('[carrito]', error.message));
+});

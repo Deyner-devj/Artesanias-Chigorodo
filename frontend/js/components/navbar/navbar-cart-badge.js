@@ -5,13 +5,6 @@ function updateCartBadge() {
   let totalItems = 0;
   if (typeof getCartTotalItems === "function") {
     totalItems = getCartTotalItems();
-  } else {
-    try {
-      const cart = JSON.parse(localStorage.getItem("artesanias_cart")) || [];
-      totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-    } catch (e) {
-      totalItems = 0;
-    }
   }
 
   badge.textContent = totalItems;

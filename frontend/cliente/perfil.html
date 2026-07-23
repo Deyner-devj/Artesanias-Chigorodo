@@ -583,7 +583,8 @@
       `;
       }
 
-      function renderFavorites(panel) {
+      async function renderFavorites(panel) {
+        if (window.favoritesAPI) await window.favoritesAPI.load();
         const favorites = window.favoritesAPI ? window.favoritesAPI.get() : [];
 
         if (favorites.length === 0) {
@@ -626,9 +627,9 @@
         `;
       }
 
-      function removeFavoriteFromUI(productId) {
+      async function removeFavoriteFromUI(productId) {
         if (window.favoritesAPI) {
-          window.favoritesAPI.remove(productId);
+          await window.favoritesAPI.remove(productId);
           showModernToast("Producto eliminado de favoritos.");
           renderTabContent();
         }

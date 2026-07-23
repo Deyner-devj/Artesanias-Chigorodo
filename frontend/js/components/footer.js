@@ -178,6 +178,8 @@ function renderFooter() {
           throw new Error("Error del servidor");
         }
       } catch (err) {
+        showModernToast(err.message || "No fue posible completar la suscripcion.", "error");
+        return;
         // Fallback local si el backend no esta disponible
         showModernToast(
           "¡Gracias por suscribirte a nuestro boletin informativo!",

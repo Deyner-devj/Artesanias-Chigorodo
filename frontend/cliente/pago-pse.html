@@ -127,12 +127,14 @@
     <script src="../js/cliente/productos.js"></script>
     <script src="../js/core/api.js"></script><script src="../js/core/auth.js"></script>
     <script src="../js/cliente/carrito.js"></script>
+    <script src="../js/cliente/checkout-order.js"></script>
 
     <script>
       let grandTotal = 0;
       let globalCartItems = []; // Para no perder los items en funciones posteriores
 
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", async function () {
+        await syncCartFromAPI();
         // Extracción segura de items
         try {
           if (typeof getCartItems === "function") {
@@ -196,7 +198,7 @@
         document.getElementById("pse-grand-total").textContent = formattedTotal;
       }
 
-      function payWithPSE() {
+      async function payWithPSE() {
         const check = document.getElementById("pse-terms");
         if (!check.checked) {
           showModernToast(
@@ -205,6 +207,14 @@
           );
           return;
         }
+
+        try {
+          await completeCheckoutOrder("PSE");
+          window.location.href = "confirmacion-compra.html";
+        } catch (error) {
+          showModernToast(error.message || "No fue posible crear la orden.", "error");
+        }
+        return;
 
         // Generar número de orden seguro (por si falla la función externa)
         const orderNum =

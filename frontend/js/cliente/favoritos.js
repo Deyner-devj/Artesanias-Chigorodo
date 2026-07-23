@@ -1,119 +1,38 @@
-// ==========================================
-// FAVORITOS - Gestion de productos favoritos
-// Almacena en localStorage bajo clave "favorites"
-// ==========================================
+// Favoritos persistidos por usuario en el backend. La cache solo vive en memoria.
+let favoriteItems = [];
 
-const FAVORITES_KEY = "favorites";
-
-/**
- * Obtiene la lista de productos favoritos almacenados
- * @returns {Array} Lista de objetos { id, name, image, price, addedAt }
- */
-function getFavorites() {
-  try {
-    const data = localStorage.getItem(FAVORITES_KEY);
-    return data ? JSON.parse(data) : [];
-  } catch (e) {
-    return [];
-  }
+function normalizeProduct(product) {
+  return { ...product, image: product.image || product.imageUrls?.[0] || "../img/mochila_wayuu.png" };
 }
 
-/**
- * Agrega un producto a favoritos
- * @param {Object} product - Producto con al menos { id, name, image, price }
- * @returns {boolean} true si se agrego, false si ya existia
- */
-function addFavorite(product) {
-  const favorites = getFavorites();
-  const exists = favorites.some((fav) => String(fav.id) === String(product.id));
-  if (exists) return false;
+async function loadFavorites() {
+  if (!window.API) throw new Error("El servicio de favoritos no esta disponible.");
+  favoriteItems = (await window.API.favorites.getAll()).map(normalizeProduct);
+  window.dispatchEvent(new Event("favoritesChanged"));
+  return favoriteItems;
+}
 
-  favorites.push({
-    id: String(product.id),
-    name: product.name || "Producto",
-    image: product.image || "",
-    price: product.price || 0,
-    addedAt: new Date().toISOString(),
-  });
+function getFavorites() { return [...favoriteItems]; }
+function isFavorite(productId) { return favoriteItems.some((item) => String(item.id) === String(productId)); }
+function getFavoritesCount() { return favoriteItems.length; }
 
-  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
-  window.dispatchEvent(new CustomEvent("favoritesChanged"));
+async function addFavorite(product) {
+  await window.API.favorites.add(product.id);
+  if (!isFavorite(product.id)) favoriteItems.unshift(normalizeProduct(product));
+  window.dispatchEvent(new Event("favoritesChanged"));
   return true;
 }
 
-/**
- * Elimina un producto de favoritos
- * @param {string|number} productId
- * @returns {boolean} true si se elimino
- */
-function removeFavorite(productId) {
-  let favorites = getFavorites();
-  const initialLength = favorites.length;
-  favorites = favorites.filter((fav) => String(fav.id) !== String(productId));
-  if (favorites.length === initialLength) return false;
-
-  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
-  window.dispatchEvent(new CustomEvent("favoritesChanged"));
+async function removeFavorite(productId) {
+  await window.API.favorites.remove(productId);
+  favoriteItems = favoriteItems.filter((item) => String(item.id) !== String(productId));
+  window.dispatchEvent(new Event("favoritesChanged"));
   return true;
 }
 
-/**
- * Verifica si un producto esta en favoritos
- * @param {string|number} productId
- * @returns {boolean}
- */
-function isFavorite(productId) {
-  const favorites = getFavorites();
-  return favorites.some((fav) => String(fav.id) === String(productId));
+async function toggleFavorite(product) {
+  if (isFavorite(product.id)) { await removeFavorite(product.id); return false; }
+  await addFavorite(product); return true;
 }
 
-/**
- * Obtiene el numero total de favoritos
- * @returns {number}
- */
-function getFavoritesCount() {
-  return getFavorites().length;
-}
-
-/**
- * Alterna (agrega/remueve) un producto de favoritos
- * @param {Object} product
- * @returns {boolean} true si ahora esta en favoritos, false si se removio
- */
-function toggleFavorite(product) {
-  if (isFavorite(product.id)) {
-    removeFavorite(product.id);
-    return false; // ya no esta en favoritos
-  } else {
-    addFavorite(product);
-    return true; // ahora esta en favoritos
-  }
-}
-
-/**
- * Obtiene los IDs de todos los favoritos
- * @returns {string[]}
- */
-function getFavoriteIds() {
-  return getFavorites().map((fav) => String(fav.id));
-}
-
-/**
- * Limpia todos los favoritos
- */
-function clearFavorites() {
-  localStorage.removeItem(FAVORITES_KEY);
-  window.dispatchEvent(new CustomEvent("favoritesChanged"));
-}
-
-// Exponer funciones globalmente
-window.favoritesAPI = {
-  get: getFavorites,
-  add: addFavorite,
-  remove: removeFavorite,
-  is: isFavorite,
-  count: getFavoritesCount,
-  toggle: toggleFavorite,
-  ids: getFavoriteIds,
-  clear: clearFavorites,
-};
+window.favoritesAPI = { get: getFavorites, load: loadFavorites, add: addFavorite, remove: removeFavorite, is: isFavorite, count: getFavoritesCount, toggle: toggleFavorite, ids: () => favoriteItems.map((item) => String(item.id)) };
