@@ -31,6 +31,11 @@
       rel="stylesheet"
       href="../css/components/dashboard.css"
     />
+    <link
+      class="page-css"
+      rel="stylesheet"
+      href="../css/cliente/cliente-dashboard.css"
+    />
   </head>
   <body>
     <!-- Protect Route -->
@@ -234,8 +239,10 @@
     <!-- Scripts -->
     <script src="../js/core/main.js"></script>
     <script src="../js/cliente/productos.js"></script>
-    <script src="../js/core/api.js"></script><script src="../js/core/auth.js"></script>
+    <script src="../js/core/api.js"></script>
+    <script src="../js/core/auth.js"></script>
     <script src="../js/cliente/carrito.js"></script>
+    <script src="../js/cliente/favoritos.js"></script>
     <script src="../js/components/navbar.js"></script>
     <script src="../js/components/cart-fx.js"></script>
     <script src="../js/components/footer.js"></script>
@@ -577,21 +584,54 @@
       }
 
       function renderFavorites(panel) {
-        panel.innerHTML = `
-        <div>
-          <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Mis piezas favoritas</h2>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-            <div style="border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; display: flex; gap: 1rem; padding: 1rem;">
-              <img src="img/producto-mochila-wayuu-1.png" alt="Mochila Wayuu" style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover;" onerror="this.onerror=null;this.src='img/mochila_wayuu.png'" />
-              <div style="display: flex; flex-direction: column; justify-content: center;">
-                <h4 style="margin: 0; font-weight: 700;">Mochila Wayuu Colores del Sol</h4>
-                <span style="color: var(--primary); font-weight: 700; margin: 0.25rem 0;">${formatCOP(280000)}</span>
-                <a href="producto.html?id=1" style="font-size: 0.8rem; color: var(--secondary); font-weight: 600;">Ver pieza en catálogo</a>
-              </div>
+        const favorites = window.favoritesAPI ? window.favoritesAPI.get() : [];
+
+        if (favorites.length === 0) {
+          panel.innerHTML = `
+          <div>
+            <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Mis piezas favoritas</h2>
+            <div class="empty-state">
+              <p style="font-size: 1rem; color: var(--text-muted);">No tienes piezas favoritas aun.</p>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Explora el catalogo y agrega tus artesanias favoritas.</p>
+              <a href="../home/productos.html" class="btn btn-primary" style="margin-top: 1rem;">Ir al catalogo</a>
             </div>
           </div>
+          `;
+          return;
+        }
+
+        let cardsHtml = favorites
+          .map(
+            (fav) => `
+          <div class="favorito-card">
+            <img src="${fav.image}" alt="${fav.name}" onerror="this.onerror=null;this.src='../img/mochila_wayuu.png'" />
+            <div class="favorito-info">
+              <h4>${fav.name}</h4>
+              <span class="price">${formatCOP(fav.price)}</span>
+              <a href="../home/producto.html?id=${fav.id}">Ver pieza en catalogo</a>
+              <button onclick="removeFavoriteFromUI('${fav.id}')" style="background:none;border:none;color:#ef4444;font-size:0.8rem;cursor:pointer;text-align:left;padding:0;margin-top:0.25rem;font-weight:600;">Eliminar de favoritos</button>
+            </div>
+          </div>
+        `,
+          )
+          .join("");
+
+        panel.innerHTML = `
+        <div>
+          <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Mis piezas favoritas <span style="font-size:0.9rem;font-weight:400;color:var(--text-muted);">(${favorites.length})</span></h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            ${cardsHtml}
+          </div>
         </div>
-      `;
+        `;
+      }
+
+      function removeFavoriteFromUI(productId) {
+        if (window.favoritesAPI) {
+          window.favoritesAPI.remove(productId);
+          showModernToast("Producto eliminado de favoritos.");
+          renderTabContent();
+        }
       }
 
       function triggerLogout() {

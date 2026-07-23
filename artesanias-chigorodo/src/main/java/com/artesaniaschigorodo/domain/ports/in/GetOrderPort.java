@@ -1,5 +1,11 @@
 package com.artesaniaschigorodo.domain.ports.in;
 
-public class GetOrderPort {
-    
+import com.artesaniaschigorodo.domain.models.order.Order;
+import com.artesaniaschigorodo.domain.models.user.User;
+
+import java.util.List;
+
+public interface GetOrderPort {
+    Order getOrderByOrderNumber(String orderNumber, User currentUser);
+    List<Order> getOrdersForUser(User currentUser);
 }

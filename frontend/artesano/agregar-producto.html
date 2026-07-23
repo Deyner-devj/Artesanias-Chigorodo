@@ -4,7 +4,7 @@
     padding: 2rem;
     border-radius: 16px;
     box-shadow: var(--shadow);
-    max-width: 650px;
+    max-width: 700px;
     margin: 0 auto;
   "
 >
@@ -19,191 +19,175 @@
     Agregar Nuevo Producto
   </h3>
   <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem">
-    Registra una obra artesanal para exponerla en el mercado.
+    Registra una nueva artesania para exponerla en el catalogo de la tienda.
   </p>
 
   <form
     onsubmit="
       event.preventDefault();
-      showModernToast('\u00a1Artesan\u00eda guardada en el cat\u00e1logo exitosamente!', 'success');
+      showModernToast(
+        'Artesania guardada en el catalogo exitosamente!',
+        'success',
+      );
       loadView('productos');
     "
   >
-    <div style="margin-bottom: 1.25rem">
-      <label
-        style="
-          display: block;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #475569;
-          margin-bottom: 0.5rem;
-        "
-        >Nombre de la Artesanía</label
-      >
+    <p class="aa-section-title">Informacion general</p>
+
+    <div class="aa-form-group">
+      <label class="aa-label">Nombre del Producto</label>
       <input
         type="text"
-        placeholder="Ej. Mochila Wayuu de Hilos de Algodón"
+        class="aa-input"
+        placeholder="Ej. Mochila Wayuu Colores de Uraba"
         required
-        style="
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
-          font-family: inherit;
-          font-size: 0.9rem;
-        "
       />
     </div>
 
-    <div
-      style="
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-        margin-bottom: 1.25rem;
-      "
-    >
+    <div class="aa-form-group">
+      <label class="aa-label">Descripcion del Producto</label>
+      <textarea
+        class="aa-textarea"
+        placeholder="Describe la historia, tecnica y materiales de la artesania..."
+        required
+      ></textarea>
+      <span class="aa-hint"
+        >Cuenta la historia y la tecnica: esto es lo primero que leen tus
+        clientes.</span
+      >
+    </div>
+
+    <div class="aa-form-grid-2">
       <div>
-        <label
-          style="
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 0.5rem;
-          "
-          >Categoría</label
-        >
-        <select
-          style="
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            background: white;
-          "
-        >
+        <label class="aa-label">Categoria</label>
+        <select class="aa-select">
           <option>Tejidos</option>
-          <option>Alfarería y Barro</option>
-          <option>Ebanistería y Madera</option>
-          <option>Joyería Tradicional</option>
+          <option>Alfareria y Barro</option>
+          <option>Ebanisteria y Madera</option>
+          <option>Joyeria Artesanal</option>
+          <option>Accesorios</option>
+          <option>Hogar y Decoracion</option>
         </select>
       </div>
       <div>
-        <label
-          style="
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 0.5rem;
-          "
-          >Material Principal</label
-        >
+        <label class="aa-label">Precio Unitario (COP)</label>
+        <input
+          type="number"
+          class="aa-input"
+          placeholder="240000"
+          min="0"
+          required
+        />
+      </div>
+    </div>
+
+    <p class="aa-section-title">Detalles de fabricacion</p>
+
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Material Principal</label>
         <input
           type="text"
-          placeholder="Ej. Paja Tetera, Arcilla"
-          style="
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-          "
+          class="aa-input"
+          placeholder="Ej. Hilo de algodon mercerizado, barro negro..."
+        />
+      </div>
+      <div>
+        <label class="aa-label">Tecnica de Elaboracion</label>
+        <input
+          type="text"
+          class="aa-input"
+          placeholder="Ej. Tejido en crochet Wayuu, alfareria a mano..."
         />
       </div>
     </div>
 
-    <div
-      style="
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-      "
-    >
+    <div class="aa-form-grid-2">
       <div>
-        <label
-          style="
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 0.5rem;
-          "
-          >Precio de Venta (COP)</label
-        >
-        <input
-          type="number"
-          placeholder="150000"
-          required
-          style="
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-          "
-        />
+        <label class="aa-label">Tiempo de Elaboracion (dias)</label>
+        <input type="number" class="aa-input" placeholder="15" min="1" />
       </div>
       <div>
-        <label
-          style="
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 0.5rem;
-          "
-          >Cantidad Inicial en Stock</label
-        >
-        <input
-          type="number"
-          placeholder="5"
-          required
-          style="
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-          "
-        />
+        <label class="aa-label">Dimensiones (Alto x Ancho x Fondo cm)</label>
+        <input type="text" class="aa-input" placeholder="40 x 35 x 15" />
       </div>
     </div>
 
-    <div style="margin-bottom: 1.5rem">
-      <label
-        style="
-          display: block;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #475569;
-          margin-bottom: 0.5rem;
-        "
-        >Descripción de la Técnica o Historia</label
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Peso para Envio (kg)</label>
+        <input
+          type="number"
+          class="aa-input"
+          placeholder="0.6"
+          step="0.1"
+          min="0"
+        />
+      </div>
+      <div>
+        <label class="aa-label">Codigo Interno / SKU</label>
+        <input type="text" class="aa-input" placeholder="Ej. MWY-URB-004" />
+      </div>
+    </div>
+
+    <p class="aa-section-title">Inventario y publicacion</p>
+
+    <div class="aa-form-grid-2">
+      <div>
+        <label class="aa-label">Stock Disponible</label>
+        <input
+          type="number"
+          class="aa-input"
+          placeholder="12"
+          min="0"
+          required
+        />
+      </div>
+      <div>
+        <label class="aa-label">Estado de Publicacion</label>
+        <select class="aa-select">
+          <option selected>Visible en Catalogo</option>
+          <option>Oculto / Borrador</option>
+          <option>Agotado temporalmente</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="aa-form-group">
+      <label class="aa-label">Etiquetas de Busqueda</label>
+      <input
+        type="text"
+        class="aa-input"
+        placeholder="mochila, wayuu, tejido, guajira, colores"
+      />
+      <span class="aa-hint"
+        >Ayudan a que tu pieza aparezca en mas busquedas del catalogo. Separadas
+        por comas.</span
       >
-      <textarea
-        rows="3"
-        placeholder="Describe brevemente la herencia familiar impregnada en este producto..."
-        style="
-          width: 100%;
-          padding: 0.75rem;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
-          font-family: inherit;
-          font-size: 0.9rem;
-          resize: none;
-        "
-      ></textarea>
     </div>
 
-    <div style="display: flex; gap: 1rem">
+    <div class="aa-form-group">
+      <label class="aa-label">Imagen Principal (URL)</label>
+      <input
+        type="text"
+        class="aa-input"
+        id="add-product-image-url"
+        placeholder="../img/producto-mochila-wayuu-1.png"
+        oninput="
+          const p = document.getElementById('add-product-image-preview');
+          if (p) p.src = this.value;
+        "
+      />
+      <img
+        id="add-product-image-preview"
+        class="aa-image-preview"
+        src="../img/mochila_wayuu.png"
+        alt="Vista previa del producto"
+        onerror="this.style.opacity = 0.3"
+      />
+    </div>
+
+    <div style="display: flex; gap: 1rem; margin-top: 1.5rem">
       <button
         type="button"
         onclick="loadView('productos')"

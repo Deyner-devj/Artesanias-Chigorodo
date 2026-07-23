@@ -9,7 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Nuestros Artesanos - Artesanías Chigorodó</title>
+    <title>Nuestros Artesanos - Artesanias Chigorodo</title>
     <link rel="stylesheet" href="../css/components/styles.css" />
     <link rel="stylesheet" href="../css/components/navbar.css" />
     <link rel="stylesheet" href="../css/components/cart-fx.css" />
@@ -37,7 +37,7 @@
                 letter-spacing: 0.05em;
               "
             >
-              Creadores de Tradición
+              Creadores de Tradicion
             </p>
             <h1
               style="
@@ -56,135 +56,14 @@
                 line-height: 1.6;
               "
             >
-              Conoce a las personas y comunidades detrás de cada obra. Su
-              talento, herencia cultural y dedicación preservan viva la memoria
-              colectiva del país.
+              Conoce a las personas y comunidades detras de cada obra. Su
+              talento, herencia cultural y dedicacion preservan viva la memoria
+              colectiva del pais.
             </p>
           </header>
 
-          <div class="artesanos-grid">
-            <!-- Artesano 1 -->
-            <article class="artesano-card">
-              <div
-                class="artesano-header-img"
-                style="
-                  background-image:
-                    linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
-                    url(&quot;img/categoria-tejidos.png&quot;);
-                  background-size: cover;
-                  background-position: center;
-                "
-              >
-                <div
-                  class="artesano-avatar"
-                  style="background-color: var(--primary)"
-                >
-                  ME
-                </div>
-              </div>
-              <div class="artesano-info">
-                <div>
-                  <h3 class="artesano-name">María Elena</h3>
-                  <p class="artesano-specialty">Artesana Tejedora</p>
-                  <p class="artesano-bio">
-                    Especialista en tejido tradicional en caña flecha y palma de
-                    iraca. Heredó el oficio de su abuela y hoy enseña a nuevas
-                    generaciones en su comunidad.
-                  </p>
-                </div>
-                <a
-                  href="productos.html"
-                  class="btn btn-secondary"
-                  style="
-                    align-self: flex-start;
-                    padding: 10px 20px;
-                    font-size: 0.9rem;
-                  "
-                  >Ver sus productos</a
-                >
-              </div>
-            </article>
-
-            <!-- Artesano 2 -->
-            <article class="artesano-card">
-              <div
-                class="artesano-header-img"
-                style="
-                  background-image:
-                    linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
-                    url(&quot;img/categoria-ceramica.png&quot;);
-                  background-size: cover;
-                  background-position: center;
-                "
-              >
-                <div
-                  class="artesano-avatar"
-                  style="background-color: var(--secondary)"
-                >
-                  BA
-                </div>
-              </div>
-              <div class="artesano-info">
-                <div>
-                  <h3 class="artesano-name">Barro Ancestral</h3>
-                  <p class="artesano-specialty">Taller de Cerámica y Barro</p>
-                  <p class="artesano-bio">
-                    Colectivo familiar dedicado a la alfarería tradicional y
-                    pulido con piedra en barro negro. Piezas cocidas en horno de
-                    leña que rescatan técnicas precolombinas.
-                  </p>
-                </div>
-                <a
-                  href="productos.html"
-                  class="btn btn-secondary"
-                  style="
-                    align-self: flex-start;
-                    padding: 10px 20px;
-                    font-size: 0.9rem;
-                  "
-                  >Ver sus productos</a
-                >
-              </div>
-            </article>
-
-            <!-- Artesano 3 -->
-            <article class="artesano-card">
-              <div
-                class="artesano-header-img"
-                style="
-                  background-image:
-                    linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
-                    url(&quot;img/login-bg-mochila-wayuu.png&quot;);
-                  background-size: cover;
-                  background-position: center;
-                "
-              >
-                <div class="artesano-avatar" style="background-color: #0c4a6e">
-                  TS
-                </div>
-              </div>
-              <div class="artesano-info">
-                <div>
-                  <h3 class="artesano-name">Tejidos del Sol</h3>
-                  <p class="artesano-specialty">Tejido Wayuu</p>
-                  <p class="artesano-bio">
-                    Comunidad de tejedoras de la Alta Guajira. Cada mochila y
-                    chinchorro es tejido a mano con hilo de algodón mercerizado,
-                    interpretando dibujos sagrados o kanaas.
-                  </p>
-                </div>
-                <a
-                  href="productos.html"
-                  class="btn btn-secondary"
-                  style="
-                    align-self: flex-start;
-                    padding: 10px 20px;
-                    font-size: 0.9rem;
-                  "
-                  >Ver sus productos</a
-                >
-              </div>
-            </article>
+          <div class="artesanos-grid" id="artesanos-grid-dynamic">
+            <!-- Los artesanos se cargaran dinamicamente desde el backend -->
           </div>
         </main>
       </div>
@@ -203,5 +82,128 @@
     <script src="../js/components/cart-fx.js"></script>
     <script src="../js/components/footer.js"></script>
     <script src="../js/admin/mantenimiento.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        const grid = document.getElementById("artesanos-grid-dynamic");
+        if (!grid) return;
+
+        // Intentar cargar desde backend API
+        let artisans = [];
+        if (window.API) {
+          try {
+            const users = await window.API.products.getAll();
+            // Filtrar vendedores unicos de los productos
+            const sellerMap = {};
+            if (Array.isArray(users)) {
+              users.forEach((p) => {
+                if (p.sellerName && !sellerMap[p.sellerName]) {
+                  sellerMap[p.sellerName] = {
+                    name: p.sellerName,
+                    specialty: p.category || "Artesania",
+                    bio: "Artesano registrado en nuestra plataforma.",
+                    productCount: 0,
+                  };
+                }
+                if (p.sellerName && sellerMap[p.sellerName]) {
+                  sellerMap[p.sellerName].productCount++;
+                }
+              });
+              artisans = Object.values(sellerMap);
+            }
+          } catch (e) {
+            console.warn(
+              "No se pudieron cargar artesanos del backend:",
+              e.message,
+            );
+          }
+        }
+
+        // Si no hay datos del backend, usar informacion estatica
+        if (artisans.length === 0) {
+          artisans = [
+            {
+              name: "Maria Luz Valdes",
+              specialty: "Tejidos Wayuu",
+              bio: "Especialista en tejidos Wayuu y bolsos artesanales. Mas de 20 anos de experiencia传承endo la cultura indigena.",
+              productCount: 34,
+              rating: 4.9,
+              image: "../img/artesanos/Maria.jpg",
+              initials: "MV",
+              color: "var(--primary)",
+            },
+            {
+              name: "Carlos Rincon",
+              specialty: "Ceramica Tradicional",
+              bio: "Maestro ceramista especializado en barro negro de La Chamba. Arte heredado de generaciones y reconocido internacionalmente.",
+              productCount: 21,
+              rating: 5.0,
+              image: "../img/artesanos/Pedro.png",
+              initials: "CR",
+              color: "var(--secondary)",
+            },
+            {
+              name: "Rosa Elena Suarez",
+              specialty: "Sombreria Artesanal",
+              bio: "Tejedora de sombreros vueltiao Zenu con la tecnica tradicional de cana flecha. Preservando la identidad cultural colombiana.",
+              productCount: 18,
+              rating: 4.8,
+              image: "../img/artesanos/Julia.jpg",
+              initials: "RS",
+              color: "#0c4a6e",
+            },
+          ];
+        }
+
+        // Renderizar tarjetas
+        grid.innerHTML = artisans
+          .map(
+            (a) => `
+          <article class="artesano-card">
+            <div
+              class="artesano-header-img"
+              style="
+                background-image:
+                  linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
+                  url('${a.image || "../img/home/categoria-tejidos.png"}');
+                background-size: cover;
+                background-position: center;
+              "
+            >
+              <div
+                class="artesano-avatar"
+                style="background-color: ${a.color || "var(--primary)"}"
+              >
+                ${a.initials || a.name.substring(0, 2).toUpperCase()}
+              </div>
+            </div>
+            <div class="artesano-info">
+              <div>
+                <h3 class="artesano-name">${a.name}</h3>
+                <p class="artesano-specialty">${a.specialty}</p>
+                <p class="artesano-bio">
+                  ${a.bio}
+                </p>
+                <div class="artesano-stats" style="display: flex; gap: 1rem; margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted);">
+                  <span><strong>${a.productCount}</strong> productos</span>
+                  ${a.rating ? `<span><strong>${a.rating}</strong> calificacion</span>` : ""}
+                </div>
+              </div>
+              <a
+                href="productos.html?search=${encodeURIComponent(a.name)}"
+                class="btn btn-secondary"
+                style="
+                  align-self: flex-start;
+                  padding: 10px 20px;
+                  font-size: 0.9rem;
+                "
+                >Ver sus productos</a
+              >
+            </div>
+          </article>
+        `,
+          )
+          .join("");
+      });
+    </script>
   </body>
 </html>

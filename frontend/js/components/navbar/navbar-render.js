@@ -132,4 +132,16 @@ function renderNavbar() {
   navbarPlaceholder.innerHTML = html;
   const userTextEl = navbarPlaceholder.querySelector(".user-text");
   if (userTextEl) userTextEl.textContent = profileText;
+
+  // Bind search form submission - navega a productos.html con query de busqueda
+  const searchForm = document.getElementById("nav-search-form");
+  if (searchForm) {
+    searchForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const query = document.getElementById("nav-search-input").value.trim();
+      if (query) {
+        window.location.href = `${homePrefix}productos.html?search=${encodeURIComponent(query)}`;
+      }
+    });
+  }
 }

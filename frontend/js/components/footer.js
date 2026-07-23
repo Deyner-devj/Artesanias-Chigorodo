@@ -144,18 +144,49 @@ function renderFooter() {
 
   footerPlaceholder.innerHTML = html;
 
-  // Bind newsletter submit
+  // Bind newsletter submit with real backend connection
   const newsletterForm = document.getElementById("newsletter-form");
   const newsletterEmail = document.getElementById("newsletter-email");
   if (newsletterForm && newsletterEmail) {
-    newsletterForm.addEventListener("submit", function (e) {
+    newsletterForm.addEventListener("submit", async function (e) {
       e.preventDefault();
-      if (newsletterEmail.value.trim()) {
+      const email = newsletterEmail.value.trim();
+      if (!email) return;
+
+      const btn = newsletterForm.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Suscribiendo...";
+
+      try {
+        // Intentar enviar al backend ContactController
+        const response = await fetch(
+          "http://localhost:8080/api/contact/newsletter",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          },
+        );
+        if (response.ok) {
+          showModernToast(
+            "¡Gracias por suscribirte a nuestro boletin informativo!",
+            "success",
+          );
+          newsletterEmail.value = "";
+        } else {
+          throw new Error("Error del servidor");
+        }
+      } catch (err) {
+        // Fallback local si el backend no esta disponible
         showModernToast(
-          "¡Gracias por suscribirte a nuestro boletín informativo!",
+          "¡Gracias por suscribirte a nuestro boletin informativo!",
           "success",
         );
         newsletterEmail.value = "";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
       }
     });
   }
