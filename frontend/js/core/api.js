@@ -1,27 +1,32 @@
 // js/core/api.js
 // Cliente HTTP centralizado para el backend Spring Boot en localhost:8080
 
-const API_BASE = 'http://localhost:8080';
+const API_BASE = "http://localhost:8080";
 
 // ─── Token helpers ───────────────────────────────────────────────────────────
 function _getToken() {
-  return sessionStorage.getItem('auth_token') || localStorage.getItem('auth_token');
+  return (
+    sessionStorage.getItem("auth_token") || localStorage.getItem("auth_token")
+  );
 }
 
 function _saveToken(token) {
-  sessionStorage.setItem('auth_token', token);
+  sessionStorage.setItem("auth_token", token);
 }
 
 function _clearToken() {
-  sessionStorage.removeItem('auth_token');
-  localStorage.removeItem('auth_token');
+  sessionStorage.removeItem("auth_token");
+  localStorage.removeItem("auth_token");
 }
 
 // ─── Core fetch wrapper ──────────────────────────────────────────────────────
 async function apiFetch(path, options = {}) {
   const token = _getToken();
-  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
-  if (token) headers['Authorization'] = `Bearer ${token}`;
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
 
   const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
 
@@ -44,8 +49,8 @@ async function apiFetch(path, options = {}) {
 // ─── Auth ────────────────────────────────────────────────────────────────────
 const auth = {
   async login(email, password) {
-    const data = await apiFetch('/api/auth/login', {
-      method: 'POST',
+    const data = await apiFetch("/api/auth/login", {
+      method: "POST",
       body: JSON.stringify({ email, password }),
     });
     // data = { token, email, fullName, role }
@@ -53,9 +58,9 @@ const auth = {
     return data;
   },
 
-  async register(fullName, email, password, role = 'CLIENT') {
-    const data = await apiFetch('/api/auth/register', {
-      method: 'POST',
+  async register(fullName, email, password, role = "CLIENT") {
+    const data = await apiFetch("/api/auth/register", {
+      method: "POST",
       body: JSON.stringify({ fullName, email, password, role }),
     });
     return data;
@@ -66,12 +71,12 @@ const auth = {
 const products = {
   async getAll({ category, minPrice, maxPrice, search } = {}) {
     const params = new URLSearchParams();
-    if (category) params.set('category', category);
-    if (minPrice != null) params.set('minPrice', minPrice);
-    if (maxPrice != null) params.set('maxPrice', maxPrice);
-    if (search) params.set('search', search);
+    if (category) params.set("category", category);
+    if (minPrice != null) params.set("minPrice", minPrice);
+    if (maxPrice != null) params.set("maxPrice", maxPrice);
+    if (search) params.set("search", search);
     const qs = params.toString();
-    return apiFetch(`/api/products${qs ? '?' + qs : ''}`);
+    return apiFetch(`/api/products${qs ? "?" + qs : ""}`);
   },
 
   async getById(id) {
@@ -79,68 +84,70 @@ const products = {
   },
 
   async create(productData) {
-    return apiFetch('/api/products', {
-      method: 'POST',
+    return apiFetch("/api/products", {
+      method: "POST",
       body: JSON.stringify(productData),
     });
   },
 
   async update(id, productData) {
     return apiFetch(`/api/products/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(productData),
     });
   },
 
   async delete(id) {
-    return apiFetch(`/api/products/${id}`, { method: 'DELETE' });
+    return apiFetch(`/api/products/${id}`, { method: "DELETE" });
   },
 };
 
 // ─── Categories ──────────────────────────────────────────────────────────────
 const categories = {
   async getAll() {
-    return apiFetch('/api/categories');
+    return apiFetch("/api/categories");
   },
 };
 
 // ─── Cart ────────────────────────────────────────────────────────────────────
 const cart = {
   async get() {
-    return apiFetch('/api/cart');
+    return apiFetch("/api/cart");
   },
 
   async addItem(productId, quantity = 1) {
-    return apiFetch('/api/cart/items', {
-      method: 'POST',
+    return apiFetch("/api/cart/items", {
+      method: "POST",
       body: JSON.stringify({ productId, quantity }),
     });
   },
 
   async decreaseItem(productId) {
-    return apiFetch(`/api/cart/items/${productId}/decrease`, { method: 'PATCH' });
+    return apiFetch(`/api/cart/items/${productId}/decrease`, {
+      method: "PATCH",
+    });
   },
 
   async removeItem(productId) {
-    return apiFetch(`/api/cart/items/${productId}`, { method: 'DELETE' });
+    return apiFetch(`/api/cart/items/${productId}`, { method: "DELETE" });
   },
 
   async clear() {
-    return apiFetch('/api/cart', { method: 'DELETE' });
+    return apiFetch("/api/cart", { method: "DELETE" });
   },
 };
 
 // ─── Orders ──────────────────────────────────────────────────────────────────
 const orders = {
   async create(orderData) {
-    return apiFetch('/api/orders', {
-      method: 'POST',
+    return apiFetch("/api/orders", {
+      method: "POST",
       body: JSON.stringify(orderData),
     });
   },
 
   async getAll() {
-    return apiFetch('/api/orders');
+    return apiFetch("/api/orders");
   },
 
   async getByOrderNumber(orderNumber) {
@@ -151,8 +158,8 @@ const orders = {
 // ─── Payments ────────────────────────────────────────────────────────────────
 const payments = {
   async process(paymentData) {
-    return apiFetch('/api/payments', {
-      method: 'POST',
+    return apiFetch("/api/payments", {
+      method: "POST",
       body: JSON.stringify(paymentData),
     });
   },
@@ -165,8 +172,8 @@ const reviews = {
   },
 
   async create(reviewData) {
-    return apiFetch('/api/reviews', {
-      method: 'POST',
+    return apiFetch("/api/reviews", {
+      method: "POST",
       body: JSON.stringify(reviewData),
     });
   },
@@ -175,24 +182,54 @@ const reviews = {
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 const dashboard = {
   async getSummary() {
-    return apiFetch('/api/dashboard/resumen');
+    return apiFetch("/api/dashboard/resumen");
   },
 };
 
 // ─── Users ───────────────────────────────────────────────────────────────────
 const users = {
   async getProfile() {
-    return apiFetch('/api/users/me');
+    return apiFetch("/api/users/me");
   },
 
   async updateProfile(data) {
-    return apiFetch('/api/users/me', {
-      method: 'PUT',
+    return apiFetch("/api/users/me", {
+      method: "PUT",
       body: JSON.stringify(data),
+    });
+  },
+
+  // Solo ADMIN. El backend responde 403 si el usuario autenticado no es admin.
+  async getAll() {
+    return apiFetch("/api/users");
+  },
+
+  async updateStatus(id, status) {
+    return apiFetch(`/api/users/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
     });
   },
 };
 
+// ─── Artisans (directorio público) ───────────────────────────────────────────
+const artisans = {
+  async getAll() {
+    return apiFetch("/api/artisans");
+  },
+};
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
-window.API = { auth, products, categories, cart, orders, payments, reviews, dashboard, users };
+window.API = {
+  auth,
+  products,
+  categories,
+  cart,
+  orders,
+  payments,
+  reviews,
+  dashboard,
+  users,
+  artisans,
+};
 window._API_clearToken = _clearToken;

@@ -30,8 +30,9 @@ public class ContactController {
             mailSender.send(message);
             return ResponseEntity.ok(Map.of("message", "Mensaje enviado con éxito. Te responderemos pronto."));
         } catch (Exception e) {
-            // Si el correo no está configurado, responder éxito simulado
-            return ResponseEntity.ok(Map.of("message", "Mensaje recibido con éxito. Te responderemos pronto."));
+            // Fallo real de envío: se informa como error, no se simula éxito.
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("message", "No pudimos enviar tu mensaje en este momento. Intenta más tarde o escríbenos directamente."));
         }
     }
 
@@ -45,8 +46,9 @@ public class ContactController {
             mailSender.send(message);
             return ResponseEntity.ok(Map.of("message", "¡Gracias por suscribirte a nuestro boletín informativo!"));
         } catch (Exception e) {
-            return ResponseEntity.ok(Map.of("message", "¡Gracias por suscribirte a nuestro boletín informativo!"));
+            // Fallo real de envío: se informa como error, no se simula éxito.
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("message", "No pudimos completar tu suscripción en este momento. Intenta más tarde."));
         }
     }
 }
-

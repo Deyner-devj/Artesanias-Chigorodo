@@ -150,18 +150,38 @@
           offset: 1,
         },
       ],
-      { duration: 750, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)", fill: "forwards" },
+      {
+        duration: 750,
+        easing: "cubic-bezier(0.22, 0.61, 0.36, 1)",
+        fill: "forwards",
+      },
     ).finished;
 
     // ── Paso 2: el carrito aparece y gira hasta quedar de frente
     cartWrap.style.display = "block";
     await cartWrap.animate(
       [
-        { transform: "translateY(50px) scale(0.4) rotateY(-150deg)", opacity: 0, offset: 0 },
-        { transform: "translateY(0px) scale(1.08) rotateY(24deg)", opacity: 1, offset: 0.65 },
-        { transform: "translateY(0px) scale(1) rotateY(0deg)", opacity: 1, offset: 1 },
+        {
+          transform: "translateY(50px) scale(0.4) rotateY(-150deg)",
+          opacity: 0,
+          offset: 0,
+        },
+        {
+          transform: "translateY(0px) scale(1.08) rotateY(24deg)",
+          opacity: 1,
+          offset: 0.65,
+        },
+        {
+          transform: "translateY(0px) scale(1) rotateY(0deg)",
+          opacity: 1,
+          offset: 1,
+        },
       ],
-      { duration: 850, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)", fill: "forwards" },
+      {
+        duration: 850,
+        easing: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        fill: "forwards",
+      },
     ).finished;
 
     await cartWrap.animate(
@@ -176,11 +196,30 @@
     // ── Paso 3: el producto cae dentro de la canasta
     await flyer.animate(
       [
-        { top: `${centerTop}px`, transform: "rotate(0deg) scale(1)", opacity: 1, offset: 0 },
-        { top: `${centerTop + 55}px`, transform: "rotate(8deg) scale(0.6)", opacity: 0.9, offset: 0.6 },
-        { top: `${centerTop + 95}px`, transform: "rotate(14deg) scale(0.15)", opacity: 0, offset: 1 },
+        {
+          top: `${centerTop}px`,
+          transform: "rotate(0deg) scale(1)",
+          opacity: 1,
+          offset: 0,
+        },
+        {
+          top: `${centerTop + 55}px`,
+          transform: "rotate(8deg) scale(0.6)",
+          opacity: 0.9,
+          offset: 0.6,
+        },
+        {
+          top: `${centerTop + 95}px`,
+          transform: "rotate(14deg) scale(0.15)",
+          opacity: 0,
+          offset: 1,
+        },
       ],
-      { duration: 620, easing: "cubic-bezier(0.55, 0.06, 0.68, 0.19)", fill: "forwards" },
+      {
+        duration: 620,
+        easing: "cubic-bezier(0.55, 0.06, 0.68, 0.19)",
+        fill: "forwards",
+      },
     ).finished;
     flyer.remove();
 
@@ -206,8 +245,15 @@
 
     // ── Paso 4: check de confirmación
     checkFx.classList.add("show");
-    if (product && product.name && typeof window.showModernToast === "function") {
-      window.showModernToast(`${product.name} se agregó a tu carrito`, "success");
+    if (
+      product &&
+      product.name &&
+      typeof window.showModernToast === "function"
+    ) {
+      window.showModernToast(
+        `${product.name} se agregó a tu carrito`,
+        "success",
+      );
     }
     await sleep(500);
     checkFx.classList.remove("show");
@@ -219,26 +265,47 @@
     let dy = 0;
     if (cartIconEl) {
       const targetRect = cartIconEl.getBoundingClientRect();
-      dx = targetRect.left + targetRect.width / 2 - (finalStageRect.left + finalStageRect.width / 2);
-      dy = targetRect.top + targetRect.height / 2 - (finalStageRect.top + finalStageRect.height / 2);
+      dx =
+        targetRect.left +
+        targetRect.width / 2 -
+        (finalStageRect.left + finalStageRect.width / 2);
+      dy =
+        targetRect.top +
+        targetRect.height / 2 -
+        (finalStageRect.top + finalStageRect.height / 2);
     } else {
       dx = vw / 2 - (finalStageRect.left + finalStageRect.width / 2);
       dy = -finalStageRect.top;
     }
 
-    const overlayFade = overlay.animate([{ opacity: 1 }, { opacity: 1 }, { opacity: 0 }], {
-      duration: 620,
-      delay: 60,
-      fill: "forwards",
-    });
+    const overlayFade = overlay.animate(
+      [{ opacity: 1 }, { opacity: 1 }, { opacity: 0 }],
+      {
+        duration: 620,
+        delay: 60,
+        fill: "forwards",
+      },
+    );
 
     await stage.animate(
       [
         { transform: "translate(0px, 0px) scale(1)", opacity: 1, offset: 0 },
-        { transform: `translate(${dx * 0.55}px, ${dy * 0.55}px) scale(0.55)`, opacity: 0.9, offset: 0.6 },
-        { transform: `translate(${dx}px, ${dy}px) scale(0.05)`, opacity: 0, offset: 1 },
+        {
+          transform: `translate(${dx * 0.55}px, ${dy * 0.55}px) scale(0.55)`,
+          opacity: 0.9,
+          offset: 0.6,
+        },
+        {
+          transform: `translate(${dx}px, ${dy}px) scale(0.05)`,
+          opacity: 0,
+          offset: 1,
+        },
       ],
-      { duration: 600, easing: "cubic-bezier(0.5, 0, 0.75, 0)", fill: "forwards" },
+      {
+        duration: 600,
+        easing: "cubic-bezier(0.5, 0, 0.75, 0)",
+        fill: "forwards",
+      },
     ).finished;
 
     await overlayFade.finished;
@@ -287,7 +354,10 @@
     }
     cartFXChain = cartFXChain
       .then(() => runAddToCartAnimation(product, sourceImgEl || null))
-      .catch((err) => console.error("[cart-fx] Error en animación de carrito:", err));
+      .catch((err) =>
+        console.error("[cart-fx] Error en animación de carrito:", err),
+      );
+    return cartFXChain;
   };
 
   // ──────────────────────────────────────────────────────────────────────
@@ -313,7 +383,14 @@
     const img =
       (card ? card.querySelector("img") : null) ||
       document.getElementById("detail-img");
-    window.addToCartWithFX(productId, img);
+
+    // Bloqueamos el botón mientras dura SU animación encolada, para que
+    // clics repetidos y rápidos no acumulen varias corridas de la FX que
+    // se pisan visualmente. Se libera automáticamente cuando termina.
+    btn.disabled = true;
+    Promise.resolve(window.addToCartWithFX(productId, img)).finally(() => {
+      btn.disabled = false;
+    });
   });
 
   // ──────────────────────────────────────────────────────────────────────
@@ -345,18 +422,36 @@
     let dy = 0;
     if (cartIconEl) {
       const originRect = cartIconEl.getBoundingClientRect();
-      dx = originRect.left + originRect.width / 2 - (stageRect.left + stageRect.width / 2);
-      dy = originRect.top + originRect.height / 2 - (stageRect.top + stageRect.height / 2);
+      dx =
+        originRect.left +
+        originRect.width / 2 -
+        (stageRect.left + stageRect.width / 2);
+      dy =
+        originRect.top +
+        originRect.height / 2 -
+        (stageRect.top + stageRect.height / 2);
     }
 
     // Paso 1: el carrito viaja desde el ícono del navbar hasta el centro
     await stage.animate(
       [
-        { transform: `translate(${dx}px, ${dy}px) scale(0.15)`, opacity: 0, offset: 0 },
-        { transform: `translate(${dx * 0.3}px, ${dy * 0.3}px) scale(0.7)`, opacity: 1, offset: 0.5 },
+        {
+          transform: `translate(${dx}px, ${dy}px) scale(0.15)`,
+          opacity: 0,
+          offset: 0,
+        },
+        {
+          transform: `translate(${dx * 0.3}px, ${dy * 0.3}px) scale(0.7)`,
+          opacity: 1,
+          offset: 0.5,
+        },
         { transform: "translate(0px, 0px) scale(1)", opacity: 1, offset: 1 },
       ],
-      { duration: 650, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)", fill: "forwards" },
+      {
+        duration: 650,
+        easing: "cubic-bezier(0.22, 0.61, 0.36, 1)",
+        fill: "forwards",
+      },
     ).finished;
     cartWrap.style.opacity = "1";
 
@@ -367,7 +462,11 @@
         { transform: "scale(1.06) rotateY(200deg)", offset: 0.55 },
         { transform: "scale(1) rotateY(360deg)", offset: 1 },
       ],
-      { duration: 900, easing: "cubic-bezier(0.45, 0, 0.2, 1)", fill: "forwards" },
+      {
+        duration: 900,
+        easing: "cubic-bezier(0.45, 0, 0.2, 1)",
+        fill: "forwards",
+      },
     ).finished;
 
     // Pequeña pausa para que el usuario vea el carrito ya de frente
@@ -381,7 +480,11 @@
         { transform: "scale(2.6)", opacity: 1, offset: 0.65 },
         { transform: "scale(5.2)", opacity: 0, offset: 1 },
       ],
-      { duration: 700, easing: "cubic-bezier(0.5, 0, 0.85, 0)", fill: "forwards" },
+      {
+        duration: 700,
+        easing: "cubic-bezier(0.5, 0, 0.85, 0)",
+        fill: "forwards",
+      },
     ).finished;
 
     window.location.href = href;
@@ -411,7 +514,9 @@
     if (!pending) return;
     sessionStorage.removeItem("cartfx_entrance_pending");
 
-    const container = document.querySelector(".cart-page-container, #cart-main-container");
+    const container = document.querySelector(
+      ".cart-page-container, #cart-main-container",
+    );
     if (!container) return;
 
     container.classList.add("cartfx-pre-reveal");
@@ -436,10 +541,17 @@
         { transform: "scale(1.3)", opacity: 1, offset: 0.4 },
         { transform: "scale(0.4)", opacity: 0, offset: 1 },
       ],
-      { duration: 750, easing: "cubic-bezier(0.16, 1, 0.3, 1)", fill: "forwards" },
+      {
+        duration: 750,
+        easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+        fill: "forwards",
+      },
     ).finished;
 
-    overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, fill: "forwards" });
+    overlay.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 350,
+      fill: "forwards",
+    });
     await sleep(150);
 
     overlay.classList.remove("active", "cartfx-overlay-solid");

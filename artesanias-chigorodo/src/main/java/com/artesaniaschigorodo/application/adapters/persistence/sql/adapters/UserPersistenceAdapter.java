@@ -3,12 +3,15 @@ package com.artesaniaschigorodo.application.adapters.persistence.sql.adapters;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.UserEntity;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.mappers.UserMapper;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.UserRepository;
+import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -37,5 +40,18 @@ public class UserPersistenceAdapter implements UserPort {
     public boolean existsByEmail(String email) {
         return userJpaRepository.existsByEmail(email);
     }
-}
 
+    @Override
+    public List<User> findAll() {
+        return userJpaRepository.findAll().stream()
+                .map(UserMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> findAllByRole(Role role) {
+        return userJpaRepository.findByRole(role.name()).stream()
+                .map(UserMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+}

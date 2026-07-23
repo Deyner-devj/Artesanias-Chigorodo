@@ -1,0 +1,295 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   UI-FEEDBACK.CSS
+   Loader global, toasts y confirm-dialog reutilizables en todo el proyecto.
+   Se activan/ocultan desde js/core/ui-feedback.js
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --uf-primary: var(--primary, #b5651d);
+  --uf-success: #16a34a;
+  --uf-danger: #dc2626;
+  --uf-warning: #d97706;
+  --uf-dark: #0f172a;
+}
+
+/* ---------- LOADER GLOBAL (overlay de pantalla completa) ---------- */
+#global-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+#global-loader.is-visible {
+  display: flex;
+  opacity: 1;
+}
+
+#global-loader.is-slow .uf-spinner {
+  border-top-color: var(--uf-warning);
+}
+
+.uf-spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.55);
+  border-top-color: var(--uf-primary);
+  animation: uf-spin 0.7s linear infinite;
+}
+
+.uf-loader-text {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(15, 23, 42, 0.55);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+@keyframes uf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- BARRA DE PROGRESO SUPERIOR (transiciones ligeras) ---------- */
+#uf-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--uf-primary);
+  z-index: 100000;
+  transition:
+    width 0.25s ease,
+    opacity 0.3s ease;
+  opacity: 0;
+}
+#uf-topbar.is-active {
+  opacity: 1;
+}
+
+/* ---------- SKELETON (placeholder de carga para conexiones lentas) ---------- */
+.uf-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #e6e0d5;
+  border-radius: 8px;
+}
+.uf-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.55),
+    transparent
+  );
+  animation: uf-shimmer 1.3s infinite;
+}
+@keyframes uf-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ---------- TOASTS ---------- */
+#uf-toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100001;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: min(360px, calc(100vw - 32px));
+}
+
+.uf-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--uf-dark);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  border-left: 4px solid var(--uf-primary);
+  font-size: 0.88rem;
+  font-weight: 500;
+  transform: translateX(120%);
+  opacity: 0;
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2),
+    opacity 0.28s ease;
+}
+.uf-toast.is-visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+.uf-toast.is-leaving {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+.uf-toast[data-type="success"] {
+  border-left-color: var(--uf-success);
+}
+.uf-toast[data-type="error"] {
+  border-left-color: var(--uf-danger);
+}
+.uf-toast[data-type="warning"] {
+  border-left-color: var(--uf-warning);
+}
+
+.uf-toast-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.uf-toast-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 0 0 8px;
+}
+
+/* ---------- CONFIRM DIALOG ---------- */
+.uf-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 100002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: uf-fade-in 0.18s ease forwards;
+}
+@keyframes uf-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+.uf-confirm-box {
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px;
+  width: min(380px, calc(100vw - 40px));
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  transform: translateY(10px) scale(0.98);
+  animation: uf-pop-in 0.2s ease forwards;
+}
+@keyframes uf-pop-in {
+  to {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.uf-confirm-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--uf-dark);
+  margin-bottom: 8px;
+}
+.uf-confirm-msg {
+  color: #475569;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+.uf-confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.uf-btn {
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    filter 0.15s ease,
+    transform 0.1s ease;
+}
+.uf-btn:active {
+  transform: scale(0.97);
+}
+.uf-btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.uf-btn-ghost {
+  background: #f1f5f9;
+  color: #334155;
+}
+.uf-btn-danger {
+  background: var(--uf-danger);
+  color: #fff;
+}
+.uf-btn-primary {
+  background: var(--uf-primary);
+  color: #fff;
+}
+.uf-btn:hover:not([disabled]) {
+  filter: brightness(1.06);
+}
+
+/* ---------- Icono inline reutilizado tras eliminar emojis ---------- */
+.icon-inline {
+  display: inline-block;
+  vertical-align: -3px;
+}
+
+/* ---------- Indicador de calidad de red (opcional, discreto) ---------- */
+#uf-network-badge {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 99998;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff;
+  color: #475569;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+#uf-network-badge.is-visible {
+  display: inline-flex;
+}
+#uf-network-badge .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #16a34a;
+}
+#uf-network-badge[data-quality="slow"] .dot {
+  background: #dc2626;
+}
+#uf-network-badge[data-quality="moderate"] .dot {
+  background: #d97706;
+}
