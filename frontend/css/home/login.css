@@ -248,3 +248,16 @@
     display: none !important;
   }
 }
+.validation-error {
+  color: #c2410c;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  display: none;
+  padding-left: 0.5rem;
+}
+.input-group.has-error {
+  border-color: #c2410c !important;
+  background-color: #fffaf8 !important;
+}

@@ -6,15 +6,20 @@ function initNavbarMobileMenu() {
 
   if (mobileBtn && menuContainer) {
     mobileBtn.addEventListener("click", function () {
-      const isOpen = menuContainer.classList.contains("mobile-active");
+      const isOpen = menuContainer.classList.contains("is-open");
       if (isOpen) {
-        menuContainer.classList.remove("mobile-active");
+        menuContainer.classList.remove("is-open");
         if (hamburgerIcon) hamburgerIcon.style.display = "block";
         if (closeIcon) closeIcon.style.display = "none";
       } else {
-        menuContainer.classList.add("mobile-active");
+        menuContainer.classList.add("is-open");
         if (hamburgerIcon) hamburgerIcon.style.display = "none";
         if (closeIcon) closeIcon.style.display = "block";
+      }
+      if (typeof window.updateNavbarClearance === "function") {
+        // El menú desplegado cambia la altura real del navbar: recalculamos
+        // el espacio reservado para que no tape el contenido de abajo.
+        requestAnimationFrame(window.updateNavbarClearance);
       }
     });
   }

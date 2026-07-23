@@ -30,8 +30,11 @@
   align-items: center;
   justify-content: flex-start; /* Empuja el contenido de texto hacia la izquierda */
 
-  /* Padding superior amplio para compensar el Navbar absoluto y evitar colisiones de texto */
-  padding: 170px 8% 5rem 8%;
+  /* Padding superior dinámico: se calcula en tiempo real con la altura
+     real del navbar (ver js/components/navbar/navbar-clearance.js), así
+     que nunca se descuadra sin importar el tamaño de pantalla. El valor
+     fijo es solo un respaldo por si JS no ha corrido aún. */
+  padding: var(--navbar-clearance, 170px) 8% 5rem 8%;
   overflow: hidden;
   background-color: #faf9f6;
 }
@@ -113,7 +116,7 @@
 @media (max-width: 768px) {
   .hero-section {
     min-height: 75vh;
-    padding: 140px 1.5rem 4rem 1.5rem; /* Menor padding superior en móvil */
+    padding: var(--navbar-clearance, 210px) 1.5rem 4rem 1.5rem; /* dinámico: se ajusta a la altura real del navbar envuelto en móvil */
     justify-content: center; /* Centra el contenido en móviles */
   }
 

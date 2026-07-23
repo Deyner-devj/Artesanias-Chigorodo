@@ -15,21 +15,6 @@
     <link rel="stylesheet" href="../css/components/cart-fx.css" />
     <link rel="stylesheet" href="../css/components/footer.css?v=1.2" />
     <link rel="stylesheet" href="../css/home/login.css?v=1.2" />
-    <style>
-      .validation-error {
-        color: #c2410c;
-        font-size: 0.8rem;
-        font-weight: 600;
-        margin-top: -1rem;
-        margin-bottom: 1rem;
-        display: none;
-        padding-left: 0.5rem;
-      }
-      .input-group.has-error {
-        border-color: #c2410c !important;
-        background-color: #fffaf8 !important;
-      }
-    </style>
   </head>
   <body>
     <div class="app-shell">
@@ -614,21 +599,30 @@
           if (isValid) {
             // loginUser es async — deshabilitar botón mientras espera
             const loginBtn = loginForm.querySelector('button[type="submit"]');
-            if (loginBtn) { loginBtn.disabled = true; loginBtn.textContent = 'Entrando...'; }
-            loginUser(email.value, password.value).then(function (user) {
-              if (user) {
-                redirectUser(user);
-              } else {
-                showModernToast(
-                  'Credenciales incorrectas. Verifica tu correo y contraseña.',
-                  'error',
-                );
-              }
-            }).catch(function () {
-              showModernToast('Error al conectar con el servidor.', 'error');
-            }).finally(function () {
-              if (loginBtn) { loginBtn.disabled = false; loginBtn.textContent = 'Iniciar sesión'; }
-            });
+            if (loginBtn) {
+              loginBtn.disabled = true;
+              loginBtn.textContent = "Entrando...";
+            }
+            loginUser(email.value, password.value)
+              .then(function (user) {
+                if (user) {
+                  redirectUser(user);
+                } else {
+                  showModernToast(
+                    "Credenciales incorrectas. Verifica tu correo y contraseña.",
+                    "error",
+                  );
+                }
+              })
+              .catch(function () {
+                showModernToast("Error al conectar con el servidor.", "error");
+              })
+              .finally(function () {
+                if (loginBtn) {
+                  loginBtn.disabled = false;
+                  loginBtn.textContent = "Iniciar sesión";
+                }
+              });
           }
         });
 
@@ -668,35 +662,43 @@
           }
 
           if (isValid) {
-            const registerBtn = registerForm.querySelector('button[type="submit"]');
-            if (registerBtn) { registerBtn.disabled = true; registerBtn.textContent = 'Creando cuenta...'; }
-            registerUser(
-              name.value.trim(),
-              email.value.trim(),
-              password.value,
-            ).then(function (success) {
-              if (success) {
-                showModernToast(
-                  '¡Cuenta creada con éxito! Ahora puedes iniciar sesión.',
-                  'success',
-                );
-                document.getElementById('login-email').value = email.value.trim();
-                toggleColumn('login');
-                name.value = '';
-                email.value = '';
-                password.value = '';
-                confirm.value = '';
-              } else {
-                showModernToast(
-                  'El correo electrónico ya está registrado.',
-                  'error',
-                );
-              }
-            }).catch(function () {
-              showModernToast('Error al conectar con el servidor.', 'error');
-            }).finally(function () {
-              if (registerBtn) { registerBtn.disabled = false; registerBtn.textContent = 'Crear cuenta'; }
-            });
+            const registerBtn = registerForm.querySelector(
+              'button[type="submit"]',
+            );
+            if (registerBtn) {
+              registerBtn.disabled = true;
+              registerBtn.textContent = "Creando cuenta...";
+            }
+            registerUser(name.value.trim(), email.value.trim(), password.value)
+              .then(function (success) {
+                if (success) {
+                  showModernToast(
+                    "¡Cuenta creada con éxito! Ahora puedes iniciar sesión.",
+                    "success",
+                  );
+                  document.getElementById("login-email").value =
+                    email.value.trim();
+                  toggleColumn("login");
+                  name.value = "";
+                  email.value = "";
+                  password.value = "";
+                  confirm.value = "";
+                } else {
+                  showModernToast(
+                    "El correo electrónico ya está registrado.",
+                    "error",
+                  );
+                }
+              })
+              .catch(function () {
+                showModernToast("Error al conectar con el servidor.", "error");
+              })
+              .finally(function () {
+                if (registerBtn) {
+                  registerBtn.disabled = false;
+                  registerBtn.textContent = "Crear cuenta";
+                }
+              });
           }
         });
       }

@@ -1,0 +1,224 @@
+/* ==========================================================================
+   PSE MOCK PORTAL
+   Estilos del simulador de pasarela PSE (pago-pse.html). Antes no existía
+   ningún CSS para estas clases, por eso se veía como texto plano.
+   ========================================================================== */
+
+.pse-mock-portal-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2.5rem 1.25rem;
+}
+
+.pse-portal-card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--bg-card, #fff);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 24px 60px rgba(15, 30, 60, 0.14),
+    0 2px 8px rgba(15, 30, 60, 0.06);
+  border: 1px solid rgba(15, 30, 60, 0.06);
+}
+
+.pse-portal-header {
+  padding: 1.75rem 2rem 1.5rem;
+  background: linear-gradient(135deg, #0b428c 0%, #1a5fbf 100%);
+  color: #fff;
+}
+
+.pse-logo-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.pse-portal-header h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.pse-portal-body {
+  padding: 1.75rem 2rem 1.25rem;
+}
+
+.pse-portal-intro {
+  font-size: 0.9rem;
+  color: var(--text-muted, #6b7280);
+  margin: 0 0 1.1rem;
+  line-height: 1.5;
+}
+
+.pse-transaction-info {
+  background: #f6f8fb;
+  border: 1px solid #e6ebf2;
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+}
+
+.pse-transaction-info h4 {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #17264a;
+}
+
+.pse-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem 0;
+  font-size: 0.88rem;
+  color: #57607a;
+  border-bottom: 1px dashed #dde3ec;
+}
+
+.pse-info-row:last-child {
+  border-bottom: none;
+}
+
+.pse-info-row strong {
+  color: #17264a;
+  font-weight: 700;
+  text-align: right;
+}
+
+.pse-info-row .pse-amount {
+  color: #0b428c;
+  font-size: 1rem;
+}
+
+.pse-bank-security-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-top: 1.1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: #eaf3ff;
+  border: 1px solid #d5e6fb;
+}
+
+.pse-bank-security-msg p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #2c4a72;
+}
+
+.pse-terms-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+  font-size: 0.86rem;
+  color: #4a5468;
+  line-height: 1.4;
+}
+
+.pse-terms-checkbox label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.pse-terms-checkbox input[type="checkbox"] {
+  margin-top: 3px;
+  width: 17px;
+  height: 17px;
+  accent-color: #0b428c;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.pse-total-block {
+  text-align: center;
+  margin: 1.5rem 0 0.25rem;
+}
+
+.pse-total-label {
+  font-size: 0.85rem;
+  color: var(--text-muted, #6b7280);
+}
+
+.pse-total-amount {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #0b428c;
+  margin-top: 0.25rem;
+}
+
+.pse-portal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.pse-portal-actions .btn {
+  margin: 0;
+  text-align: center;
+}
+
+.btn-pse-blue {
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, #0b428c 0%, #1a5fbf 100%);
+  color: #fff;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+  box-shadow: 0 8px 20px rgba(11, 66, 140, 0.28);
+}
+
+.btn-pse-blue:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(11, 66, 140, 0.34);
+}
+
+.btn-pse-blue:active {
+  transform: translateY(0);
+}
+
+.pse-portal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.9rem 2rem 1.4rem;
+  color: #8891a6;
+  font-size: 0.76rem;
+  border-top: 1px solid #eef1f6;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 520px) {
+  .pse-portal-header {
+    padding: 1.4rem 1.4rem 1.2rem;
+  }
+  .pse-portal-body {
+    padding: 1.4rem 1.4rem 1.1rem;
+  }
+  .pse-portal-actions {
+    grid-template-columns: 1fr;
+  }
+  .pse-portal-footer {
+    padding: 0.9rem 1.4rem 1.2rem;
+  }
+}

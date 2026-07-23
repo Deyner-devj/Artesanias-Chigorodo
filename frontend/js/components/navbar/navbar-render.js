@@ -80,7 +80,7 @@ function renderNavbar() {
               <li><a href="${firstOptionUrl}">${firstOptionLabel}</a></li>
               <li><a href="#" id="favs-menu-link">Ver favoritos</a></li>
               <li><a href="${trackingUrl}">Rastrear su pedido</a></li>
-              ${isLoggedIn ? `<li><hr class="dropdown-divider"></li><li><a href="#" id="logout-menu-link" style="color: var(--primary);">Cerrar sesión</a></li>` : ""}
+              ${isLoggedIn ? `<li><hr class="dropdown-divider"></li><li><a onclick="triggerLogout()" id="logout-menu-link" style="color: var(--primary);">Cerrar sesión</a></li>` : ""}
             </ul>
           </div>
 

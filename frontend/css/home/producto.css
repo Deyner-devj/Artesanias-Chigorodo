@@ -446,3 +446,142 @@
     grid-template-columns: 1fr !important;
   }
 }
+.product-detail-container {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  display: none;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: flex-start;
+}
+.product-image-box {
+  background: #f9f9f9;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  border: 1px solid var(--border-color);
+}
+.product-image-box img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.product-info-box h1 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+.product-seller {
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: block;
+  font-size: 1rem;
+}
+.product-price {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin: 1.5rem 0;
+}
+.product-desc {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+}
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.not-found-container {
+  text-align: center;
+  padding: 5rem 1rem;
+  display: none;
+}
+
+/* Animación del carrito y el Toast */
+.flying-product {
+  position: fixed;
+  z-index: 9999;
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  object-fit: contain;
+}
+.cart-bounce {
+  animation: bounceCart 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes bounceCart {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+    color: var(--primary);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.toast-notification {
+  position: fixed;
+  bottom: -100px;
+  right: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 5px solid var(--secondary);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 16px 24px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10000;
+  transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.toast-notification.show {
+  bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .product-info-box h1 {
+    font-size: 2rem;
+  }
+}

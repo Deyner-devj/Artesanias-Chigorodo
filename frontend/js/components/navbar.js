@@ -2,14 +2,18 @@
 // NAVBAR ORQUESTADOR: Carga submódulos del Navbar y los ejecuta
 // ==========================================================================
 (function loadNavbarSubmodules() {
-  const currentScript = document.currentScript ? document.currentScript.src : "";
-  const basePath = currentScript.substring(0, currentScript.lastIndexOf("/")) + "/navbar/";
+  const currentScript = document.currentScript
+    ? document.currentScript.src
+    : "";
+  const basePath =
+    currentScript.substring(0, currentScript.lastIndexOf("/")) + "/navbar/";
 
   const submodules = [
     "navbar-render.js",
     "navbar-auth-state.js",
     "navbar-cart-badge.js",
-    "navbar-mobile-menu.js"
+    "navbar-mobile-menu.js",
+    "navbar-clearance.js",
   ];
 
   let loadedCount = 0;
@@ -23,8 +27,9 @@
     if (typeof updateCartBadge === "function") updateCartBadge();
     if (typeof initCartTransition === "function") initCartTransition();
     if (typeof initNavbarMobileMenu === "function") initNavbarMobileMenu();
+    if (typeof initNavbarClearance === "function") initNavbarClearance();
 
-    window.addEventListener("cartChanged", function() {
+    window.addEventListener("cartChanged", function () {
       if (typeof updateCartBadge === "function") updateCartBadge();
     });
   }

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../css/cliente/carrito.css" />
     <link rel="stylesheet" href="../css/cliente/checkout.css" />
     <link rel="stylesheet" href="../css/cliente/checkout-journey.css" />
+    <link rel="stylesheet" href="../css/cliente/pago-pse.css" />
   </head>
   <body>
     <div class="app-shell" style="background-color: #f6efe2">
@@ -27,13 +28,7 @@
               <h3>PSE - Portal de Pagos Seguros</h3>
             </div>
             <div class="pse-portal-body">
-              <p
-                style="
-                  font-size: 0.9rem;
-                  color: var(--text-muted);
-                  margin: 0 0 1rem 0;
-                "
-              >
+              <p class="pse-portal-intro">
                 Serás redirigido al portal seguro del banco para realizar el
                 pago.
               </p>
@@ -80,50 +75,27 @@
                 </p>
               </div>
 
-              <div class="pse-terms-checkbox" style="margin-top: 1.5rem">
+              <div class="pse-terms-checkbox">
                 <input type="checkbox" id="pse-terms" required />
-                <label
-                  htmlFor="pse-terms"
-                  style="cursor: pointer; user-select: none"
-                >
+                <label for="pse-terms">
                   Acepto los términos y condiciones y la política de privacidad
                   de la pasarela.
                 </label>
               </div>
 
-              <div style="text-align: center; margin: 1.5rem 0 0.5rem 0">
-                <span style="font-size: 0.85rem; color: var(--text-muted)"
-                  >Total a pagar:</span
-                >
-                <div
-                  style="
-                    font-size: 1.8rem;
-                    font-weight: 800;
-                    color: #0b428c;
-                    margin-top: 0.25rem;
-                  "
-                  id="pse-grand-total"
-                ></div>
+              <div class="pse-total-block">
+                <span class="pse-total-label">Total a pagar:</span>
+                <div class="pse-total-amount" id="pse-grand-total"></div>
               </div>
 
               <div class="pse-portal-actions">
-                <a
-                  href="checkout-pago.html"
-                  class="btn btn-outline-orange"
-                  style="text-align: center"
+                <a href="checkout-pago.html" class="btn btn-outline-orange"
                   >Cancelar</a
                 >
                 <button
                   type="button"
                   onclick="payWithPSE()"
                   class="btn btn-pse-blue"
-                  style="
-                    border-radius: 8px;
-                    padding: 14px;
-                    font-weight: 700;
-                    border: none;
-                    cursor: pointer;
-                  "
                 >
                   Pagar con PSE
                 </button>

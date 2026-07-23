@@ -204,6 +204,15 @@
 
   .newsletter-form {
     width: 100% !important;
+    flex: 0 1 auto !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .newsletter-form input,
+  .newsletter-btn {
+    width: 100% !important;
+    flex: 0 0 auto !important;
   }
 
   .footer-body {
