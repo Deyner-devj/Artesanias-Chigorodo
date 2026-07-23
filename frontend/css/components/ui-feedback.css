@@ -21,9 +21,8 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 14px;
-  background: rgba(15, 23, 42, 0.35);
-  backdrop-filter: blur(2px);
+  background: rgba(12, 48, 35, 0.72);
+  backdrop-filter: blur(8px);
   opacity: 0;
   transition: opacity 0.18s ease;
 }
@@ -33,26 +32,77 @@
   opacity: 1;
 }
 
+.uf-loader-card {
+  width: min(340px, calc(100vw - 40px));
+  padding: 34px 28px 30px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 26px;
+  background: linear-gradient(145deg, #fffdf8, #f4eadc);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+.uf-loader-mark {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 5px;
+  height: 42px;
+  margin-bottom: 9px;
+}
+
+.uf-loader-mark span {
+  width: 10px;
+  border-radius: 999px 999px 4px 4px;
+  background: #c46b2d;
+  animation: uf-weave 1s ease-in-out infinite;
+}
+
+.uf-loader-mark span:nth-child(1) { height: 24px; animation-delay: -0.2s; }
+.uf-loader-mark span:nth-child(2) { height: 40px; background: #2e7d32; }
+.uf-loader-mark span:nth-child(3) { height: 30px; animation-delay: -0.4s; }
+
+.uf-loader-brand {
+  color: #174635;
+  font-family: Poppins, sans-serif;
+  font-size: 1.13rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.uf-loader-brand strong { color: #b65f27; font-weight: 800; }
+
 #global-loader.is-slow .uf-spinner {
   border-top-color: var(--uf-warning);
 }
 
+#global-loader.is-slow .uf-loader-card {
+  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.2), 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
 .uf-spinner {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  border: 4px solid rgba(255, 255, 255, 0.55);
+  border: 4px solid rgba(46, 125, 50, 0.14);
   border-top-color: var(--uf-primary);
   animation: uf-spin 0.7s linear infinite;
+  margin: 20px auto 14px;
 }
 
 .uf-loader-text {
-  color: #fff;
+  color: #486055;
   font-size: 0.85rem;
   font-weight: 600;
-  background: rgba(15, 23, 42, 0.55);
-  padding: 6px 14px;
-  border-radius: 999px;
+  line-height: 1.5;
+}
+
+@keyframes uf-weave {
+  50% { transform: translateY(-7px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uf-spinner, .uf-loader-mark span { animation: none; }
 }
 
 @keyframes uf-spin {

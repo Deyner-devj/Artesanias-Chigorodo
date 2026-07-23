@@ -1,6 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
   inicializarDashboard();
+  cargarDatosAdministrativos();
 });
+
+async function cargarDatosAdministrativos() {
+  if (!window.API) return;
+  try {
+    const [summary, users] = await Promise.all([
+      API.dashboard.getSummary(),
+      API.users.getAll(),
+    ]);
+    setDashboardValue("admin-total-sales", formatCOP(summary.totalSales || 0));
+    setDashboardValue("admin-pending-orders", summary.pendingOrders || 0);
+    setDashboardValue("admin-total-products", summary.totalProducts || 0);
+    setDashboardValue("admin-total-artisans", users.filter((user) => user.role === "VENDOR").length);
+    renderRecentAdminOrders(summary.recentOrders || []);
+  } catch (error) {
+    console.error("No fue posible cargar el dashboard administrativo", error);
+    if (window.UF) window.UF.toast("No fue posible cargar las métricas del panel.", "error");
+  }
+}
+
+function setDashboardValue(id, value) {
+  const element = document.getElementById(id);
+  if (element) element.textContent = value;
+}
+
+function renderRecentAdminOrders(orders) {
+  const body = document.getElementById("admin-recent-orders");
+  if (!body) return;
+  if (!orders.length) {
+    body.innerHTML = '<tr><td colspan="4">Aún no hay pedidos registrados.</td></tr>';
+    return;
+  }
+  body.innerHTML = orders.map((order) => `
+    <tr>
+      <td class="font-mono">${escapeAdminHtml(order.orderNumber)}</td>
+      <td>${escapeAdminHtml(order.customerName)}</td>
+      <td>${formatCOP(order.total || 0)}</td>
+      <td><span class="badge badge-info">${escapeAdminHtml(order.status)}</span></td>
+    </tr>`).join("");
+}
+
+function escapeAdminHtml(value) {
+  const node = document.createElement("span");
+  node.textContent = value || "";
+  return node.innerHTML;
+}
 
 async function inicializarDashboard() {
   // 1. Cargar Sidebar

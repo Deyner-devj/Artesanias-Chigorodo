@@ -34,28 +34,28 @@
                 <i data-lucide="banknote"></i>
               </div>
               <div class="card-title">Ventas Totales</div>
-              <div class="card-value">$4.250.000</div>
+              <div class="card-value" id="admin-total-sales">—</div>
             </div>
             <div class="card">
               <div class="card-icon-box blue">
                 <i data-lucide="clipboard-list"></i>
               </div>
               <div class="card-title">Pedidos Pendientes</div>
-              <div class="card-value">12</div>
+              <div class="card-value" id="admin-pending-orders">—</div>
             </div>
             <div class="card">
               <div class="card-icon-box green">
                 <i data-lucide="shopping-bag"></i>
               </div>
               <div class="card-title">Productos Activos</div>
-              <div class="card-value">148</div>
+              <div class="card-value" id="admin-total-products">—</div>
             </div>
             <div class="card">
               <div class="card-icon-box purple">
                 <i data-lucide="user-check"></i>
               </div>
               <div class="card-title">Artesanos Registrados</div>
-              <div class="card-value">34</div>
+              <div class="card-value" id="admin-total-artisans">—</div>
             </div>
           </div>
 
@@ -87,7 +87,7 @@
                     <th>Estado</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="admin-recent-orders">
                   <tr>
                     <td class="font-mono">#AC-2024-000125</td>
                     <td>Juan Pérez</td>
@@ -116,7 +116,10 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
     <script src="../js/core/main.js"></script>
+    <script src="../js/core/api.js"></script>
     <script src="../js/admin/admin-dashboard.js"></script>
     <script src="../js/admin/main-admin.js"></script>
   </body>

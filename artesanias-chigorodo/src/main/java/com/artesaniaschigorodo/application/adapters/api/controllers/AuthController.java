@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Map;
+import com.artesaniaschigorodo.infrastructure.audit.AuditEventService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,6 +38,7 @@ public class AuthController {
     private final PasswordResetTokenRepository passwordResetTokens;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
+    private final AuditEventService auditEventService;
 
     @Value("${app.frontend-base-url:http://localhost:5500/frontend/home}")
     private String frontendBaseUrl;
@@ -61,8 +63,20 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
-        String token = authUseCase.login(request.getEmail(), request.getPassword());
-        User user = userPersistencePort.findByEmail(request.getEmail()).orElseThrow();
+        String token;
+        User user;
+        try {
+            token = authUseCase.login(request.getEmail(), request.getPassword());
+            user = userPersistencePort.findByEmail(request.getEmail()).orElseThrow();
+        } catch (RuntimeException ex) {
+            // Nunca se registra la contrasena ni el token, solo el resultado.
+            auditEventService.record("AUTH_LOGIN", "FAILURE", request.getEmail(), null,
+                    "USER", null, Map.of("reason", "INVALID_CREDENTIALS_OR_ACCOUNT"));
+            throw ex;
+        }
+
+        auditEventService.record("AUTH_LOGIN", "SUCCESS", user.getEmail(), user.getId(),
+                "USER", String.valueOf(user.getId()), Map.of("role", user.getRole().name()));
 
         AuthResponse response = AuthResponse.builder()
                 .token(token)

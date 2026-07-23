@@ -19,11 +19,33 @@
   let loaderCount = 0;
   let slowTimer = null;
 
+  function loadStyles() {
+    if (document.getElementById("uf-feedback-styles")) return;
+    const script = document.currentScript || document.querySelector('script[src*="ui-feedback.js"]');
+    const href = script && script.src
+      ? script.src.replace(/js\/core\/ui-feedback\.js(?:\?.*)?$/, "css/components/ui-feedback.css")
+      : null;
+    if (!href) return;
+    const link = document.createElement("link");
+    link.id = "uf-feedback-styles";
+    link.rel = "stylesheet";
+    link.href = href;
+    document.head.appendChild(link);
+  }
+
   function ensureRoot() {
     if (!document.getElementById("global-loader")) {
       const loader = document.createElement("div");
       loader.id = "global-loader";
-      loader.innerHTML = `<div class="uf-spinner"></div><div class="uf-loader-text" id="uf-loader-text">Cargando...</div>`;
+      loader.setAttribute("role", "status");
+      loader.setAttribute("aria-live", "polite");
+      loader.innerHTML = `
+        <div class="uf-loader-card">
+          <div class="uf-loader-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="uf-loader-brand">Artesanias <strong>Chigorodo</strong></div>
+          <div class="uf-spinner" aria-hidden="true"></div>
+          <div class="uf-loader-text" id="uf-loader-text">Preparando una experiencia hecha a mano...</div>
+        </div>`;
       document.body.appendChild(loader);
     }
     if (!document.getElementById("uf-topbar")) {
@@ -45,6 +67,7 @@
   }
 
   function showLoader(text) {
+    loadStyles();
     ensureRoot();
     loaderCount++;
     const loader = document.getElementById("global-loader");
@@ -226,6 +249,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    loadStyles();
     ensureRoot();
     classifyConnection();
     const conn =
@@ -234,6 +258,14 @@
       navigator.webkitConnection;
     if (conn && conn.addEventListener)
       conn.addEventListener("change", classifyConnection);
+
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("a[href]");
+      if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const url = new URL(link.href, window.location.href);
+      if (link.target === "_blank" || link.hasAttribute("download") || url.origin !== window.location.origin || (url.hash && url.pathname === window.location.pathname)) return;
+      showLoader("Abriendo una nueva pieza de nuestra tienda...");
+    });
   });
 
   window.UF = {

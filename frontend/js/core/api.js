@@ -1,6 +1,18 @@
 // js/core/api.js
 // Cliente HTTP centralizado para el backend Spring Boot en localhost:8080
 
+// Carga el feedback visual antes de este cliente en todas las vistas que ya
+// incluyen api.js. document.write es intencional aqui: este archivo se carga
+// como script clasico durante el parseo y asi el recurso queda disponible de
+// forma sincronica, incluso en las paginas antiguas que aun no lo referencian.
+if (!window.UF && document.currentScript) {
+  const feedbackSrc = document.currentScript.src.replace(
+    /api\.js(?:\?.*)?$/,
+    "ui-feedback.js",
+  );
+  document.write(`<script src="${feedbackSrc}"></script>`);
+}
+
 const API_BASE = "http://localhost:8080";
 
 // ─── Token helpers ───────────────────────────────────────────────────────────
@@ -28,7 +40,18 @@ async function apiFetch(path, options = {}) {
   };
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  // Todas las peticiones pasan por aqui: el contador del loader permite
+  // cubrir solicitudes simultaneas sin ocultarlo antes de tiempo.
+  const loaderMessage =
+    options.loaderMessage || "Conectando con Artesanias Chigorodo...";
+  if (window.UF) window.UF.showLoader(loaderMessage);
+
+  let response;
+  try {
+    response = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  } finally {
+    if (window.UF) window.UF.hideLoader();
+  }
 
   if (!response.ok) {
     let errMsg = `HTTP ${response.status}`;
