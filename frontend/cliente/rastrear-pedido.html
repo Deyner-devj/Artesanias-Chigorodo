@@ -223,48 +223,11 @@
             return;
           } catch (_) {
             trackError.style.display = "block";
-            return;
-          }
-
-          // Buscamos en el historial de la máquina
-          let history = [];
-          try {
-            const historyStr = localStorage.getItem("orders_history");
-            if (historyStr) {
-              history = JSON.parse(historyStr);
-            }
-          } catch (error) {
-            console.error("No se pudo leer el historial");
-          }
-
-          const foundOrder = history.find((order) => order.id === inputId);
-
-          if (foundOrder) {
-            // Llenamos los datos en la tarjeta de resultado
-            document.getElementById("result-order-num").textContent =
-              foundOrder.id;
-            document.getElementById("result-order-date").textContent =
-              foundOrder.date;
-            document.getElementById("result-order-city").textContent =
-              foundOrder.city || "tu dirección";
-
-            // Mostramos el resultado
-            trackResult.style.display = "block";
-
-            // Escena de rastreo: bodega -> tránsito -> reparto -> entregado,
-            // según el tiempo transcurrido desde que se creó el pedido.
-            if (window.OrderTracking) {
-              const scene = document.getElementById("tracking-scene");
-              const pill = document.getElementById("result-order-status");
-              window.OrderTracking.watchOrder(scene, pill, foundOrder);
-            }
-          } else {
-            // Mostramos error
-            trackError.style.display = "block";
             document
               .getElementById("track-id")
               .closest(".input-field")
               .classList.add("has-error");
+            return;
           }
         });
       });

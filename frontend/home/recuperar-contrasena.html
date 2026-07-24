@@ -1,1 +1,188 @@
-<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Recuperar contrasena</title><link rel="stylesheet" href="../css/components/styles.css"></head><body><main class="page" style="max-width:480px;margin:5rem auto"><h1>Recuperar contrasena</h1><p>Te enviaremos un enlace de un solo uso si tu correo esta registrado.</p><form id="forgot-form"><label>Correo electronico<input id="email" type="email" required></label><button class="btn btn-primary" type="submit">Enviar enlace</button></form><p id="message" role="status"></p><a href="login.html">Volver al inicio de sesion</a></main><script src="../js/core/api.js"></script><script>document.getElementById('forgot-form').addEventListener('submit',async(e)=>{e.preventDefault();const message=document.getElementById('message');try{const data=await API.auth.forgotPassword(document.getElementById('email').value.trim());message.textContent=data.message;}catch(error){message.textContent=error.message;}});</script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperar contraseña - Artesanías Chigorodó</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../css/components/styles.css" />
+  <link rel="stylesheet" href="../css/components/navbar.css" />
+  <link rel="stylesheet" href="../css/components/footer.css" />
+  <link rel="stylesheet" href="../css/home/recuperar-contrasena.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <div id="navbar-placeholder"></div>
+    
+    <div class="app-main-content">
+      <main class="forgot-password-container">
+        <div class="forgot-password-card">
+          <!-- Logo -->
+          <div class="forgot-logo-container">
+            <svg class="forgot-logo" viewBox="0 0 100 100" width="80" height="80">
+              <path
+                d="M50,15 C40,15 35,25 35,32 C35,35 37,38 40,40 C30,48 25,60 25,72 C25,82 33,85 50,85 C67,85 75,82 75,72 C75,60 70,48 60,40 C63,38 65,35 65,32 C65,25 60,15 50,15 Z"
+                fill="#D97706"
+              />
+              <path
+                d="M38,30 Q50,34 62,30"
+                stroke="#F59E0B"
+                stroke-width="3"
+                fill="none"
+              />
+              <path
+                d="M27,65 Q50,72 73,65"
+                stroke="#F59E0B"
+                stroke-width="3"
+                fill="none"
+              />
+            </svg>
+          </div>
+          
+          <h1 class="forgot-title">¿Olvidaste tu contraseña?</h1>
+          <p class="forgot-subtitle">
+            No te preocupes, te ayudamos a recuperar el acceso a tu cuenta.
+          </p>
+          
+          <p class="forgot-instruction">
+            Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+          </p>
+          
+          <form id="forgot-form" class="forgot-form">
+            <div class="forgot-input-group">
+              <label for="email" class="forgot-label">Correo electrónico</label>
+              <div class="forgot-input-wrapper">
+                <svg class="forgot-input-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <input 
+                  id="email" 
+                  type="email" 
+                  name="email"
+                  class="forgot-input"
+                  required 
+                  placeholder="Ej: juan@example.com"
+                  aria-label="Correo electrónico"
+                  aria-describedby="email-help"
+                />
+              </div>
+              <span id="email-help" class="forgot-help-text">Nunca compartiremos tu correo con nadie más.</span>
+              <span id="email-error" class="forgot-error-message" role="alert"></span>
+            </div>
+            
+            <button type="submit" class="forgot-submit-btn" id="submit-btn">
+              <span id="btn-text">Enviar enlace de recuperación</span>
+              <span id="btn-loader" class="forgot-loader" style="display: none;">
+                <svg class="forgot-spinner" viewBox="0 0 24 24" width="18" height="18">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="30 70"/>
+                </svg>
+              </span>
+            </button>
+          </form>
+          
+          <!-- Mensajes de estado -->
+          <div id="status-message" class="forgot-status-message" role="status" aria-live="polite"></div>
+          
+          <div class="forgot-footer-links">
+            <a href="login.html" class="forgot-back-link">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              Volver al inicio de sesión
+            </a>
+          </div>
+        </div>
+      </main>
+    </div>
+    
+    <div id="footer-placeholder"></div>
+  </div>
+  
+  <script src="../js/core/main.js"></script>
+  <script src="../js/core/api.js"></script>
+  <script src="../js/core/auth.js"></script>
+  <script src="../js/components/navbar.js"></script>
+  <script src="../js/components/footer.js"></script>
+  
+  <script>
+    document.getElementById('forgot-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const emailInput = document.getElementById('email');
+      const emailError = document.getElementById('email-error');
+      const statusMessage = document.getElementById('status-message');
+      const submitBtn = document.getElementById('submit-btn');
+      const btnText = document.getElementById('btn-text');
+      const btnLoader = document.getElementById('btn-loader');
+      
+      const email = emailInput.value.trim();
+      
+      // Limpiar mensajes anteriores
+      emailError.textContent = '';
+      statusMessage.textContent = '';
+      statusMessage.className = 'forgot-status-message';
+      
+      // Validar email
+      if (!email) {
+        emailError.textContent = 'Por favor ingresa tu correo electrónico.';
+        emailInput.focus();
+        return;
+      }
+      
+      // Validar formato de email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        emailError.textContent = 'Por favor ingresa un correo electrónico válido.';
+        emailInput.focus();
+        return;
+      }
+      
+      // Mostrar estado de carga
+      submitBtn.disabled = true;
+      btnText.style.display = 'none';
+      btnLoader.style.display = 'block';
+      statusMessage.textContent = 'Enviando enlace de recuperación...';
+      statusMessage.style.color = 'var(--text-muted)';
+      
+      try {
+        const data = await window.API.auth.forgotPassword(email);
+        
+        // Mostrar mensaje de éxito
+        statusMessage.textContent = data.message || 'Enlace de recuperación enviado correctamente.';
+        statusMessage.className = 'forgot-status-message success';
+        statusMessage.style.color = 'var(--success)';
+        
+        // Limpiar el campo
+        emailInput.value = '';
+        
+        // Restaurar botón
+        submitBtn.disabled = false;
+        btnText.style.display = 'block';
+        btnLoader.style.display = 'none';
+        
+      } catch (error) {
+        // Mostrar error
+        const errorMsg = error.message || error.error || 'Error al enviar el enlace de recuperación.';
+        statusMessage.textContent = errorMsg;
+        statusMessage.className = 'forgot-status-message error';
+        statusMessage.style.color = 'var(--error)';
+        
+        // Restaurar botón
+        submitBtn.disabled = false;
+        btnText.style.display = 'block';
+        btnLoader.style.display = 'none';
+        
+        // Enfocar el campo para intentar de nuevo
+        emailInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>

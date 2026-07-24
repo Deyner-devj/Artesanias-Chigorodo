@@ -14,6 +14,8 @@ public class UserMapper {
                 .fullName(domain.getFullName())
                 .email(domain.getEmail())
                 .password(domain.getPassword())
+                .telephone(domain.getTelephone())
+                .specialty(domain.getSpecialty())
                 .role(domain.getRole() != null ? domain.getRole().name() : null)
                 .status(domain.getStatus() != null ? domain.getStatus().name() : null)
                 .build();
@@ -26,6 +28,8 @@ public class UserMapper {
                 .fullName(entity.getFullName())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
+                .telephone(entity.getTelephone())
+                .specialty(entity.getSpecialty())
                 .role(entity.getRole() != null ? Role.valueOf(entity.getRole()) : null)
                 .status(entity.getStatus() != null ? UserStatus.valueOf(entity.getStatus()) : null)
                 .build();

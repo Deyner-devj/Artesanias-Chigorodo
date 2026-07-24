@@ -6,12 +6,15 @@ import com.artesaniaschigorodo.domain.exceptions.BusinessException;
 import com.artesaniaschigorodo.domain.models.enums.Role;
 import com.artesaniaschigorodo.domain.models.enums.UserStatus;
 import com.artesaniaschigorodo.domain.models.user.User;
+import com.artesaniaschigorodo.domain.models.user.ArtisanProfile;
 import com.artesaniaschigorodo.domain.ports.in.AuthPort;
+import com.artesaniaschigorodo.domain.ports.out.ArtisanProfilePort;
 import com.artesaniaschigorodo.domain.ports.out.JwtTokenPort;
 import com.artesaniaschigorodo.domain.ports.out.PasswordEncoderPort;
 import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +23,10 @@ public class AuthUseCase implements AuthPort {
     private final UserPort userPersistencePort;
     private final PasswordEncoderPort passwordEncoderPort;
     private final JwtTokenPort jwtTokenPort;
+    private final ArtisanProfilePort artisanProfilePort;
 
     @Override
+    @Transactional
     public User register(User user) {
         new com.artesaniaschigorodo.domain.services.ValidateUniqueEmail().validate(userPersistencePort.existsByEmail(user.getEmail()));
 
@@ -32,7 +37,24 @@ public class AuthUseCase implements AuthPort {
         }
         user.setStatus(UserStatus.ACTIVE);
 
-        return userPersistencePort.save(user);
+        User registeredUser = userPersistencePort.save(user);
+        
+        // Si es artesano (VENDOR), crear el perfil de artesano
+        if (user.getRole() == Role.VENDOR) {
+            if (user.getSpecialty() == null || user.getSpecialty().isBlank()) {
+                throw new com.artesaniaschigorodo.domain.exceptions.BusinessException(
+                    "La especialidad es obligatoria para registrar un artesano.",
+                    org.springframework.http.HttpStatus.BAD_REQUEST.value()
+                );
+            }
+            ArtisanProfile profile = ArtisanProfile.builder()
+                    .userId(registeredUser.getId())
+                    .specialty(user.getSpecialty())
+                    .build();
+            artisanProfilePort.save(profile);
+        }
+
+        return registeredUser;
     }
 
     @Override

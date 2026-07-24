@@ -18,6 +18,7 @@ public class User {
     private String email;
     private String password;
     private String telephone;
+    private String specialty;
     private Role role;
     private UserStatus status;
 
@@ -35,6 +36,9 @@ public class User {
 
     public String getTelephone() { return telephone; }
     public void setTelephone(String telephone) { this.telephone = telephone; }
+
+    public String getSpecialty() { return specialty; }
+    public void setSpecialty(String specialty) { this.specialty = specialty; }
 
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }

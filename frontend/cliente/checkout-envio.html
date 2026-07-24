@@ -111,6 +111,62 @@
                 </label>
               </div>
 
+              <!-- Formulario de dirección de envío -->
+              <div class="form-section" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+                <div class="form-section-title">Dirección de envío</div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                  <div class="input-field">
+                    <label>País *</label>
+                    <select id="shipping-country" required>
+                      <option value="" disabled selected>Selecciona un país</option>
+                      <option value="Colombia" selected>Colombia</option>
+                    </select>
+                  </div>
+                  <div class="input-field">
+                    <label>Departamento *</label>
+                    <select id="shipping-department" required>
+                      <option value="" disabled selected>Selecciona un departamento</option>
+                      <option value="Antioquia">Antioquia</option>
+                      <option value="Bogotá D.C.">Bogotá D.C.</option>
+                      <option value="Valle del Cauca">Valle del Cauca</option>
+                      <option value="Cundinamarca">Cundinamarca</option>
+                      <option value="Atlántico">Atlántico</option>
+                      <option value="Bolívar">Bolívar</option>
+                      <option value="Caldas">Caldas</option>
+                      <option value="Cauca">Cauca</option>
+                      <option value="Córdoba">Córdoba</option>
+                      <option value="Huila">Huila</option>
+                      <option value="Magdalena">Magdalena</option>
+                      <option value="Meta">Meta</option>
+                      <option value="Nariño">Nariño</option>
+                      <option value="Norte de Santander">Norte de Santander</option>
+                      <option value="Quindío">Quindío</option>
+                      <option value="Risaralda">Risaralda</option>
+                      <option value="Santander">Santander</option>
+                      <option value="Sucre">Sucre</option>
+                      <option value="Tolima">Tolima</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                  <div class="input-field">
+                    <label>Ciudad *</label>
+                    <input type="text" id="shipping-city" placeholder="Ej: Medellín" required />
+                  </div>
+                  <div class="input-field">
+                    <label>Código postal</label>
+                    <input type="text" id="shipping-postal-code" placeholder="Ej: 050001" />
+                  </div>
+                </div>
+
+                <div class="input-field" style="margin-top: 1rem;">
+                  <label>Dirección completa *</label>
+                  <input type="text" id="shipping-address" placeholder="Ej: Calle 12 #45-67, Barrio La Candelaria" required />
+                </div>
+              </div>
+
               <div class="form-actions-row">
                 <a
                   href="checkout-info.html"
@@ -243,8 +299,6 @@
         try {
           if (typeof getCartItems === "function") {
             items = getCartItems();
-          } else {
-            items = JSON.parse(localStorage.getItem("cart_items") || "[]");
           }
         } catch (e) {
           console.error("Error recuperando el carrito", e);
@@ -316,8 +370,27 @@
       }
 
       function continueToPayment() {
+        // Validar que se hayan seleccionado todos los campos de dirección
+        const country = document.getElementById("shipping-country").value;
+        const department = document.getElementById("shipping-department").value;
+        const city = document.getElementById("shipping-city").value;
+        const address = document.getElementById("shipping-address").value;
+        const postalCode = document.getElementById("shipping-postal-code").value;
+        
+        if (!country || !department || !city || !address) {
+          alert("Por favor, completa todos los campos obligatorios de la dirección de envío.");
+          return;
+        }
+        
+        // Guardar datos de envío
         sessionStorage.setItem("checkout_shipping_method", selectedMethod);
         sessionStorage.setItem("checkout_shipping_cost", selectedCost);
+        sessionStorage.setItem("checkout_shipping_country", country);
+        sessionStorage.setItem("checkout_shipping_department", department);
+        sessionStorage.setItem("checkout_shipping_city", city);
+        sessionStorage.setItem("checkout_shipping_address", address);
+        sessionStorage.setItem("checkout_shipping_postal_code", postalCode || "");
+        
         window.location.href = "checkout-pago.html";
       }
     </script>

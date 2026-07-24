@@ -62,12 +62,12 @@
                   id="sidebar-user-name"
                   style="margin: 0; font-weight: 700; color: var(--text-dark)"
                 >
-                  Juan Pérez
+                  Cargando...
                 </h4>
                 <span
                   id="sidebar-user-email"
                   style="font-size: 0.8rem; color: var(--text-muted)"
-                  >juanperez@mail.com</span
+                  >Cargando...</span
                 >
               </div>
               <nav class="account-sidebar-menu">
@@ -250,79 +250,107 @@
     <script>
       let activeTab = "pedidos";
       let selectedOrder = null;
+      let allOrders = [];
 
       // Presets for profile form
       let profileData = {
-        name: "Juan Pérez",
-        email: "cliente@chigorodo.test",
-        phone: "3001234567",
-        city: "Medellín",
-        address: "Calle 12 #45-67",
+        name: "",
+        email: "",
+        phone: "",
+        city: "",
+        address: "",
       };
 
-      const DEFAULT_ORDERS = [
-        {
-          id: "#AC-2024-000125",
-          date: "Mayo 28, 2024",
-          status: "delivered",
-          statusText: "Entregado",
-          total: 505000,
-          address: "Calle 12 #45-67",
-          city: "Medellín",
-          items: [
-            { name: "Mochila Wayuu Colores del Sol", qty: 1, price: 280000 },
-            { name: "Jarrón de Barro Negro", qty: 1, price: 120000 },
-            { name: "Individual Tejido Multicolor (x2)", qty: 2, price: 45000 },
-          ],
-        },
-        {
-          id: "#AC-2024-000098",
-          date: "Abril 14, 2024",
-          status: "transit",
-          statusText: "En tránsito",
-          total: 320000,
-          address: "Carrera 45 #89-12",
-          city: "Envigado",
-          items: [{ name: "Hamaca San Jacinto", qty: 1, price: 350000 }],
-        },
-        {
-          id: "#AC-2024-000075",
-          date: "Marzo 10, 2024",
-          status: "delivered",
-          statusText: "Entregado",
-          total: 118000,
-          address: "Calle 12 #45-67",
-          city: "Medellín",
-          items: [
-            { name: "Aretes de Filigrana Momposina", qty: 1, price: 150000 },
-          ],
-        },
-      ];
+      // Mapear el status de la orden a texto en español y clase CSS
+      const orderStatusMap = {
+        'PENDING': { status: 'pending', statusText: 'Pendiente' },
+        'CONFIRMED': { status: 'confirmed', statusText: 'Confirmado' },
+        'PROCESSING': { status: 'processing', statusText: 'En procesamiento' },
+        'SHIPPED': { status: 'transit', statusText: 'En tránsito' },
+        'DELIVERED': { status: 'delivered', statusText: 'Entregado' },
+        'CANCELLED': { status: 'cancelled', statusText: 'Cancelado' },
+        'REFUNDED': { status: 'refunded', statusText: 'Reembolsado' },
+      };
 
-      document.addEventListener("DOMContentLoaded", function () {
-        // Synchronize session details
+      // Formatear fecha a formato "Mes dd, yyyy" en español
+      function formatDate(dateString) {
+        if (!dateString) return "Fecha desconocida";
+        const date = new Date(dateString);
+        const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+      }
+
+      // Convertir respuesta del backend a formato esperado por el frontend
+      function mapOrderResponse(apiOrder) {
+        const statusInfo = orderStatusMap[apiOrder.orderStatus] || { status: 'pending', statusText: apiOrder.orderStatus };
+        
+        return {
+          id: apiOrder.orderNumber || `#AC-${apiOrder.id}`,
+          date: formatDate(apiOrder.createdAt),
+          status: statusInfo.status,
+          statusText: statusInfo.statusText,
+          total: apiOrder.total,
+          address: apiOrder.shippingDetails ? apiOrder.shippingDetails.address : "",
+          city: apiOrder.shippingDetails ? apiOrder.shippingDetails.city : "",
+          items: apiOrder.items ? apiOrder.items.map(item => ({
+            name: item.productName,
+            qty: item.quantity,
+            price: item.unitPrice
+          })) : []
+        };
+      }
+
+      async function loadOrders() {
+        try {
+          if (!window.API) {
+            console.error("API no disponible");
+            allOrders = [];
+            return;
+          }
+          const response = await window.API.orders.getAll();
+          allOrders = Array.isArray(response) ? response.map(mapOrderResponse) : [];
+        } catch (error) {
+          console.error("Error cargando pedidos:", error);
+          allOrders = [];
+        }
+      }
+
+      async function loadProfile() {
+        try {
+          if (!window.API) {
+            console.error("API no disponible");
+            return;
+          }
+          const user = await window.API.users.getProfile();
+          if (user) {
+            profileData.name = user.fullName || "";
+            profileData.email = user.email || "";
+            profileData.phone = user.telephone || "";
+            
+            // Sincronizar con la barra lateral
+            document.getElementById("sidebar-user-name").textContent = profileData.name;
+            document.getElementById("sidebar-user-email").textContent = profileData.email;
+          }
+        } catch (error) {
+          console.error("Error cargando perfil:", error);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        // Cargar perfil y pedidos en paralelo
+        await Promise.all([loadProfile(), loadOrders()]);
+        
+        // Si no hay usuario logueado, redirigir
         const user = getLoggedInUser();
-        if (user) {
-          profileData.name = user.name || "Juan Pérez";
-          profileData.email = user.email || "cliente@chigorodo.test";
-          document.getElementById("sidebar-user-name").textContent =
-            profileData.name;
-          document.getElementById("sidebar-user-email").textContent =
-            profileData.email;
+        if (!user) {
+          window.location.href = "../home/login.html";
+          return;
         }
 
-        // Initialize orders database in localStorage if not exists
-        if (!localStorage.getItem("orders_history")) {
-          localStorage.setItem(
-            "orders_history",
-            JSON.stringify(DEFAULT_ORDERS),
-          );
-        }
-
-        renderTabContent();
+        await renderTabContent();
       });
 
-      function switchTab(tab) {
+      async function switchTab(tab) {
         activeTab = tab;
         selectedOrder = null;
 
@@ -338,10 +366,10 @@
           }
         });
 
-        renderTabContent();
+        await renderTabContent();
       }
 
-      function renderTabContent() {
+      async function renderTabContent() {
         const panel = document.getElementById("account-tab-panel");
 
         if (activeTab === "pedidos") {
@@ -353,25 +381,21 @@
         } else if (activeTab === "datos") {
           renderProfileForm(panel);
         } else if (activeTab === "direcciones") {
-          renderAddresses(panel);
+          await renderAddresses(panel);
         } else if (activeTab === "pagos") {
-          renderPaymentMethods(panel);
+          await renderPaymentMethods(panel);
         } else if (activeTab === "favoritos") {
-          renderFavorites(panel);
+          await renderFavorites(panel);
         }
       }
 
       function renderOrdersList(panel) {
-        const orders = JSON.parse(
-          localStorage.getItem("orders_history") || "[]",
-        );
-
         let rowsHtml = "";
-        if (orders.length === 0) {
+        if (allOrders.length === 0) {
           rowsHtml =
             '<p style="padding: 2rem; text-align: center; color: var(--text-muted);">No has realizado ningún pedido aún.</p>';
         } else {
-          orders.forEach((order) => {
+          allOrders.forEach((order) => {
             rowsHtml += `
             <div class="order-row-item">
               <div class="order-col-id" style="font-weight: 700;">${order.id}</div>
@@ -406,12 +430,9 @@
       `;
       }
 
-      function viewOrderDetails(orderId) {
-        const orders = JSON.parse(
-          localStorage.getItem("orders_history") || "[]",
-        );
-        selectedOrder = orders.find((o) => o.id === orderId) || null;
-        renderTabContent();
+      async function viewOrderDetails(orderId) {
+        selectedOrder = allOrders.find((o) => o.id === orderId) || null;
+        await renderTabContent();
       }
 
       function renderOrderDetail(panel) {
@@ -514,125 +535,244 @@
       `;
       }
 
-      function saveProfile(e) {
+      async function saveProfile(e) {
         e.preventDefault();
-        profileData.name = document.getElementById("profile-name").value;
-        profileData.email = document.getElementById("profile-email").value;
-        profileData.phone = document.getElementById("profile-phone").value;
+        const newName = document.getElementById("profile-name").value;
+        const newEmail = document.getElementById("profile-email").value;
+        const newPhone = document.getElementById("profile-phone").value;
+        const newPassword = document.getElementById("profile-new-password").value;
 
-        // Update sidebar
-        document.getElementById("sidebar-user-name").textContent =
-          profileData.name;
-        document.getElementById("sidebar-user-email").textContent =
-          profileData.email;
+        try {
+          // Actualizar perfil a través de la API
+          const updateData = { fullName: newName };
+          if (newPhone) updateData.telephone = newPhone;
+          if (newPassword) updateData.password = newPassword;
+          
+          await window.API.users.updateProfile(updateData);
+          
+          // Actualizar datos locales
+          profileData.name = newName;
+          profileData.email = newEmail;
+          profileData.phone = newPhone;
 
-        // Sync with localStorage
-        const user = getLoggedInUser();
-        if (user) {
-          user.name = profileData.name;
-          user.email = profileData.email;
-          localStorage.setItem("user", JSON.stringify(user));
+          // Update sidebar
+          document.getElementById("sidebar-user-name").textContent = profileData.name;
+          document.getElementById("sidebar-user-email").textContent = profileData.email;
+
+          // Sync with sessionStorage
+          const user = getLoggedInUser();
+          if (user) {
+            user.name = profileData.name;
+            user.email = profileData.email;
+            user.phone = profileData.phone;
+            sessionStorage.setItem("user", JSON.stringify(user));
+          }
+
+          showModernToast("Tus datos han sido guardados con éxito.", "success");
+        } catch (error) {
+          const errorMessage = error.message || "Error al guardar los datos.";
+          showModernToast(`Error: ${errorMessage}`, "error");
         }
-
-        showModernToast("Tus datos han sido guardados con éxito.", "success");
       }
 
-      function renderAddresses(panel) {
+      async function loadAddresses() {
+        try {
+          if (!window.API) {
+            console.error("API no disponible");
+            return [];
+          }
+          const response = await window.API.addresses.getAll();
+          return Array.isArray(response) ? response : [];
+        } catch (error) {
+          console.error("Error cargando direcciones:", error);
+          showModernToast(`Error al cargar direcciones: ${error.message || 'Error desconocido'}`, "error");
+          return [];
+        }
+      }
+
+      async function loadPaymentMethods() {
+        try {
+          if (!window.API) {
+            console.error("API no disponible");
+            return [];
+          }
+          const response = await window.API.paymentMethods.getAll();
+          return Array.isArray(response) ? response : [];
+        } catch (error) {
+          console.error("Error cargando métodos de pago:", error);
+          showModernToast(`Error al cargar métodos de pago: ${error.message || 'Error desconocido'}`, "error");
+          return [];
+        }
+      }
+
+      async function renderAddresses(panel) {
+        const addresses = await loadAddresses();
+        
+        let addressesHtml = "";
+        
+        if (addresses.length === 0) {
+          addressesHtml = `
+            <div style="padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; grid-column: 1 / -1;">
+              <p style="color: var(--text-muted); margin: 0;">No tienes direcciones guardadas aún.</p>
+            </div>
+            <div onclick="openAddressModal()" style="padding: 1.25rem; border: 1px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 130px;">
+              <span style="color: var(--primary); font-weight: 600; font-size: 0.95rem;">+ Agregar nueva dirección</span>
+            </div>
+          `;
+        } else {
+          addresses.forEach((address) => {
+            const isDefault = address.isDefault ? 
+              `<span style="font-size: 0.8rem; font-weight: 700; color: var(--secondary); display: flex; align-items: center; gap: 0.25rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Dirección Predeterminada
+              </span>` : '';
+            
+            addressesHtml += `
+            <div style="padding: 1.25rem; border: ${address.isDefault ? '2px solid var(--secondary)' : '1px solid var(--border-color)'}; background-color: ${address.isDefault ? '#F4FAF7' : 'transparent'}; border-radius: 12px; display: flex; flex-direction: column; gap: 0.5rem;">
+              ${isDefault}
+              <h4 style="margin: 0; font-weight: 700;">${address.recipientName || profileData.name || 'Sin nombre'}</h4>
+              <p style="margin: 0; font-size: 0.9rem; color: var(--text-dark);">${address.addressLine || address.address || 'No especificado'}</p>
+              <span style="font-size: 0.85rem; color: var(--text-muted);">${address.city || 'Ciudad'}, ${address.country || 'Colombia'}</span>
+            </div>
+          `;
+          });
+          
+          addressesHtml += `
+            <div onclick="openAddressModal()" style="padding: 1.25rem; border: 1px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 130px;">
+              <span style="color: var(--primary); font-weight: 600; font-size: 0.95rem;">+ Agregar nueva dirección</span>
+            </div>
+          `;
+        }
+        
         panel.innerHTML = `
         <div>
           <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Direcciones de envío</h2>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-            <div style="padding: 1.25rem; border: 2px solid var(--secondary); background-color: #F4FAF7; border-radius: 12px; display: flex; flex-direction: column; gap: 0.5rem;">
-              <span style="font-size: 0.8rem; font-weight: 700; color: var(--secondary); display: flex; align-items: center; gap: 0.25rem;">
-                <!-- Check Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                Dirección Predeterminada
-              </span>
-              <h4 style="margin: 0; font-weight: 700;">${profileData.name}</h4>
-              <p style="margin: 0; font-size: 0.9rem; color: var(--text-dark);">${profileData.address}</p>
-              <span style="font-size: 0.85rem; color: var(--text-muted);">${profileData.city}, Colombia</span>
-            </div>
-            
-            <div onclick="showModernToast('Funcionalidad de agregar dirección disponible próximamente.', 'success')" style="padding: 1.25rem; border: 1px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 130px;">
-              <span style="color: var(--primary); font-weight: 600; font-size: 0.95rem;">+ Agregar nueva dirección</span>
-            </div>
+          <div id="addresses-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            ${addressesHtml}
           </div>
         </div>
       `;
       }
 
-      function renderPaymentMethods(panel) {
+      async function renderPaymentMethods(panel) {
+        const paymentMethods = await loadPaymentMethods();
+        
+        let methodsHtml = "";
+        
+        if (paymentMethods.length === 0) {
+          methodsHtml = `
+            <div style="padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; grid-column: 1 / -1;">
+              <p style="color: var(--text-muted); margin: 0;">No tienes tarjetas guardadas aún.</p>
+            </div>
+            <div onclick="openPaymentMethodModal()" style="padding: 1.25rem; border: 1px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 80px;">
+              <span style="color: var(--primary); font-weight: 600; font-size: 0.95rem;">+ Agregar tarjeta</span>
+            </div>
+          `;
+        } else {
+          paymentMethods.forEach((method) => {
+            const last4 = method.cardNumber ? method.cardNumber.slice(-4) : '0000';
+            const expiry = method.expiryDate ? method.expiryDate : '00/0000';
+            const cardType = method.cardType || 'Tarjeta';
+            
+            methodsHtml += `
+            <div style="padding: 1.25rem; border: ${method.isDefault ? '2px solid var(--secondary)' : '1px solid var(--border-color)'}; border-radius: 12px; display: flex; align-items: center; gap: 1rem; background-color: #FAF9F7;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
+              <div>
+                <h4 style="margin: 0; font-weight: 700;">${cardType} terminada en ${last4}</h4>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Expira: ${expiry}</span>
+              </div>
+            </div>
+          `;
+          });
+          
+          methodsHtml += `
+            <div onclick="openPaymentMethodModal()" style="padding: 1.25rem; border: 1px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 80px;">
+              <span style="color: var(--primary); font-weight: 600; font-size: 0.95rem;">+ Agregar tarjeta</span>
+            </div>
+          `;
+        }
+        
         panel.innerHTML = `
         <div>
           <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Tarjetas guardadas</h2>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-            <div style="padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; display: flex; align-items: center; gap: 1rem; background-color: #FAF9F7;">
-              <!-- CreditCard Icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg>
-              <div>
-                <h4 style="margin: 0; font-weight: 700;">Visa terminada en 4321</h4>
-                <span style="font-size: 0.8rem; color: var(--text-muted);">Expira: 12 / 2028</span>
-              </div>
-            </div>
-            
-            <div onclick="showModernToast('Funcionalidad de agregar tarjeta disponible próximamente.', 'success')" style="padding: 1.25rem; border: 1px dashed var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 80px;">
-              <span style="color: var(--primary); font-weight: 600; font-size: 0.95rem;">+ Agregar tarjeta</span>
-            </div>
+          <div id="payment-methods-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            ${methodsHtml}
           </div>
         </div>
       `;
       }
 
       async function renderFavorites(panel) {
-        if (window.favoritesAPI) await window.favoritesAPI.load();
-        const favorites = window.favoritesAPI ? window.favoritesAPI.get() : [];
+        try {
+          const response = await window.API.favorites.getAll();
+          const favorites = Array.isArray(response) ? response : [];
 
-        if (favorites.length === 0) {
+          if (favorites.length === 0) {
+            panel.innerHTML = `
+            <div>
+              <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Mis piezas favoritas</h2>
+              <div class="empty-state">
+                <p style="font-size: 1rem; color: var(--text-muted);">No tienes piezas favoritas aun.</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Explora el catalogo y agrega tus artesanias favoritas.</p>
+                <a href="../home/productos.html" class="btn btn-primary" style="margin-top: 1rem;">Ir al catalogo</a>
+              </div>
+            </div>
+            `;
+            return;
+          }
+
+          let cardsHtml = favorites
+            .map(
+              (fav) => `
+            <div class="favorito-card">
+              <img src="${fav.product ? (fav.product.imageUrl || '../img/mochila_wayuu.png') : '../img/mochila_wayuu.png'}" alt="${fav.product ? fav.product.name : 'Producto'}" onerror="this.onerror=null;this.src='../img/mochila_wayuu.png'" />
+              <div class="favorito-info">
+                <h4>${fav.product ? fav.product.name : 'Producto'}</h4>
+                <span class="price">${formatCOP(fav.product ? fav.product.price : 0)}</span>
+                <a href="../home/producto.html?id=${fav.product ? fav.product.id : ''}">Ver pieza en catalogo</a>
+                <button onclick="removeFavoriteFromUI(${fav.product ? fav.product.id : 0})" style="background:none;border:none;color:#ef4444;font-size:0.8rem;cursor:pointer;text-align:left;padding:0;margin-top:0.25rem;font-weight:600;">Eliminar de favoritos</button>
+              </div>
+            </div>
+          `,
+            )
+            .join("");
+
           panel.innerHTML = `
           <div>
-            <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Mis piezas favoritas</h2>
-            <div class="empty-state">
-              <p style="font-size: 1rem; color: var(--text-muted);">No tienes piezas favoritas aun.</p>
-              <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Explora el catalogo y agrega tus artesanias favoritas.</p>
-              <a href="../home/productos.html" class="btn btn-primary" style="margin-top: 1rem;">Ir al catalogo</a>
+            <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Mis piezas favoritas <span style="font-size:0.9rem;font-weight:400;color:var(--text-muted);">(${favorites.length})</span></h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+              ${cardsHtml}
             </div>
           </div>
           `;
-          return;
+        } catch (error) {
+          console.error("Error cargando favoritos:", error);
+          panel.innerHTML = `
+          <div>
+            <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Mis piezas favoritas</h2>
+            <p style="color: var(--text-muted);">Error al cargar favoritos.</p>
+          </div>
+          `;
         }
-
-        let cardsHtml = favorites
-          .map(
-            (fav) => `
-          <div class="favorito-card">
-            <img src="${fav.image}" alt="${fav.name}" onerror="this.onerror=null;this.src='../img/mochila_wayuu.png'" />
-            <div class="favorito-info">
-              <h4>${fav.name}</h4>
-              <span class="price">${formatCOP(fav.price)}</span>
-              <a href="../home/producto.html?id=${fav.id}">Ver pieza en catalogo</a>
-              <button onclick="removeFavoriteFromUI('${fav.id}')" style="background:none;border:none;color:#ef4444;font-size:0.8rem;cursor:pointer;text-align:left;padding:0;margin-top:0.25rem;font-weight:600;">Eliminar de favoritos</button>
-            </div>
-          </div>
-        `,
-          )
-          .join("");
-
-        panel.innerHTML = `
-        <div>
-          <h2 style="font-size: 1.8rem; font-weight: 800; fontFamily: var(--font-serif); margin-bottom: 1.5rem;">Mis piezas favoritas <span style="font-size:0.9rem;font-weight:400;color:var(--text-muted);">(${favorites.length})</span></h2>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-            ${cardsHtml}
-          </div>
-        </div>
-        `;
       }
 
       async function removeFavoriteFromUI(productId) {
-        if (window.favoritesAPI) {
-          await window.favoritesAPI.remove(productId);
+        try {
+          await window.API.favorites.remove(productId);
           showModernToast("Producto eliminado de favoritos.");
-          renderTabContent();
+          await renderTabContent();
+        } catch (error) {
+          showModernToast(`Error: ${error.message || 'No se pudo eliminar'}`, "error");
         }
+      }
+
+      // Funciones para modales (por implementar)
+      function openAddressModal() {
+        showModernToast("La funcionalidad para agregar direcciones se implementará pronto.", "info");
+      }
+
+      function openPaymentMethodModal() {
+        showModernToast("La funcionalidad para agregar tarjetas se implementará pronto.", "info");
       }
 
       function triggerLogout() {

@@ -333,13 +333,11 @@
         const ph = document.getElementById("checkout-summary-placeholder");
         if (!ph) return;
 
-        // Bypass directo al LocalStorage para evitar fallos si carrito.js no cargó
+        // Obtener items del carrito desde la API
         let items = [];
         try {
           if (typeof getCartItems === "function") {
             items = getCartItems();
-          } else {
-            items = JSON.parse(localStorage.getItem("cart_items") || "[]");
           }
         } catch (e) {
           console.error("Error recuperando el carrito", e);

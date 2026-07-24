@@ -1,1 +1,133 @@
-<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Restablecer contrasena</title><link rel="stylesheet" href="../css/components/styles.css"></head><body><main class="page" style="max-width:480px;margin:5rem auto"><h1>Nueva contrasena</h1><form id="reset-form"><label>Nueva contrasena<input id="password" type="password" minlength="8" required></label><button class="btn btn-primary" type="submit">Actualizar contrasena</button></form><p id="message" role="status"></p></main><script src="../js/core/api.js"></script><script>document.getElementById('reset-form').addEventListener('submit',async(e)=>{e.preventDefault();const message=document.getElementById('message');const token=new URLSearchParams(location.search).get('token');if(!token){message.textContent='El enlace no es valido.';return;}try{const data=await API.auth.resetPassword(token,document.getElementById('password').value);message.textContent=data.message;setTimeout(()=>location.href='login.html',1500);}catch(error){message.textContent=error.message;}});</script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restablecer contraseña - Artesanías Chigorodó</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../css/components/styles.css" />
+  <link rel="stylesheet" href="../css/components/navbar.css" />
+  <link rel="stylesheet" href="../css/components/footer.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <div id="navbar-placeholder"></div>
+    
+    <div class="app-main-content">
+      <main class="page" style="max-width: 480px; margin: 5rem auto; padding: 2rem;">
+        <h1>Nueva contraseña</h1>
+        <p>Ingresa tu nueva contraseña para continuar.</p>
+        
+        <form id="reset-form" class="recover-form">
+          <div class="input-field">
+            <label for="password">Nueva contraseña</label>
+            <input 
+              id="password" 
+              type="password" 
+              minlength="8"
+              required 
+              placeholder="Mínimo 8 caracteres"
+            />
+            <small style="color: var(--text-muted); font-size: 0.8rem;">
+              Debe incluir mayúscula, minúscula, número y carácter especial
+            </small>
+          </div>
+          
+          <div class="input-field" style="margin-top: 1rem;">
+            <label for="password-confirm">Confirmar contraseña</label>
+            <input 
+              id="password-confirm" 
+              type="password" 
+              minlength="8"
+              required 
+              placeholder="Repite la contraseña"
+            />
+          </div>
+          
+          <button class="btn btn-primary" type="submit" style="width: 100%; margin-top: 1.5rem;">
+            Actualizar contraseña
+          </button>
+        </form>
+        
+        <p id="message" role="status" style="margin-top: 1rem; text-align: center;"></p>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="login.html" style="color: var(--primary); text-decoration: none;">
+            Volver al inicio de sesión
+          </a>
+        </div>
+      </main>
+    </div>
+    
+    <div id="footer-placeholder"></div>
+  </div>
+  
+  <script src="../js/core/main.js"></script>
+  <script src="../js/core/api.js"></script>
+  <script src="../js/core/auth.js"></script>
+  <script src="../js/components/navbar.js"></script>
+  <script src="../js/components/footer.js"></script>
+  
+  <script>
+    document.getElementById('reset-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const message = document.getElementById('message');
+      const passwordInput = document.getElementById('password');
+      const confirmInput = document.getElementById('password-confirm');
+      const password = passwordInput.value.trim();
+      const confirm = confirmInput.value.trim();
+      
+      if (!password || !confirm) {
+        message.textContent = 'Por favor completa ambos campos.';
+        message.style.color = 'var(--error)';
+        return;
+      }
+      
+      if (password !== confirm) {
+        message.textContent = 'Las contraseñas no coinciden.';
+        message.style.color = 'var(--error)';
+        return;
+      }
+      
+      if (password.length < 8) {
+        message.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+        message.style.color = 'var(--error)';
+        return;
+      }
+      
+      message.textContent = 'Actualizando...';
+      message.style.color = 'var(--text-muted)';
+      
+      const token = new URLSearchParams(window.location.search).get('token');
+      if (!token) {
+        message.textContent = 'El enlace no es válido o ha expirado.';
+        message.style.color = 'var(--error)';
+        return;
+      }
+      
+      try {
+        const data = await window.API.auth.resetPassword(token, password);
+        message.textContent = data.message;
+        message.style.color = 'var(--success)';
+        
+        // Redirigir después de exitoso
+        setTimeout(function() {
+          window.location.href = 'login.html';
+        }, 1500);
+        
+        // Limpiar los campos
+        passwordInput.value = '';
+        confirmInput.value = '';
+      } catch (error) {
+        message.textContent = error.message || 'Error al restablecer la contraseña.';
+        message.style.color = 'var(--error)';
+      }
+    });
+  </script>
+</body>
+</html>

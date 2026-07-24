@@ -45,12 +45,20 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@Valid @RequestBody RegisterRequest request) {
-        Role role = Role.CLIENT; // Always enforce CLIENT role on public registration to prevent privilege escalation
+        // Determine role from request, default to CLIENT if not specified
+        Role role = request.getRole() != null ? Role.valueOf(request.getRole().toUpperCase()) : Role.CLIENT;
+
+        // For public registration, only CLIENT and VENDOR roles are allowed
+        if (role != Role.CLIENT && role != Role.VENDOR) {
+            role = Role.CLIENT;
+        }
 
         User user = User.builder()
                 .fullName(request.getFullName())
                 .email(request.getEmail())
                 .password(request.getPassword())
+                .telephone(request.getTelephone())
+                .specialty(request.getSpecialty())
                 .role(role)
                 .build();
 

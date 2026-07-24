@@ -106,7 +106,7 @@
                       value="Tejidos"
                       onchange="applyFilters()"
                     />
-                    Tejidos <span class="filter-count-badge">2</span>
+                    Tejidos <span class="filter-count-badge" data-category="Tejidos">0</span>
                   </label>
                   <label class="filter-option">
                     <input
@@ -115,7 +115,7 @@
                       value="Cerámica"
                       onchange="applyFilters()"
                     />
-                    Cerámica <span class="filter-count-badge">1</span>
+                    Cerámica <span class="filter-count-badge" data-category="Cerámica">0</span>
                   </label>
                   <label class="filter-option">
                     <input
@@ -124,7 +124,7 @@
                       value="Joyería"
                       onchange="applyFilters()"
                     />
-                    Joyería <span class="filter-count-badge">1</span>
+                    Joyería <span class="filter-count-badge" data-category="Joyería">0</span>
                   </label>
                   <label class="filter-option">
                     <input
@@ -133,7 +133,7 @@
                       value="Madera"
                       onchange="applyFilters()"
                     />
-                    Madera <span class="filter-count-badge">0</span>
+                    Madera <span class="filter-count-badge" data-category="Madera">0</span>
                   </label>
                   <label class="filter-option">
                     <input
@@ -142,7 +142,7 @@
                       value="Hogar y Decoración"
                       onchange="applyFilters()"
                     />
-                    Hogar y Decoración <span class="filter-count-badge">1</span>
+                    Hogar y Decoración <span class="filter-count-badge" data-category="Hogar y Decoración">0</span>
                   </label>
                   <label class="filter-option">
                     <input
@@ -151,7 +151,7 @@
                       value="Accesorios"
                       onchange="applyFilters()"
                     />
-                    Accesorios <span class="filter-count-badge">1</span>
+                    Accesorios <span class="filter-count-badge" data-category="Accesorios">0</span>
                   </label>
                 </div>
               </div>
@@ -490,7 +490,26 @@
       let filteredProducts = [];
 
       // ─── Init ────────────────────────────────────────────────────
-      document.addEventListener("DOMContentLoaded", function () {
+      function updateCategoryCounts() {
+        if (typeof window.getProducts !== 'function') return;
+        
+        const products = window.getProducts();
+        const categoryCounts = {};
+        
+        products.forEach((product) => {
+          const category = product.category;
+          categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+        });
+        
+        // Actualizar los badges de conteo
+        document.querySelectorAll('.filter-count-badge[data-category]').forEach((badge) => {
+          const category = badge.getAttribute('data-category');
+          const count = categoryCounts[category] || 0;
+          badge.textContent = count;
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", async function () {
         // Pre-populate from query params
         const params = getQueryParams();
         const categoryParam = params.get("category");
@@ -512,8 +531,79 @@
           eyebrowEl.textContent = "Búsqueda";
         }
 
+        // Esperar a que se carguen los productos antes de aplicar filtros
+        if (typeof window.initProducts === 'function') {
+          try {
+            await window.initProducts();
+            // Verificar si hay productos cargados
+            if (typeof window.isProductsLoaded === 'function' && !window.isProductsLoaded()) {
+              const error = typeof window.getProductsLoadError === 'function' ? window.getProductsLoadError() : null;
+              showProductsError(error);
+              return;
+            }
+            // Actualizar conteos de categorías
+            updateCategoryCounts();
+          } catch (error) {
+            console.error('Error al cargar productos:', error);
+            showProductsError(error);
+            return;
+          }
+        }
         applyFilters();
       });
+
+      // ─── Error Handling ──────────────────────────────────────────
+      function showProductsError(error) {
+        const gridContainer = document.getElementById("catalog-grid-container");
+        const emptyContainer = document.getElementById("empty-state-container");
+        const resultsCount = document.getElementById("results-count");
+        
+        resultsCount.textContent = "0";
+        gridContainer.style.display = "none";
+        
+        // Personalizar el mensaje de error
+        let errorMessage = "No se pudieron cargar los productos";
+        let errorDescription = "Por favor, intenta de nuevo más tarde.";
+        
+        if (error) {
+          if (error.message.includes("404") || error.message.includes("401") || error.message.includes("403")) {
+            errorMessage = "Error de conexión";
+            errorDescription = "No tienes permisos o la página no existe.";
+          } else if (error.message.includes("500") || error.message.includes("503")) {
+            errorMessage = "Error del servidor";
+            errorDescription = "El servidor está experimentando problemas. Por favor, intenta de nuevo más tarde.";
+          } else if (error.message.includes("no esta disponible")) {
+            errorMessage = "Servicio no disponible";
+            errorDescription = "El servicio de catálogo no está disponible en este momento.";
+          } else if (error.message) {
+            errorMessage = "Error al cargar productos";
+            errorDescription = error.message;
+          }
+        }
+        
+        emptyContainer.innerHTML = `
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+          <h3>${errorMessage}</h3>
+          <p>${errorDescription}</p>
+          <button onclick="window.location.reload()" class="btn btn-primary" style="margin-top: 1rem;">Reintentar</button>
+        `;
+        emptyContainer.style.display = "flex";
+        document.getElementById("pagination-bar").innerHTML = "";
+      }
 
       // ─── Core Render ─────────────────────────────────────────────
       function renderCatalog() {

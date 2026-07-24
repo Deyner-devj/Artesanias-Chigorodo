@@ -4,10 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registrar Artesano - Artesanías Chigorodó</title>
+    <link rel="stylesheet" href="../css/components/styles.css" />
+    <link rel="stylesheet" href="../css/components/navbar.css" />
     <link rel="stylesheet" href="../css/artesano/registro-artesano.css" />
+    <script src="../js/core/main.js"></script>
+    <script src="../js/core/api.js"></script>
+    <script src="../js/core/auth.js"></script>
   </head>
   <body>
-    <main class="main-container">
+    <div class="app-shell">
+      <div id="navbar-placeholder"></div>
+      <div class="app-main-content">
+        <main class="main-container" style="padding-top: 2rem;">
       <!-- Tarjeta de Registro -->
       <section class="register-card">
         <!-- Logo y Encabezado -->
@@ -220,5 +228,88 @@
         </form>
       </section>
     </main>
+    <script>
+      document.querySelector('.register-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const form = e.target;
+        const formData = new FormData(form);
+        
+        const fullName = formData.get('nombre');
+        const email = formData.get('email');
+        const password = formData.get('password');
+        const telephone = formData.get('telefono');
+        const specialty = formData.get('especialidad');
+        const passwordConfirmation = formData.get('password_confirmation');
+        
+        // Validar campos obligatorios
+        if (!fullName || !email || !password || !telephone || !specialty) {
+          alert('Todos los campos son obligatorios.');
+          return;
+        }
+        
+        // Validar que las contraseñas coincidan
+        if (password !== passwordConfirmation) {
+          alert('Las contraseñas no coinciden. Por favor, verifica e inténtalo nuevamente.');
+          return;
+        }
+        
+        // Validar formato de email básico
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          alert('Por favor, ingresa un correo electrónico válido.');
+          return;
+        }
+        
+        // Validar que la contraseña cumpla con los requisitos
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,100}$/;
+        if (!passwordRegex.test(password)) {
+          alert('La contraseña debe tener entre 8 y 100 caracteres, incluir al menos una mayúscula, una minúscula, un número y un carácter especial (@$!%*?&).');
+          return;
+        }
+        
+        try {
+          const result = await window.API.auth.register(
+            fullName,
+            email,
+            password,
+            'VENDOR',
+            telephone,
+            specialty
+          );
+          
+          alert('Registro exitoso. Serás redirigido a la página de inicio de sesión.');
+          window.location.href = '../home/login.html';
+        } catch (error) {
+          // Mejor manejo de errores del backend
+          let errorMessage = 'Error al registrar el usuario.';
+          if (error.message) {
+            errorMessage = error.message;
+          } else if (error.error) {
+            errorMessage = error.error;
+          } else if (typeof error === 'string') {
+            errorMessage = error;
+          }
+          // Intentar parsear si el error tiene una estructura compleja
+          try {
+            const errorObj = typeof error === 'string' ? JSON.parse(error) : error;
+            if (errorObj && errorObj.message) {
+              errorMessage = errorObj.message;
+            } else if (errorObj && errorObj.fieldErrors) {
+              const errors = Object.values(errorObj.fieldErrors).join('. ');
+              errorMessage = errors || errorMessage;
+            }
+          } catch (e) {
+            // Ignorar si no se puede parsear
+          }
+          alert('Error: ' + errorMessage);
+        }
+      });
+    </script>
+    <script src="../js/components/navbar.js"></script>
+    <script src="../js/components/footer.js"></script>
+    <div id="footer-placeholder"></div>
+      </div>
+    </div>
   </body>
 </html>

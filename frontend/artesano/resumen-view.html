@@ -260,44 +260,21 @@
       return;
     } catch (err) {
       console.warn('[dashboard] No se pudo cargar desde API:', err.message);
+      // Mostrar mensajes de error en lugar de usar localStorage
+      const salesEl = document.getElementById('dash-monthly-sales');
+      const prodEl = document.getElementById('dash-product-count');
+      const pendEl = document.getElementById('dash-pending-orders');
+      const pendLbl = document.getElementById('dash-pending-label');
+      const trendEl = document.getElementById('dash-sales-trend');
+      const ordersContainer = document.getElementById('dash-recent-orders');
+      
+      if (salesEl) salesEl.textContent = 'Error al cargar';
+      if (trendEl) trendEl.textContent = 'Error al cargar';
+      if (prodEl) prodEl.textContent = 'Error al cargar';
+      if (pendEl) pendEl.textContent = 'Error';
+      if (pendLbl) pendLbl.textContent = 'Error al cargar';
+      if (ordersContainer) ordersContainer.innerHTML = '<p style="color:#ef4444;font-size:0.9rem">Error al cargar datos del dashboard.</p>';
     }
-  }
-
-  // Fallback: datos de localStorage (orders_history)
-  const salesEl = document.getElementById('dash-monthly-sales');
-  const prodEl  = document.getElementById('dash-product-count');
-  const pendEl  = document.getElementById('dash-pending-orders');
-  const pendLbl = document.getElementById('dash-pending-label');
-  const trendEl = document.getElementById('dash-sales-trend');
-
-  try {
-    const history = JSON.parse(localStorage.getItem('orders_history') || '[]');
-    const total = history.reduce((s, o) => s + (o.total || 0), 0);
-    if (salesEl) salesEl.textContent = fmt(total);
-    if (trendEl) trendEl.textContent = `${history.length} pedido(s) registrado(s)`;
-    if (pendEl)  pendEl.textContent  = `${history.filter(o => o.status === 'transit').length} en tránsito`;
-    if (pendLbl) pendLbl.textContent  = 'Basado en historial local';
-    const customProds = JSON.parse(localStorage.getItem('custom_products') || '[]');
-    if (prodEl) prodEl.textContent = `${customProds.length} piezas`;
-
-    const ordersContainer = document.getElementById('dash-recent-orders');
-    if (ordersContainer) {
-      if (history.length === 0) {
-        ordersContainer.innerHTML = '<p style="color:#64748b;font-size:0.9rem">No hay pedidos registrados.</p>';
-      } else {
-        ordersContainer.innerHTML = history.slice(0, 3).map((o) => `
-          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:0.75rem;border-bottom:1px solid #f1f5f9;">
-            <div>
-              <h4 style="font-size:0.9rem;font-weight:700">${o.id}</h4>
-              <p style="font-size:0.75rem;color:#64748b">${fmt(o.total)}</p>
-            </div>
-            <span style="background:#fef3c7;color:#d97706;padding:4px 8px;border-radius:20px;font-size:0.75rem;font-weight:700;">
-              ${o.statusText || o.status}
-            </span>
-          </div>`).join('');
-      }
-    }
-  } catch (_) {}
 })();
 </script>
 

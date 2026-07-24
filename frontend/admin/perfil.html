@@ -35,8 +35,7 @@
               <div>
                 <div class="config-card-title">Mi Perfil</div>
                 <div class="config-card-subtitle">
-                  Actualiza tus datos de contacto, contraseña y avatar
-                  personal.
+                  Actualiza tus datos de contacto, contraseña y avatar personal.
                 </div>
               </div>
             </div>
@@ -49,57 +48,155 @@
                 margin-bottom: 24px;
               "
             >
-              <div class="sidebar-avatar" style="width: 64px; height: 64px; font-size: 1.3rem">
-                DC
+              <div
+                class="sidebar-avatar"
+                style="width: 64px; height: 64px; font-size: 1.3rem"
+                id="admin-perfil-avatar"
+              >
+                --
               </div>
               <div>
-                <div class="font-semibold" style="font-size: 1.05rem">
-                  Deyner Chaverra
+                <div
+                  class="font-semibold"
+                  style="font-size: 1.05rem"
+                  id="admin-perfil-name-display"
+                >
+                  Cargando...
                 </div>
-                <div class="card-subtitle">Administrador general</div>
+                <div class="card-subtitle" id="admin-perfil-role-display">
+                  Administrador
+                </div>
               </div>
             </div>
 
-            <div class="option-group">
-              <label
-                >Nombre completo
-                <input
-                  type="text"
-                  class="custom-datetime-input"
-                  value="Deyner Chaverra"
-                  style="margin-top: 6px"
-                />
-              </label>
-              <label
-                >Correo electrónico
-                <input
-                  type="email"
-                  class="custom-datetime-input"
-                  value="admin@chigorodo.test"
-                  style="margin-top: 6px"
-                />
-              </label>
-              <label
-                >Nueva contraseña
-                <input
-                  type="password"
-                  class="custom-datetime-input"
-                  placeholder="••••••••"
-                  style="margin-top: 6px"
-                />
-              </label>
-            </div>
+            <form id="admin-perfil-form">
+              <div class="option-group">
+                <label
+                  >Nombre completo
+                  <input
+                    type="text"
+                    id="admin-perfil-nombre"
+                    class="custom-datetime-input"
+                    style="margin-top: 6px"
+                    required
+                  />
+                </label>
+                <label
+                  >Correo electrónico
+                  <input
+                    type="email"
+                    id="admin-perfil-email"
+                    class="custom-datetime-input"
+                    style="margin-top: 6px"
+                    disabled
+                    title="El correo no se puede modificar desde aquí."
+                  />
+                </label>
+                <label
+                  >Teléfono
+                  <input
+                    type="tel"
+                    id="admin-perfil-telefono"
+                    class="custom-datetime-input"
+                    placeholder="Ej: 3001234567"
+                    style="margin-top: 6px"
+                  />
+                </label>
+              </div>
 
-            <div class="actions-row">
-              <button class="btn btn-save">Guardar cambios</button>
-              <button class="btn btn-disable">Cancelar</button>
-            </div>
+              <div class="actions-row">
+                <button type="submit" class="btn btn-save">
+                  Guardar cambios
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-disable"
+                  onclick="loadAdminProfile()"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
 
+    <script src="../js/core/main.js"></script>
+    <script src="../js/core/api.js"></script>
     <script src="../js/admin/admin-dashboard.js"></script>
     <script src="../js/admin/main-admin.js"></script>
+    <script>
+      // Perfil de administrador conectado a /api/users/me. Nada hardcodeado:
+      // el nombre, correo y teléfono vienen del backend real.
+      function initials(name) {
+        if (!name) return "--";
+        return name
+          .split(" ")
+          .filter(Boolean)
+          .slice(0, 2)
+          .map((p) => p[0].toUpperCase())
+          .join("");
+      }
+
+      async function loadAdminProfile() {
+        try {
+          const data = await window.API.users.getProfile();
+          document.getElementById("admin-perfil-nombre").value =
+            data.fullName || "";
+          document.getElementById("admin-perfil-email").value =
+            data.email || "";
+          document.getElementById("admin-perfil-telefono").value =
+            data.telephone || "";
+          document.getElementById("admin-perfil-name-display").textContent =
+            data.fullName || "";
+          document.getElementById("admin-perfil-role-display").textContent =
+            data.role === "ADMIN" ? "Administrador general" : data.role;
+          document.getElementById("admin-perfil-avatar").textContent = initials(
+            data.fullName,
+          );
+        } catch (error) {
+          if (window.showModernToast) {
+            showModernToast(
+              "No fue posible cargar tu perfil: " + error.message,
+              "error",
+            );
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadAdminProfile();
+        document
+          .getElementById("admin-perfil-form")
+          .addEventListener("submit", async (e) => {
+            e.preventDefault();
+            try {
+              const updated = await window.API.users.updateProfile({
+                fullName: document
+                  .getElementById("admin-perfil-nombre")
+                  .value.trim(),
+                telephone: document
+                  .getElementById("admin-perfil-telefono")
+                  .value.trim(),
+              });
+              document.getElementById("admin-perfil-name-display").textContent =
+                updated.fullName;
+              document.getElementById("admin-perfil-avatar").textContent =
+                initials(updated.fullName);
+              if (window.showModernToast) {
+                showModernToast("Perfil actualizado correctamente.", "success");
+              }
+            } catch (error) {
+              if (window.showModernToast) {
+                showModernToast(
+                  "No fue posible guardar: " + error.message,
+                  "error",
+                );
+              }
+            }
+          });
+      });
+    </script>
   </body>
 </html>

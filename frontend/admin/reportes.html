@@ -43,26 +43,26 @@
                 <i data-lucide="trending-up"></i>
               </div>
               <div class="card-title">Crecimiento mensual</div>
-              <div class="card-value">+18,4%</div>
+              <div class="card-value" id="rep-growth">—</div>
             </div>
             <div class="card">
               <div class="card-icon-box blue">
                 <i data-lucide="package"></i>
               </div>
               <div class="card-title">Pedidos este mes</div>
-              <div class="card-value">86</div>
+              <div class="card-value" id="rep-orders-month">—</div>
             </div>
             <div class="card">
               <div class="card-icon-box green">
                 <i data-lucide="banknote"></i>
               </div>
               <div class="card-title">Ingresos del mes</div>
-              <div class="card-value">$12.480.000</div>
+              <div class="card-value" id="rep-revenue-month">—</div>
             </div>
             <div class="card">
               <div class="card-icon-box purple"><i data-lucide="star"></i></div>
               <div class="card-title">Calificación promedio</div>
-              <div class="card-value">4,8 / 5</div>
+              <div class="card-value" id="rep-avg-rating">—</div>
             </div>
           </div>
 
@@ -83,24 +83,9 @@
                     <th>Ingresos</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="rep-top-products-body">
                   <tr>
-                    <td class="font-semibold">Mochila Wayuu Colores del Sol</td>
-                    <td>Tejidos</td>
-                    <td>42</td>
-                    <td>$11.760.000</td>
-                  </tr>
-                  <tr>
-                    <td class="font-semibold">Sombrero Vueltiao Zenú</td>
-                    <td>Accesorios</td>
-                    <td>31</td>
-                    <td>$5.580.000</td>
-                  </tr>
-                  <tr>
-                    <td class="font-semibold">Jarrón de Barro Negro</td>
-                    <td>Cerámica</td>
-                    <td>27</td>
-                    <td>$3.240.000</td>
+                    <td colspan="4">Cargando reportes...</td>
                   </tr>
                 </tbody>
               </table>
@@ -110,7 +95,10 @@
       </div>
     </div>
 
+    <script src="../js/core/main.js"></script>
+    <script src="../js/core/api.js"></script>
     <script src="../js/admin/admin-dashboard.js"></script>
     <script src="../js/admin/main-admin.js"></script>
+    <script src="../js/admin/reportes.js"></script>
   </body>
 </html>

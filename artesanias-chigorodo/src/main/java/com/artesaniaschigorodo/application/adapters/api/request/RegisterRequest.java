@@ -20,6 +20,10 @@ public class RegisterRequest {
             message = "La contraseña debe tener entre 8 y 100 caracteres, incluir al menos una mayúscula, una minúscula, un número y un carácter especial (@$!%*?&).")
     private String password;
 
+    private String telephone;
+
+    private String specialty;
+
     private String role; // CLIENT, VENDOR, ADMIN
 }
 

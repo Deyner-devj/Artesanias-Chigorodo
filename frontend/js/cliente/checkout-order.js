@@ -3,7 +3,12 @@
 
 const PAYMENT_METHOD_MAP = {
   CARD: "CREDIT_CARD",
+  CREDIT_CARD: "CREDIT_CARD",
+  DEBIT_CARD: "DEBIT_CARD",
   MERCADOPAGO: "MERCADO_PAGO",
+  PSE: "PSE",
+  NEQUI: "NEQUI",
+  DAVIPLATA: "DAVIPLATA",
 };
 
 function normalizePaymentMethod(method) {
@@ -11,11 +16,23 @@ function normalizePaymentMethod(method) {
 }
 
 async function completeCheckoutOrder(paymentMethod) {
-  const info = JSON.parse(sessionStorage.getItem("checkout_info") || "{}");
   const items = getCartItems();
   if (!items.length) throw new Error("Tu carrito esta vacio.");
 
   const normalizedMethod = normalizePaymentMethod(paymentMethod);
+
+  // Obtener datos de envío guardados
+  const shippingCountry = sessionStorage.getItem("checkout_shipping_country") || "Colombia";
+  const shippingDepartment = sessionStorage.getItem("checkout_shipping_department") || "";
+  const shippingCity = sessionStorage.getItem("checkout_shipping_city") || "";
+  const shippingAddress = sessionStorage.getItem("checkout_shipping_address") || "";
+  const shippingPostalCode = sessionStorage.getItem("checkout_shipping_postal_code") || "";
+  const shippingMethod = (sessionStorage.getItem("checkout_shipping_method") || "STANDARD").toUpperCase();
+
+  // Validar que los datos de envío sean completos
+  if (!shippingCountry || !shippingDepartment || !shippingCity || !shippingAddress) {
+    throw new Error("Los datos de envío no están completos. Por favor vuelve al paso de envío.");
+  }
 
   // 1. Crear la orden (queda PENDING, con stock ya reservado)
   const order = await window.API.orders.create({
@@ -24,14 +41,12 @@ async function completeCheckoutOrder(paymentMethod) {
       quantity: item.quantity,
     })),
     shippingDetails: {
-      country: info.country || "Colombia",
-      department: info.department,
-      city: info.city,
-      address: info.address,
-      postalCode: info.zipCode || "",
-      shippingMethod: (
-        sessionStorage.getItem("checkout_shipping_method") || "STANDARD"
-      ).toUpperCase(),
+      country: shippingCountry,
+      department: shippingDepartment,
+      city: shippingCity,
+      address: shippingAddress,
+      postalCode: shippingPostalCode,
+      shippingMethod: shippingMethod,
     },
     paymentDetails: {
       paymentMethod: normalizedMethod,

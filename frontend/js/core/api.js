@@ -81,10 +81,10 @@ const auth = {
     return data;
   },
 
-  async register(fullName, email, password, role = "CLIENT") {
+  async register(fullName, email, password, role = "CLIENT", telephone = null, specialty = null) {
     const data = await apiFetch("/api/auth/register", {
       method: "POST",
-      body: JSON.stringify({ fullName, email, password, role }),
+      body: JSON.stringify({ fullName, email, password, role, telephone, specialty }),
     });
     return data;
   },
@@ -231,6 +231,22 @@ const dashboard = {
   },
 };
 
+// ─── Contact ─────────────────────────────────────────────────────────────────
+const contact = {
+  async sendContact(data) {
+    return apiFetch("/api/contact", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  },
+  async subscribeNewsletter(email) {
+    return apiFetch("/api/contact/newsletter", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+  },
+};
+
 // ─── Users ───────────────────────────────────────────────────────────────────
 const users = {
   async getProfile() {
@@ -254,6 +270,50 @@ const users = {
       method: "PATCH",
       body: JSON.stringify({ status }),
     });
+  },
+};
+
+// ─── Addresses ────────────────────────────────────────────────────────────────
+const addresses = {
+  async getAll() {
+    return apiFetch("/api/addresses");
+  },
+
+  async create(addressData) {
+    return apiFetch("/api/addresses", {
+      method: "POST",
+      body: JSON.stringify(addressData),
+    });
+  },
+
+  async delete(id) {
+    return apiFetch(`/api/addresses/${id}`, { method: "DELETE" });
+  },
+
+  async setDefault(id) {
+    return apiFetch(`/api/addresses/${id}/default`, { method: "PATCH" });
+  },
+};
+
+// ─── Payment Methods (Cards) ──────────────────────────────────────────────────
+const paymentMethods = {
+  async getAll() {
+    return apiFetch("/api/payment-methods");
+  },
+
+  async create(cardData) {
+    return apiFetch("/api/payment-methods", {
+      method: "POST",
+      body: JSON.stringify(cardData),
+    });
+  },
+
+  async delete(id) {
+    return apiFetch(`/api/payment-methods/${id}`, { method: "DELETE" });
+  },
+
+  async setDefault(id) {
+    return apiFetch(`/api/payment-methods/${id}/default`, { method: "PATCH" });
   },
 };
 
@@ -289,5 +349,8 @@ window.API = {
   users,
   artisans,
   favorites,
+  contact,
+  addresses,
+  paymentMethods,
 };
 window._API_clearToken = _clearToken;

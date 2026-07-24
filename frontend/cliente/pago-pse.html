@@ -20,6 +20,7 @@
   </head>
   <body>
     <div class="app-shell" style="background-color: #f6efe2">
+      <div id="navbar-placeholder"></div>
       <div class="app-main-content">
         <main class="page pse-mock-portal-overlay">
           <div class="pse-portal-card">
@@ -124,8 +125,11 @@
     </div>
 
     <script src="../js/core/main.js"></script>
+    <script src="../js/core/api.js"></script>
+    <script src="../js/core/auth.js"></script>
+    <script src="../js/components/navbar.js"></script>
+    <script src="../js/components/footer.js"></script>
     <script src="../js/cliente/productos.js"></script>
-    <script src="../js/core/api.js"></script><script src="../js/core/auth.js"></script>
     <script src="../js/cliente/carrito.js"></script>
     <script src="../js/cliente/checkout-order.js"></script>
 
@@ -139,10 +143,6 @@
         try {
           if (typeof getCartItems === "function") {
             globalCartItems = getCartItems();
-          } else {
-            globalCartItems = JSON.parse(
-              localStorage.getItem("cart_items") || "[]",
-            );
           }
         } catch (e) {
           console.error("Error cargando carrito:", e);
@@ -190,7 +190,7 @@
 
         document.getElementById("pse-bank-name").textContent = bank;
         document.getElementById("pse-holder-name").textContent =
-          info.name || "Juan Pérez";
+          info.name || "";
 
         const formattedTotal = safeFormatCOP(grandTotal);
         document.getElementById("pse-total-amount").textContent =
@@ -212,131 +212,14 @@
           await completeCheckoutOrder("PSE");
           window.location.href = "confirmacion-compra.html";
         } catch (error) {
-          showModernToast(error.message || "No fue posible crear la orden.", "error");
+          showModernToast(
+            error.message || "No fue posible crear la orden.",
+            "error",
+          );
         }
-        return;
-
-        // Generar número de orden seguro (por si falla la función externa)
-        const orderNum =
-          typeof generateOrderNumber === "function"
-            ? generateOrderNumber()
-            : Math.floor(Math.random() * 1000000);
-        sessionStorage.setItem("checkout_order_number", orderNum);
-
-        // Guardar la orden en el historial
-        saveOrderToHistory(orderNum, "PSE");
-
-        // Limpiar el carrito de forma 100% efectiva
-        localStorage.removeItem("cart");
-        localStorage.removeItem("carrito");
-        if (typeof clearCart === "function") {
-          try {
-            clearCart();
-          } catch (e) {}
-        }
-
-        // Redirección segura al archivo correcto
-        window.location.href = "confirmacion-compra.html";
-      }
-
-      function saveOrderToHistory(orderNum, paymentMethod) {
-        const total = globalCartItems.reduce(
-          (sum, item) => sum + item.product.price * item.quantity,
-          0,
-        );
-        const discount = parseInt(
-          sessionStorage.getItem("checkout_discount") || "0",
-        );
-        const shippingCost = parseInt(
-          sessionStorage.getItem("checkout_shipping_cost") || "15000",
-        );
-        const grandT = Math.max(0, total - discount) + shippingCost;
-        const info = JSON.parse(
-          sessionStorage.getItem("checkout_info") || "{}",
-        );
-
-        const newOrder = {
-          id: `#${orderNum}`,
-          date: new Date().toLocaleDateString("es-CO", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          }),
-          createdAt: Date.now(),
-          status: "warehouse",
-          statusText: "En preparación",
-          total: grandT,
-          address: info.address || "Calle 12 #45-67",
-          city: info.city || "Medellín",
-          items: globalCartItems.map((item) => ({
-            name: item.product.name,
-            qty: item.quantity,
-            price: item.product.price,
-          })),
-          paymentMethod: paymentMethod,
-        };
-
-        let history = [];
-        try {
-          const ordersHistoryStr = localStorage.getItem("orders_history");
-          if (ordersHistoryStr) {
-            history = JSON.parse(ordersHistoryStr);
-          }
-        } catch (e) {}
-
-        history.unshift(newOrder);
-        localStorage.setItem("orders_history", JSON.stringify(history));
-
-        saveOrderToSellerList(orderNum, newOrder);
-      }
-
-      function saveOrderToSellerList(orderNum, orderDetails) {
-        let sellerOrders = [];
-        try {
-          const sellerOrdersStr = localStorage.getItem("seller_orders");
-          if (sellerOrdersStr) {
-            sellerOrders = JSON.parse(sellerOrdersStr);
-          } else {
-            // Predeterminados si está vacío
-            sellerOrders = [
-              {
-                id: "AC-2024-88032",
-                customer: "Carlos Gómez",
-                product: "Mochila Wayuu Colores del Sol",
-                date: "2024-07-08",
-                amount: 280000,
-                status: "Pendiente",
-              },
-              {
-                id: "AC-2024-77123",
-                customer: "Lucía Ortiz",
-                product: "Hamaca San Jacinto",
-                date: "2024-07-05",
-                amount: 350000,
-                status: "En tránsito",
-              },
-            ];
-          }
-        } catch (e) {}
-
-        const info = JSON.parse(
-          sessionStorage.getItem("checkout_info") || "{}",
-        );
-
-        globalCartItems.forEach((item) => {
-          sellerOrders.unshift({
-            id: orderNum,
-            customer: info.name || "Juan Pérez",
-            product: item.product.name,
-            date: new Date().toISOString().split("T")[0],
-            amount: item.product.price * item.quantity,
-            status: "Pendiente",
-          });
-        });
-
-        localStorage.setItem("seller_orders", JSON.stringify(sellerOrders));
       }
     </script>
     <script src="../js/cliente/checkout.js"></script>
+    <div id="footer-placeholder"></div>
   </body>
 </html>
