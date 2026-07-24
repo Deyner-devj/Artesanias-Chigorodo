@@ -88,8 +88,18 @@ const auth = {
     });
     return data;
   },
-  async forgotPassword(email) { return apiFetch("/api/auth/forgot-password", { method: "POST", body: JSON.stringify({ email }) }); },
-  async resetPassword(token, password) { return apiFetch("/api/auth/reset-password", { method: "POST", body: JSON.stringify({ token, password }) }); },
+  async forgotPassword(email) {
+    return apiFetch("/api/auth/forgot-password", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+  },
+  async resetPassword(token, password) {
+    return apiFetch("/api/auth/reset-password", {
+      method: "POST",
+      body: JSON.stringify({ token, password }),
+    });
+  },
 };
 
 // ─── Products ────────────────────────────────────────────────────────────────
@@ -178,6 +188,13 @@ const orders = {
   async getByOrderNumber(orderNumber) {
     return apiFetch(`/api/orders/${orderNumber}`);
   },
+
+  async updateStatus(orderNumber, status) {
+    return apiFetch(`/api/orders/${orderNumber}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
+  },
 };
 
 // ─── Payments ────────────────────────────────────────────────────────────────
@@ -248,9 +265,15 @@ const artisans = {
 };
 
 const favorites = {
-  async getAll() { return apiFetch("/api/favorites"); },
-  async add(productId) { return apiFetch(`/api/favorites/${productId}`, { method: "POST" }); },
-  async remove(productId) { return apiFetch(`/api/favorites/${productId}`, { method: "DELETE" }); },
+  async getAll() {
+    return apiFetch("/api/favorites");
+  },
+  async add(productId) {
+    return apiFetch(`/api/favorites/${productId}`, { method: "POST" });
+  },
+  async remove(productId) {
+    return apiFetch(`/api/favorites/${productId}`, { method: "DELETE" });
+  },
 };
 
 // ─── Exports ─────────────────────────────────────────────────────────────────

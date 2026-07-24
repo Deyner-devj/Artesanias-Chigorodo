@@ -34,7 +34,8 @@
               </div>
               <div class="card-subtitle">
                 Organiza tus piezas en categorías (cerámica, tejidos, madera,
-                etc.).
+                etc.). Las categorías se definen a nivel de sistema; esta vista
+                es de solo lectura.
               </div>
             </div>
             <div class="table-wrap">
@@ -44,63 +45,11 @@
                     <th>Categoría</th>
                     <th>Productos asociados</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="admin-categories-table-body">
                   <tr>
-                    <td class="font-semibold">Tejidos</td>
-                    <td>18</td>
-                    <td><span class="badge badge-success">Activa</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
-                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="font-semibold">Cerámica</td>
-                    <td>11</td>
-                    <td><span class="badge badge-success">Activa</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
-                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="font-semibold">Joyería</td>
-                    <td>7</td>
-                    <td><span class="badge badge-success">Activa</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
-                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="font-semibold">Madera</td>
-                    <td>5</td>
-                    <td><span class="badge badge-warning">Sin productos activos</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
-                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="font-semibold">Hogar y Decoración</td>
-                    <td>9</td>
-                    <td><span class="badge badge-success">Activa</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
-                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="font-semibold">Accesorios</td>
-                    <td>13</td>
-                    <td><span class="badge badge-success">Activa</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
-                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
-                    </td>
+                    <td colspan="3">Cargando categorías...</td>
                   </tr>
                 </tbody>
               </table>
@@ -110,7 +59,10 @@
       </div>
     </div>
 
+    <script src="../js/core/main.js"></script>
+    <script src="../js/core/api.js"></script>
     <script src="../js/admin/admin-dashboard.js"></script>
     <script src="../js/admin/main-admin.js"></script>
+    <script src="../js/admin/categorias.js"></script>
   </body>
 </html>

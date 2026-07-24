@@ -28,14 +28,40 @@
 
         <div class="dash-content">
           <div class="content-card">
-            <div style="margin-bottom: 20px">
-              <div class="card-title" style="margin-bottom: 4px">
-                Inventario de Productos
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 20px;
+                gap: 1rem;
+                flex-wrap: wrap;
+              "
+            >
+              <div>
+                <div class="card-title" style="margin-bottom: 4px">
+                  Inventario de Productos
+                </div>
+                <div class="card-subtitle">
+                  Carga productos, edita detalles, actualiza el stock y los
+                  precios.
+                </div>
               </div>
-              <div class="card-subtitle">
-                Carga productos, edita detalles, actualiza el stock y los
-                precios.
-              </div>
+              <button
+                id="btn-new-product"
+                class="icon-btn"
+                style="
+                  width: auto;
+                  padding: 0.6rem 1rem;
+                  background: var(--primary, #d97706);
+                  color: #fff;
+                  display: flex;
+                  align-items: center;
+                  gap: 0.4rem;
+                "
+              >
+                <i data-lucide="plus"></i> Nuevo producto
+              </button>
             </div>
             <div class="table-wrap">
               <table class="data-table">
@@ -50,56 +76,9 @@
                     <th>Acciones</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="admin-products-table-body">
                   <tr>
-                    <td class="font-semibold">Mochila Wayuu Colores del Sol</td>
-                    <td>Tejidos</td>
-                    <td>Tejidos del Sol</td>
-                    <td>$280.000</td>
-                    <td>15</td>
-                    <td><span class="badge badge-success">Publicado</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
-                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="font-semibold">Jarrón de Barro Negro</td>
-                    <td>Cerámica</td>
-                    <td>Barro Ancestral</td>
-                    <td>$120.000</td>
-                    <td>8</td>
-                    <td><span class="badge badge-success">Publicado</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
-                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="font-semibold">Hamaca San Jacinto</td>
-                    <td>Tejidos</td>
-                    <td>Tejedoras de San Jacinto</td>
-                    <td>$350.000</td>
-                    <td>0</td>
-                    <td><span class="badge badge-danger">Agotado</span></td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
-                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="font-semibold">Aretes de Filigrana Momposina</td>
-                    <td>Joyería</td>
-                    <td>Orfebrería Momposina</td>
-                    <td>$150.000</td>
-                    <td>10</td>
-                    <td>
-                      <span class="badge badge-warning">En revisión</span>
-                    </td>
-                    <td class="row-actions">
-                      <button class="icon-btn"><i data-lucide="pencil"></i></button>
-                      <button class="icon-btn icon-btn-danger"><i data-lucide="trash-2"></i></button>
-                    </td>
+                    <td colspan="7">Cargando productos...</td>
                   </tr>
                 </tbody>
               </table>
@@ -109,7 +88,10 @@
       </div>
     </div>
 
+    <script src="../js/core/main.js"></script>
+    <script src="../js/core/api.js"></script>
     <script src="../js/admin/admin-dashboard.js"></script>
     <script src="../js/admin/main-admin.js"></script>
+    <script src="../js/admin/productos.js"></script>
   </body>
 </html>
