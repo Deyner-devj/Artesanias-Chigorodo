@@ -21,12 +21,6 @@ function getQueryParams() {
   return new URLSearchParams(window.location.search);
 }
 
-// Generate unique order numbers
-function generateOrderNumber() {
-  const randomNum = Math.floor(100000 + Math.random() * 900000);
-  return `AC-2024-${randomNum}`;
-}
-
 /**
  * Show a professional toast notification
  * @param {string} message

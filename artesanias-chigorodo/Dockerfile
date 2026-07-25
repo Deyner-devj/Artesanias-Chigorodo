@@ -1,13 +1,36 @@
-# Build stage
-FROM maven:3.9.6-eclipse-temurin-17 AS build
-WORKDIR /app
-COPY pom.xml .
-COPY src ./src
-RUN mvn -B -ntp -DskipTests package
+# ==========================================
+# ETAPA 1: Construcción (Build)
+# ==========================================
+FROM eclipse-temurin:17-jdk-alpine AS builder
 
-# Run stage
-FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+
+# Copiamos primero los archivos de configuración de Maven para aprovechar el cache
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+
+# Dar permisos de ejecución al script mvnw
+RUN chmod +x mvnw
+
+# Descargamos las dependencias necesarias
+RUN ./mvnw dependency:go-offline -B
+
+# Copiamos el código fuente y compilamos omitiendo los tests para acelerar la build
+COPY src ./src
+RUN ./mvnw clean package -DskipTests
+
+# ==========================================
+# ETAPA 2: Ejecución (Runtime)
+# ==========================================
+FROM eclipse-temurin:17-jre-alpine
+
+WORKDIR /app
+
+# Copiamos el ejecutable generado en la etapa anterior renombrándolo correctamente a app.jar
+COPY --from=builder /app/target/*.jar app.jar
+
+# Exponemos el puerto de Spring Boot
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "appjar"]
+
+# Ejecutamos la aplicación con la extensión .jar correcta
+ENTRYPOINT ["java", "-jar", "app.jar"]

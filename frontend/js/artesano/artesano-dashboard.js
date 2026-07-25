@@ -31,6 +31,19 @@ const viewFiles = {
   ventas: "ventas.html",
 };
 
+// Mapeo de JS para cada vista
+const viewScripts = {
+  "agregar-producto": "agregar-producto.js",
+  "editar-productos": "editar-productos.js",
+  productos: "mis-productos.js",
+  pedidos: "mis-pedidos.js",
+  clientes: "clientes.js",
+  perfil: "perfil-artesano.js",
+  configuracion: "configuracion-artesano.js",
+  ganancias: "ganancias.js",
+  ventas: "ventas.js",
+};
+
 const viewTitles = {
   resumen: "Dashboard General",
   "agregar-producto": "Agregar Nuevo Producto",
@@ -225,6 +238,9 @@ async function loadView(viewName, isInitialLoad = false) {
 
   if (!file || !container) return;
 
+  // 2. Si hay un script para esta vista, cargarlo
+  const scriptName = viewScripts[viewName];
+
   // 1. Carga inicial sin animación
   if (isInitialLoad) {
     updateSidebarUI(viewName, headerTitle);
@@ -233,6 +249,11 @@ async function loadView(viewName, isInitialLoad = false) {
       container.innerHTML = html;
       container.classList.add("view-reveal-active");
       setupViewEventListeners(viewName);
+      
+      // Cargar el script de la vista
+      await loadViewScript(viewName).catch(err => {
+        console.error(`Error cargando script para ${viewName}:`, err);
+      });
     }
     return;
   }
@@ -324,6 +345,11 @@ async function loadView(viewName, isInitialLoad = false) {
       }
       container.classList.add("view-reveal-active");
       setupViewEventListeners(viewName);
+      
+      // Cargar el script de la vista
+      loadViewScript(viewName).catch(err => {
+        console.error(`Error cargando script para ${viewName}:`, err);
+      });
     }, 220);
 
     // Ocultar el overlay al final
@@ -366,6 +392,42 @@ async function fetchHTMLContent(file) {
     } catch (e) {}
   }
   return null;
+}
+
+// ==========================================================================
+// CARGA DE SCRIPTS DE VISTA
+// ==========================================================================
+async function loadViewScript(viewName) {
+  const scriptName = viewScripts[viewName];
+  if (!scriptName) return;
+
+  // Verificar si ya está cargado
+  if (window[`${viewName.charAt(0).toUpperCase() + viewName.slice(1)}JS`]) {
+    return;
+  }
+
+  const currentScript = document.currentScript || document.querySelector('script[src*="artesano-dashboard.js"]');
+  if (!currentScript) return;
+
+  const basePath = currentScript.src.substring(0, currentScript.src.lastIndexOf('/')) + '/';
+  const scriptUrl = basePath + scriptName;
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = scriptUrl;
+    script.onload = () => {
+      // Verificar si el módulo tiene función init
+      const moduleName = scriptName.replace('.js', '');
+      const initFn = window[`${moduleName.charAt(0).toUpperCase() + moduleName.slice(1)}JS`]?.init;
+      if (initFn) {
+        Promise.resolve(initFn()).then(resolve).catch(reject);
+      } else {
+        resolve();
+      }
+    };
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
 }
 
 // ==========================================================================

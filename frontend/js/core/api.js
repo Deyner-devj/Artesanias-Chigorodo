@@ -118,6 +118,10 @@ const products = {
     return apiFetch(`/api/products/${id}`);
   },
 
+  async getMine() {
+    return apiFetch("/api/products/mine");
+  },
+
   async create(productData) {
     return apiFetch("/api/products", {
       method: "POST",
@@ -134,6 +138,26 @@ const products = {
 
   async delete(id) {
     return apiFetch(`/api/products/${id}`, { method: "DELETE" });
+  },
+
+  async uploadImage(productId, imageFile) {
+    const formData = new FormData();
+    formData.append("image", imageFile);
+    return apiFetch(`/api/products/${productId}/images`, {
+      method: "POST",
+      body: formData,
+      headers: {},
+    });
+  },
+
+  async uploadImages(productId, imageFiles) {
+    const formData = new FormData();
+    imageFiles.forEach((file) => formData.append("images", file));
+    return apiFetch(`/api/products/${productId}/images`, {
+      method: "POST",
+      body: formData,
+      headers: {},
+    });
   },
 };
 
@@ -194,6 +218,14 @@ const orders = {
       method: "PATCH",
       body: JSON.stringify({ status }),
     });
+  },
+
+  async getReceived() {
+    return apiFetch("/api/orders/received");
+  },
+
+  async getReceivedByStatus(status) {
+    return apiFetch(`/api/orders/received/status/${status}`);
   },
 };
 
@@ -326,6 +358,40 @@ const artisans = {
   async getAll() {
     return apiFetch("/api/artisans");
   },
+
+  async getById(id) {
+    return apiFetch(`/api/artisans/${id}`);
+  },
+
+  async update(id, artisanData) {
+    return apiFetch(`/api/artisans/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(artisanData),
+    });
+  },
+
+  async getProfile(id) {
+    return apiFetch(`/api/artisans/${id}/profile`);
+  },
+
+  async getEarnings(id) {
+    return apiFetch(`/api/artisans/${id}/earnings`);
+  },
+
+  async getWithdrawals(id) {
+    return apiFetch(`/api/artisans/${id}/withdrawals`);
+  },
+
+  async createWithdrawal(id, withdrawalData) {
+    return apiFetch(`/api/artisans/${id}/withdrawals`, {
+      method: "POST",
+      body: JSON.stringify(withdrawalData),
+    });
+  },
+
+  async getBalance(id) {
+    return apiFetch(`/api/artisans/${id}/earnings/balance`);
+  },
 };
 
 const favorites = {
@@ -347,6 +413,71 @@ const stats = {
   },
 };
 
+// ─── Sales Reports ────────────────────────────────────────────────────────────
+const salesReports = {
+  async getArtisan(startDate, endDate) {
+    const params = new URLSearchParams();
+    if (startDate) params.set("startDate", startDate);
+    if (endDate) params.set("endDate", endDate);
+    const qs = params.toString();
+    return apiFetch(`/api/sales-reports/artisan${qs ? "?" + qs : ""}`);
+  },
+  
+  async getArtisanCustomers() {
+    return apiFetch("/api/sales-reports/artisan/customers");
+  },
+};
+
+// ─── Admin Reports ────────────────────────────────────────────────────────────
+const adminReports = {
+  async get(startDate, endDate) {
+    const params = new URLSearchParams();
+    if (startDate) params.set("startDate", startDate);
+    if (endDate) params.set("endDate", endDate);
+    const qs = params.toString();
+    return apiFetch(`/api/admin/reports${qs ? "?" + qs : ""}`);
+  },
+  
+  async export(startDate, endDate) {
+    const params = new URLSearchParams();
+    if (startDate) params.set("startDate", startDate);
+    if (endDate) params.set("endDate", endDate);
+    const qs = params.toString();
+    
+    // Este endpoint devuelve un archivo Excel, por lo que no usamos apiFetch
+    // sino que hacemos una petición directa para descargar el archivo
+    const token = _getToken();
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    
+    const url = `${API_BASE}/api/admin/reports/export${qs ? "?" + qs : ""}`;
+    window.open(url, '_blank');
+    
+    // Alternativa: usar fetch y crear un enlace de descarga
+    /*
+    return fetch(url, { headers })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error al exportar reporte');
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `reporte_ventas_${startDate}_a_${endDate}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      });
+    */
+  },
+};
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
 window.API = {
   auth,
@@ -364,5 +495,7 @@ window.API = {
   addresses,
   paymentMethods,
   stats,
+  salesReports,
+  adminReports,
 };
 window._API_clearToken = _clearToken;
