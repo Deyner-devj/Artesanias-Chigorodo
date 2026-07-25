@@ -1,0 +1,224 @@
+/* Modal Styles */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: var(--font-serif);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--text-muted);
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.modal-close:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-dark);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.input-field {
+    margin-bottom: 1rem;
+}
+
+.input-field label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.input-field input,
+.input-field select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-dark);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-field input:focus,
+.input-field select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(18, 84, 52, 0.1);
+}
+
+.input-field .field-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+.input-field .error-message {
+    font-size: 0.8rem;
+    color: #ef4444;
+    margin-top: 0.25rem;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .input-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.list-item {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.list-item-actions button {
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}
+
+.list-item-actions button:hover {
+    background: var(--secondary);
+    color: white;
+}
+
+.list-item-actions .delete-btn:hover {
+    background: #ef4444;
+}
+
+ /* Form Buttons */
+.btn-modal {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.btn-modal-primary {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.btn-modal-primary:hover {
+    background-color: var(--primary);
+}
+
+.btn-modal-secondary {
+    background-color: var(--bg-secondary);
+    color: var(--text-dark);
+    border: 1px solid var(--border-color);
+}
+
+.btn-modal-secondary:hover {
+    background-color: var(--border-color);
+}
+
+ /* Card Type Icons in Modal */
+.card-type-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-type-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+ /* Empty State for Lists */
+.empty-list-state {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+}
+
+.empty-list-state svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    color: var(--border-color);
+}

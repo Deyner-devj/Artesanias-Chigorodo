@@ -9,6 +9,8 @@ public interface ProductPort {
     Optional<Product> findById(Long id);
     Optional<Product> findByIdForUpdate(Long id);
     List<Product> findAll();
+    List<Product> findBySellerId(Long sellerId);
+    long countBySellerId(Long sellerId);
     Product save(Product product);
     void deleteById(Long id);
 }

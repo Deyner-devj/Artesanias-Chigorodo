@@ -52,5 +52,20 @@ public class OrderPersistenceAdapter implements OrderPort {
         OrderEntity savedEntity = orderJpaRepository.save(entity);
         return OrderMapper.toDomain(savedEntity);
     }
+
+    @Override
+    public List<Order> findBySellerIdOrderByCreatedAtDesc(Long sellerId) {
+        return orderJpaRepository.findBySellerIdOrderByCreatedAtDesc(sellerId).stream()
+                .map(OrderMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Order> findBySellerIdAndStatusOrderByCreatedAtDesc(Long sellerId, String status) {
+        return orderJpaRepository.findBySellerIdAndStatusOrderByCreatedAtDesc(sellerId, status).stream()
+                .map(OrderMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }
+
 

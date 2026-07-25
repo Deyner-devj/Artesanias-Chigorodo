@@ -9,6 +9,9 @@ public interface OrderPort {
     Optional<Order> findById(Long id);
     Optional<Order> findByOrderNumber(String orderNumber);
     List<Order> findByUserId(Long userId);
+    List<Order> findBySellerIdOrderByCreatedAtDesc(Long sellerId);
+    List<Order> findBySellerIdAndStatusOrderByCreatedAtDesc(Long sellerId, String status);
     Order save(Order order);
 }
+
 

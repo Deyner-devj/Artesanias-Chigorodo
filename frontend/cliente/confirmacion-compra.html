@@ -266,7 +266,7 @@
           month: "long",
           day: "numeric",
         });
-        const displayName = info.name || (latestOrder ? "Juan Pérez" : "");
+        const displayName = info.name || (latestOrder?.user?.fullName || "");
         const displayAddress = info.address
           ? `${info.address}, ${info.city}`
           : latestOrder

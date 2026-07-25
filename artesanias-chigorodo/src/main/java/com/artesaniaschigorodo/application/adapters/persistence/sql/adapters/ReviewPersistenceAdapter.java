@@ -30,4 +30,11 @@ public class ReviewPersistenceAdapter implements ReviewPort {
                 .map(ReviewMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Review> findFeaturedReviews() {
+        return reviewRepository.findByRatingGreaterThanEqualOrderByRatingDesc(4.0).stream()
+                .map(ReviewMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }

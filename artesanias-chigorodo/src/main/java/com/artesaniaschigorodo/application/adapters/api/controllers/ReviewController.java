@@ -40,6 +40,14 @@ public class ReviewController {
 		return ResponseEntity.ok(reviews);
 	}
 
+	@GetMapping("/featured")
+	public ResponseEntity<List<ReviewResponse>> getFeaturedReviews() {
+		List<ReviewResponse> reviews = createReviewUseCase.getFeaturedReviews().stream()
+				.map(this::mapToResponse)
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(reviews);
+	}
+
 	private User getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated()) {

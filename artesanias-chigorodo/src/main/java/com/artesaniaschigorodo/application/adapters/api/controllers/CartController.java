@@ -26,6 +26,7 @@ public class CartController {
 
 	private final ManageCartUseCase manageCartUseCase;
 	private final UserPort userPersistencePort;
+    private final com.artesaniaschigorodo.domain.ports.out.ProductPort productPort;
 
 	@GetMapping
 	public ResponseEntity<CartResponse> getCart() {
@@ -75,9 +76,12 @@ public class CartController {
 	}
 
 	private CartResponse.CartItemResponse mapToResponse(CartItem item) {
+		com.artesaniaschigorodo.domain.models.product.Product product = productPort.findById(item.getProduct().getId());
 		return CartResponse.CartItemResponse.builder()
 				.productId(item.getProduct().getId())
 				.productName(item.getProduct().getName())
+				.imageUrl(product != null && product.getImageUrls() != null && !product.getImageUrls().isEmpty() ? product.getImageUrls().get(0) : null)
+				.stock(product != null ? product.getStock() : 0)
 				.quantity(item.getQuantity())
 				.unitPrice(item.getUnitPrice())
 				.subtotal(item.getSubtotal())

@@ -213,6 +213,10 @@ const reviews = {
     return apiFetch(`/api/reviews/product/${productId}`);
   },
 
+  async getFeatured() {
+    return apiFetch("/api/reviews/featured");
+  },
+
   async create(reviewData) {
     return apiFetch("/api/reviews", {
       method: "POST",
@@ -336,6 +340,13 @@ const favorites = {
   },
 };
 
+// ─── Stats ────────────────────────────────────────────────────────────────
+const stats = {
+  async getPublicStats() {
+    return apiFetch("/api/stats/public");
+  },
+};
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
 window.API = {
   auth,
@@ -352,5 +363,6 @@ window.API = {
   contact,
   addresses,
   paymentMethods,
+  stats,
 };
 window._API_clearToken = _clearToken;

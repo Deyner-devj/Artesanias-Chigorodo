@@ -13,6 +13,7 @@ import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
 import com.artesaniaschigorodo.domain.models.enums.ShippingMethod;
+import com.artesaniaschigorodo.domain.ports.in.GetArtisanOrdersPort;
 import com.artesaniaschigorodo.domain.ports.in.OrderPort;
 import com.artesaniaschigorodo.domain.ports.out.InvoicePort;
 import com.artesaniaschigorodo.domain.models.order.Invoice;
@@ -36,6 +37,7 @@ public class OrderController {
     private final OrderPort orderUseCase;
     private final UserPort userPersistencePort;
     private final InvoicePort invoicePersistencePort;
+    private final GetArtisanOrdersPort getArtisanOrdersUseCase;
 
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody OrderRequest request) {
@@ -59,6 +61,26 @@ public class OrderController {
         User currentUser = getCurrentUser();
         Order order = orderUseCase.getOrderByOrderNumber(orderNumber, currentUser);
         return ResponseEntity.ok(mapToResponse(order));
+    }
+
+    @GetMapping("/received")
+    public ResponseEntity<List<OrderResponse>> getReceivedOrders() {
+        User currentUser = getCurrentUser();
+        List<Order> orders = getArtisanOrdersUseCase.getOrdersByArtisan(currentUser);
+        List<OrderResponse> responses = orders.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/received/status/{status}")
+    public ResponseEntity<List<OrderResponse>> getReceivedOrdersByStatus(@PathVariable String status) {
+        User currentUser = getCurrentUser();
+        List<Order> orders = getArtisanOrdersUseCase.getOrdersByArtisanAndStatus(currentUser, status);
+        List<OrderResponse> responses = orders.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
     }
 
     @PatchMapping("/{orderNumber}/status")

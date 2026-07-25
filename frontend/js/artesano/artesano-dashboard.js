@@ -132,17 +132,8 @@ function toggleNotificationsPanel(buttonEl) {
         <span style="font-size: 0.75rem; color: #ea580c; cursor: pointer;">Marcar leídas</span>
       </div>
       <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; color: #475569;">
-        <li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; gap: 10px; align-items: start;">
-          <span style="background: #e0f2fe; padding: 5px; border-radius: 5px;">📦</span>
-          <div><strong>Nuevo Pedido</strong><br><span style="font-size: 0.8rem">Juan Pérez compró 'Vasija de Arcilla'</span></div>
-        </li>
-        <li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; gap: 10px; align-items: start;">
-          <span style="background: #fef3c7; padding: 5px; border-radius: 5px;">⭐</span>
-          <div><strong>Nueva Reseña</strong><br><span style="font-size: 0.8rem">Tienes un comentario de 5 estrellas</span></div>
-        </li>
-        <li style="padding: 10px 0; display: flex; gap: 10px; align-items: start;">
-          <span style="background: #dcfce7; padding: 5px; border-radius: 5px;">💸</span>
-          <div><strong>Pago Recibido</strong><br><span style="font-size: 0.8rem">Tu desembolso ha sido procesado</span></div>
+        <li style="padding: 10px 0; text-align: center; color: #64748b;">
+          No hay notificaciones nuevas
         </li>
       </ul>
     `;

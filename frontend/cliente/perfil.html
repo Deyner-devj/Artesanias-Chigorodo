@@ -243,6 +243,7 @@
     <script src="../js/core/auth.js"></script>
     <script src="../js/cliente/carrito.js"></script>
     <script src="../js/cliente/favoritos.js"></script>
+    <script src="../js/cliente/perfil.js"></script>
     <script src="../js/components/navbar.js"></script>
     <script src="../js/components/cart-fx.js"></script>
     <script src="../js/components/footer.js"></script>
@@ -766,13 +767,22 @@
         }
       }
 
-      // Funciones para modales (por implementar)
+      // Funciones para modales - AHORA FUNCIONALES
+      // Delegamos a perfil.js que tiene la implementación completa
       function openAddressModal() {
-        showModernToast("La funcionalidad para agregar direcciones se implementará pronto.", "info");
+        if (window.perfilHandlers && window.perfilHandlers.openAddressModal) {
+          window.perfilHandlers.openAddressModal();
+        } else {
+          showModernToast("Error: No se pudo cargar el modal de direcciones", "error");
+        }
       }
 
       function openPaymentMethodModal() {
-        showModernToast("La funcionalidad para agregar tarjetas se implementará pronto.", "info");
+        if (window.perfilHandlers && window.perfilHandlers.openPaymentMethodModal) {
+          window.perfilHandlers.openPaymentMethodModal();
+        } else {
+          showModernToast("Error: No se pudo cargar el modal de métodos de pago", "error");
+        }
       }
 
       function triggerLogout() {

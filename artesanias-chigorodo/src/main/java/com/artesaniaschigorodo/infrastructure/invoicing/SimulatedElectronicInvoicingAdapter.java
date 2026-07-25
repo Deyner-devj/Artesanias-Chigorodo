@@ -10,9 +10,35 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 
+/**
+ * Adaptador SIMULADO para facturación electrónica DIAN.
+ * 
+ * ESTA ES UNA IMPLEMENTACIÓN DE DESARROLLO QUE NO DEBE USARSE EN PRODUCCIÓN.
+ * 
+ * Para un entorno productivo, se debe integrar con un proveedor real de facturación
+ * electrónica DIAN como:
+ * - Facturador Electrónico DIAN (https://facturadionelectronica.dian.gov.co/)
+ * - Proveedores autorizados: Siigo, Contpaqi, FE DIAN, etc.
+ * 
+ * Configuración requerida para producción:
+ * - Credenciales de acceso al proveedor DIAN
+ * - Certificado digital válido
+ * - Resolución de facturación DIAN
+ * - Ambiente configurado (pruebas o producción)
+ * 
+ * Para deshabilitar esta implementación simulada y usar una real:
+ * 1. Crear una nueva implementación de ElectronicInvoicingPort
+ * 2. Configurar el bean correspondiente en la configuración de Spring
+ * 3. Eliminar o comentar esta clase
+ * 4. Documentar la nueva implementación en el README.md
+ */
 @Component
 public class SimulatedElectronicInvoicingAdapter implements ElectronicInvoicingPort {
 
+    /**
+     * SIMULACIÓN: Genera un CUFE (Código Único de Factura Electrónica) simulado.
+     * En producción, este código debe ser generado por el proveedor DIAN autorizado.
+     */
     @Override
     public Invoice submitInvoice(Order order) {
         String cufe = generateCufe(order);

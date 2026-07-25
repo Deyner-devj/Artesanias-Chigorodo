@@ -6,7 +6,7 @@ function isAuthenticated() { return Boolean(sessionStorage.getItem('auth_token')
 function getCartItems() { return [...cartItems]; }
 function notifyCartChanged() { window.dispatchEvent(new Event('cartChanged')); }
 function mapCartItem(item) {
-  return { product: { id: String(item.productId), name: item.productName, price: item.unitPrice, image: '../img/mochila_wayuu.png', stock: 99 }, quantity: item.quantity };
+  return { product: { id: String(item.productId), name: item.productName, price: item.unitPrice, image: item.imageUrl || '../img/mochila_wayuu.png', stock: item.stock || 0 }, quantity: item.quantity };
 }
 
 async function syncCartFromAPI() {

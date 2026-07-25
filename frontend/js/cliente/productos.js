@@ -13,7 +13,7 @@ function mapApiProduct(product) {
     id: String(product.id),
     image: product.imageUrls?.[0] || `${_imgPrefix}mochila_wayuu.png`,
     category: CATEGORY_LABEL_MAP[product.category] || product.category || 'Artesanias',
-    sellerName: product.sellerName || 'Artesano',
+    sellerName: product.sellerName || '',
     rating: product.rating ?? 0,
     reviewsCount: product.reviewsCount ?? 0,
   };

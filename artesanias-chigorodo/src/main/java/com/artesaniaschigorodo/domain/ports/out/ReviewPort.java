@@ -7,4 +7,5 @@ import java.util.List;
 public interface ReviewPort {
     Review save(Review review);
     List<Review> findByProductId(Long productId);
+    List<Review> findFeaturedReviews();
 }

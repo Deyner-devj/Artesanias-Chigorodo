@@ -49,6 +49,10 @@ public class CreateReviewUseCase {
         return reviewPersistencePort.findByProductId(productId);
     }
 
+    public List<Review> getFeaturedReviews() {
+        return reviewPersistencePort.findFeaturedReviews();
+    }
+
     private void updateProductStats(Product product, Long productId) {
         List<Review> reviews = reviewPersistencePort.findByProductId(productId);
         int count = reviews.size();

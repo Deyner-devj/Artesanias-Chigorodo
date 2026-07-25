@@ -16,6 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +29,8 @@ public class ProductController {
 
     private final ProductPort productUseCase;
     private final UserPort userPersistencePort;
+    private final GetArtisanProductsPort getArtisanProductsUseCase;
+    private final ImageStoragePort imageStoragePort;
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProducts(
@@ -67,6 +72,63 @@ public class ProductController {
         User currentUser = getCurrentUser();
         productUseCase.deleteProduct(id, currentUser);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/mine")
+    public ResponseEntity<List<ProductResponse>> getMyProducts() {
+        User currentUser = getCurrentUser();
+        List<Product> products = getArtisanProductsUseCase.getProductsByArtisan(currentUser);
+        List<ProductResponse> responses = products.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
+    }
+
+    @PostMapping("/{id}/images")
+    public ResponseEntity<List<String>> uploadProductImages(
+            @PathVariable Long id,
+            @RequestParam("files") List<MultipartFile> files) throws IOException {
+        User currentUser = getCurrentUser();
+        
+        // Validar que el producto pertenece al usuario actual
+        Product product = productUseCase.getProductById(id);
+        if (currentUser.getRole() != com.artesaniaschigorodo.domain.models.enums.Role.ADMIN &&
+            !product.getSellerId().equals(currentUser.getId())) {
+            throw new ForbiddenOperationException("No tiene permisos para subir imágenes a este producto");
+        }
+        
+        // Validar y guardar imágenes
+        List<String> imageUrls = imageStoragePort.storeMultipleImages(files);
+        
+        // Actualizar el producto con las nuevas URLs de imágenes
+        product.getImageUrls().addAll(imageUrls);
+        productUseCase.updateProduct(id, product, currentUser);
+        
+        return ResponseEntity.ok(imageUrls);
+    }
+
+    @PostMapping("/{id}/image")
+    public ResponseEntity<String> uploadProductImage(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file) throws IOException {
+        User currentUser = getCurrentUser();
+        
+        // Validar que el producto pertenece al usuario actual
+        Product product = productUseCase.getProductById(id);
+        if (currentUser.getRole() != com.artesaniaschigorodo.domain.models.enums.Role.ADMIN &&
+            !product.getSellerId().equals(currentUser.getId())) {
+            throw new ForbiddenOperationException("No tiene permisos para subir imágenes a este producto");
+        }
+        
+        // Validar y guardar imagen
+        imageStoragePort.validateImage(file);
+        String imageUrl = imageStoragePort.storeImage(file);
+        
+        // Actualizar el producto con la nueva URL de imagen
+        product.getImageUrls().add(imageUrl);
+        productUseCase.updateProduct(id, product, currentUser);
+        
+        return ResponseEntity.ok(imageUrl);
     }
 
     private User getCurrentUser() {

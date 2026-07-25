@@ -109,44 +109,10 @@
           }
         }
 
-        // Si no hay datos del backend, usar informacion estatica
+        // Si no hay datos del backend, mostrar mensaje
         if (artisans.length === 0) {
           grid.innerHTML = '<p style="color: var(--text-muted);">No hay artesanos publicados todavia.</p>';
           return;
-        }
-        if (false) {
-          artisans = [
-            {
-              name: "Maria Luz Valdes",
-              specialty: "Tejidos Wayuu",
-              bio: "Especialista en tejidos Wayuu y bolsos artesanales. Mas de 20 anos de experiencia传承endo la cultura indigena.",
-              productCount: 34,
-              rating: 4.9,
-              image: "../img/artesanos/Maria.jpg",
-              initials: "MV",
-              color: "var(--primary)",
-            },
-            {
-              name: "Carlos Rincon",
-              specialty: "Ceramica Tradicional",
-              bio: "Maestro ceramista especializado en barro negro de La Chamba. Arte heredado de generaciones y reconocido internacionalmente.",
-              productCount: 21,
-              rating: 5.0,
-              image: "../img/artesanos/Pedro.png",
-              initials: "CR",
-              color: "var(--secondary)",
-            },
-            {
-              name: "Rosa Elena Suarez",
-              specialty: "Sombreria Artesanal",
-              bio: "Tejedora de sombreros vueltiao Zenu con la tecnica tradicional de cana flecha. Preservando la identidad cultural colombiana.",
-              productCount: 18,
-              rating: 4.8,
-              image: "../img/artesanos/Julia.jpg",
-              initials: "RS",
-              color: "#0c4a6e",
-            },
-          ];
         }
 
         // Renderizar tarjetas
