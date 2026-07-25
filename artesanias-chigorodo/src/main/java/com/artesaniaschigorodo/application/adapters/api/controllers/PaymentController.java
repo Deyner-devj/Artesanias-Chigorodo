@@ -43,12 +43,12 @@ public class PaymentController {
 
 	private PaymentResponse mapToResponse(Payment payment) {
 		return PaymentResponse.builder()
+				.id(payment.getId())
 				.orderNumber(payment.getOrderNumber())
-				.paymentMethod(payment.getPaymentMethod() != null ? payment.getPaymentMethod().name() : null)
+				.paymentMethod(payment.getPaymentMethod())
 				.transactionId(payment.getTransactionId())
 				.status(payment.getStatus())
 				.amount(payment.getAmount())
-				.userEmail(payment.getUserEmail())
 				.processedAt(payment.getProcessedAt())
 				.build();
 	}

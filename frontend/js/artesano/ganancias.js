@@ -3,8 +3,8 @@
 
 async function init() {
   try {
-    await loadGananciasData();
-    setupChart();
+    const data = await loadGananciasData();
+    setupChart(data);
   } catch (error) {
     console.error('Error al cargar ganancias:', error);
     showErrorState();
@@ -35,6 +35,8 @@ async function loadGananciasData() {
     
     // Actualizar el historial de desembolsos
     updateHistorialDesembolsos(gananciasData);
+
+    return gananciasData;
 
   } catch (error) {
     console.error('Error al cargar datos:', error);
@@ -144,14 +146,41 @@ function updateHistorialDesembolsos(data) {
   historialContainer.innerHTML = html;
 }
 
-function setupChart() {
+function setupChart(data) {
   // Configurar el gráfico de desembolsos
   const ctx = document.getElementById('payoutsChart');
   if (!ctx) return;
 
-  // Datos de ejemplo - en una implementación real, estos vendrían del backend
-  const labels = ['Jun 26', 'Jul 03', 'Jul 10', 'Jul 17', 'Jul 24'];
-  const data = [1420000, 980000, 1250000, 850000, 1100000];
+  // Extraer datos de desembolsos del backend
+  let labels = [];
+  let chartData = [];
+  
+  // Usar payoutsHistory si está disponible
+  if (data.payoutsHistory && Array.isArray(data.payoutsHistory)) {
+    const sortedPayouts = [...data.payoutsHistory].sort((a, b) => 
+      new Date(b.requestedAt || b.date) - new Date(a.requestedAt || a.date)
+    );
+    labels = sortedPayouts.slice(0, 5).map(p => {
+      const date = new Date(p.requestedAt || p.date || p.createdAt);
+      return date.toLocaleDateString('es-CO', { month: 'short', day: 'numeric' });
+    });
+    chartData = sortedPayouts.slice(0, 5).map(p => p.netAmount || p.amount || 0);
+  } else if (data.payouts && Array.isArray(data.payouts)) {
+    const sortedPayouts = [...data.payouts].sort((a, b) => 
+      new Date(b.date) - new Date(a.date)
+    );
+    labels = sortedPayouts.slice(0, 5).map(p => {
+      const date = new Date(p.date);
+      return date.toLocaleDateString('es-CO', { month: 'short', day: 'numeric' });
+    });
+    chartData = sortedPayouts.slice(0, 5).map(p => p.netAmount || p.amount || 0);
+  }
+  
+  // Si no hay datos, usar datos por defecto vacíos
+  if (labels.length === 0) {
+    labels = ['Sin datos'];
+    chartData = [0];
+  }
 
   new Chart(ctx.getContext('2d'), {
     type: 'bar',
@@ -160,7 +189,7 @@ function setupChart() {
       datasets: [
         {
           label: 'Desembolsado ($)',
-          data: data,
+          data: chartData,
           backgroundColor: '#3b82f6',
           borderRadius: 6,
           barThickness: 35,

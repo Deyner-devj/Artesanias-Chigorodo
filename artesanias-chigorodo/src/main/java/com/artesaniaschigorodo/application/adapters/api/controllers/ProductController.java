@@ -7,7 +7,9 @@ import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.models.enums.Category;
+import com.artesaniaschigorodo.domain.ports.in.GetArtisanProductsPort;
 import com.artesaniaschigorodo.domain.ports.in.ProductPort;
+import com.artesaniaschigorodo.domain.ports.out.ImageStoragePort;
 import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -173,7 +175,7 @@ public class ProductController {
                 .reviewsCount(product.getReviewsCount())
                 .imageUrls(product.getImageUrls())
                 .colors(product.getColors())
-                .category(product.getCategory() != null ? product.getCategory().name() : null)
+                .category(product.getCategory())
                 .stock(product.getStock())
                 .build();
     }

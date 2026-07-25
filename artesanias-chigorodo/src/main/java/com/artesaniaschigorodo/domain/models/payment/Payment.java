@@ -1,6 +1,5 @@
 package com.artesaniaschigorodo.domain.models.payment;
 
-import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,13 +12,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Payment {
-
-	private Long id;
-	private String orderNumber;
-	private String userEmail;
-	private PaymentMethod paymentMethod;
-	private String transactionId;
-	private String status;
-	private Double amount;
-	private LocalDateTime processedAt;
+    private Long id;
+    private Long orderId;
+    private String orderNumber;
+    private Double amount;
+    private String paymentMethod;
+    private String transactionId;
+    private String status;
+    private String userEmail;
+    private LocalDateTime processedAt;
 }

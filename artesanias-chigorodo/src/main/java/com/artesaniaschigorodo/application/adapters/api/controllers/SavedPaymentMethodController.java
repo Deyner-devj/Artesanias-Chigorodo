@@ -5,7 +5,6 @@ import com.artesaniaschigorodo.application.adapters.api.response.SavedPaymentMet
 import com.artesaniaschigorodo.application.useCases.SavedPaymentMethodUseCase;
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
-import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
 import com.artesaniaschigorodo.domain.models.user.SavedPaymentMethod;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.ports.out.UserPort;
@@ -88,7 +87,7 @@ public class SavedPaymentMethodController {
 
     private SavedPaymentMethod mapToDomain(SavedPaymentMethodRequest request) {
         return SavedPaymentMethod.builder()
-                .cardType(request.getCardType() != null ? PaymentMethod.valueOf(request.getCardType().toUpperCase()) : null)
+                .cardType(request.getCardType())
                 .cardNumber(request.getCardNumber())
                 .cardHolderName(request.getCardHolderName())
                 .expiryDate(request.getExpiryDate())
@@ -101,7 +100,7 @@ public class SavedPaymentMethodController {
         return SavedPaymentMethodResponse.builder()
                 .id(paymentMethod.getId())
                 .userId(paymentMethod.getUserId())
-                .cardType(paymentMethod.getCardType() != null ? paymentMethod.getCardType().name() : null)
+                .cardType(paymentMethod.getCardType())
                 .lastFourDigits(paymentMethod.getLastFourDigits())
                 .cardHolderName(paymentMethod.getCardHolderName())
                 .expiryDate(paymentMethod.getExpiryDate())

@@ -151,22 +151,19 @@ function updateVentasTable(data) {
 }
 
 function setupChart() {
-  // Crear gráfico inicial con datos de ejemplo
+  // Crear gráfico inicial - se actualizará con datos reales cuando se carguen
   const ctx = document.getElementById('salesChart');
   if (!ctx) return;
 
-  // Datos de ejemplo - se actualizarán con datos reales cuando se carguen
-  const labels = ['2026-07-08', '2026-07-09', '2026-07-10', '2026-07-11', '2026-07-12'];
-  const data = [180000, 0, 240000, 150000, 220000];
-
+  // Crear gráfico vacío inicialmente, se actualizará con updateChartData
   ctx.chart = new Chart(ctx.getContext('2d'), {
     type: 'line',
     data: {
-      labels: labels,
+      labels: ['Sin datos'],
       datasets: [
         {
           label: 'Monto de Ventas ($)',
-          data: data,
+          data: [0],
           borderColor: '#10b981',
           backgroundColor: 'rgba(16, 185, 129, 0.1)',
           borderWidth: 3,

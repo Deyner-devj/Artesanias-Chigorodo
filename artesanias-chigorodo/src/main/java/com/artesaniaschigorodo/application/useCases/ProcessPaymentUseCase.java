@@ -5,7 +5,6 @@ import com.artesaniaschigorodo.domain.exceptions.BusinessException;
 import com.artesaniaschigorodo.domain.exceptions.ForbiddenOperationException;
 import com.artesaniaschigorodo.domain.exceptions.ResourceNotFoundException;
 import com.artesaniaschigorodo.domain.models.enums.OrderStatus;
-import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
 import com.artesaniaschigorodo.domain.models.order.Invoice;
 import com.artesaniaschigorodo.domain.models.order.Order;
 import com.artesaniaschigorodo.domain.models.payment.Payment;
@@ -43,10 +42,10 @@ public class ProcessPaymentUseCase {
             throw new ForbiddenOperationException("No tiene permisos para pagar esta orden.");
         }
 
-        PaymentMethod paymentMethod;
+        String paymentMethod;
         try {
-            paymentMethod = PaymentMethod.valueOf(request.getPaymentMethod().toUpperCase());
-        } catch (IllegalArgumentException ex) {
+            paymentMethod = request.getPaymentMethod().toUpperCase();
+        } catch (Exception ex) {
             throw new BusinessException("Método de pago inválido: " + request.getPaymentMethod());
         }
 
@@ -78,7 +77,7 @@ public class ProcessPaymentUseCase {
 
         auditEventService.record("PAYMENT_PROCESS", "APPROVED".equalsIgnoreCase(status) ? "SUCCESS" : "REJECTED",
                 currentUser.getEmail(), currentUser.getId(), "ORDER", order.getOrderNumber(),
-                Map.of("paymentMethod", paymentMethod.name(), "transactionId", transactionId,
+                Map.of("paymentMethod", paymentMethod, "transactionId", transactionId,
                         "amount", String.valueOf(order.getTotal())));
 
         if (order.getOrderStatus() == OrderStatus.PAID) {

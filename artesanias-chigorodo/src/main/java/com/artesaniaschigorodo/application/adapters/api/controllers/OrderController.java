@@ -11,12 +11,9 @@ import com.artesaniaschigorodo.domain.models.payment.PaymentDetails;
 import com.artesaniaschigorodo.domain.models.order.Invoice;
 import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.user.User;
-import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
-import com.artesaniaschigorodo.domain.models.enums.ShippingMethod;
 import com.artesaniaschigorodo.domain.ports.in.GetArtisanOrdersPort;
 import com.artesaniaschigorodo.domain.ports.in.OrderPort;
 import com.artesaniaschigorodo.domain.ports.out.InvoicePort;
-import com.artesaniaschigorodo.domain.models.order.Invoice;
 import com.artesaniaschigorodo.domain.ports.out.UserPort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -129,11 +126,11 @@ public class OrderController {
                 .city(request.getShippingDetails().getCity())
                 .address(request.getShippingDetails().getAddress())
                 .postalCode(request.getShippingDetails().getPostalCode())
-                .shippingMethod(ShippingMethod.valueOf(request.getShippingDetails().getShippingMethod().toUpperCase()))
+                .shippingMethod(request.getShippingDetails().getShippingMethod())
                 .build();
 
         PaymentDetails payment = PaymentDetails.builder()
-                .paymentMethod(PaymentMethod.valueOf(request.getPaymentDetails().getPaymentMethod().toUpperCase()))
+                .paymentMethod(request.getPaymentDetails().getPaymentMethod())
                 .transactionId(request.getPaymentDetails().getTransactionId())
                 .status(request.getPaymentDetails().getStatus())
                 .build();
@@ -162,11 +159,11 @@ public class OrderController {
                 .city(order.getShippingDetails().getCity())
                 .address(order.getShippingDetails().getAddress())
                 .postalCode(order.getShippingDetails().getPostalCode())
-                .shippingMethod(order.getShippingDetails().getShippingMethod().name())
+                .shippingMethod(order.getShippingDetails().getShippingMethod())
                 .build();
 
         OrderResponse.PaymentDetailsResponse payment = OrderResponse.PaymentDetailsResponse.builder()
-                .paymentMethod(order.getPaymentDetails().getPaymentMethod().name())
+                .paymentMethod(order.getPaymentDetails().getPaymentMethod())
                 .transactionId(order.getPaymentDetails().getTransactionId())
                 .status(order.getPaymentDetails().getStatus())
                 .build();

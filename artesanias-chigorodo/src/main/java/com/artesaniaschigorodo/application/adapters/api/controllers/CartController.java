@@ -76,7 +76,7 @@ public class CartController {
 	}
 
 	private CartResponse.CartItemResponse mapToResponse(CartItem item) {
-		com.artesaniaschigorodo.domain.models.product.Product product = productPort.findById(item.getProduct().getId());
+		com.artesaniaschigorodo.domain.models.product.Product product = productPort.findById(item.getProduct().getId()).orElse(null);
 		return CartResponse.CartItemResponse.builder()
 				.productId(item.getProduct().getId())
 				.productName(item.getProduct().getName())

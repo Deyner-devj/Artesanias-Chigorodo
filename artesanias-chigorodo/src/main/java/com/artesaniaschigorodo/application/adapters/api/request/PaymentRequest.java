@@ -1,18 +1,26 @@
 package com.artesaniaschigorodo.application.adapters.api.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class PaymentRequest {
+    @NotBlank
+    private String orderNumber;
 
-	@NotBlank(message = "El número de la orden es obligatorio.")
-	private String orderNumber;
+    @NotBlank
+    private String paymentMethod;
 
-	@NotBlank(message = "El método de pago es obligatorio.")
-	private String paymentMethod;
+    @NotBlank
+    private String status;
 
-	private String transactionId;
+    @NotBlank
+    private String transactionId;
 
-	private String status;
+    @NotNull
+    private Double amount;
+
+    @NotBlank
+    private String userEmail;
 }

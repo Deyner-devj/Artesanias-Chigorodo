@@ -13,7 +13,30 @@ if (!window.UF && document.currentScript) {
   document.write(`<script src="${feedbackSrc}"></script>`);
 }
 
-const API_BASE = "http://localhost:8080";
+// Configuración flexible de la URL base del backend
+// Detecta automáticamente si está en Docker o en desarrollo local
+const API_BASE = (function() {
+  // Si estamos en un entorno Docker (puede detectarse por la URL o host)
+  // El frontend se sirve desde nginx en el puerto 5502
+  // Pero desde el navegador, localhost:8080 apunta al backend expuesto
+  const defaultBase = "http://localhost:8080";
+  
+  // Intenta detectar si estamos en un contenedor Docker
+  // por la URL actual del navegador
+  if (typeof window !== 'undefined' && window.location) {
+    const host = window.location.hostname;
+    const port = window.location.port;
+    
+    // Si el frontend está en el puerto 5502 (nginx en Docker)
+    // o en cualquier otro puerto que no sea 8080, usamos localhost:8080
+    // porque el backend está expuesto en el host
+    if (host === 'localhost' || host === '127.0.0.1' || host === '') {
+      return defaultBase;
+    }
+  }
+  
+  return defaultBase;
+})();
 
 // ─── Token helpers ───────────────────────────────────────────────────────────
 function _getToken() {

@@ -79,8 +79,8 @@ public class UserController {
                 .id(user.getId())
                 .fullName(user.getFullName())
                 .email(user.getEmail())
-                .role(user.getRole().name())
-                .status(user.getStatus().name())
+                .role(user.getRole())
+                .status(user.getStatus())
                 .build();
     }
 }

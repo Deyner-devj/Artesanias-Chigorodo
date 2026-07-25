@@ -1,6 +1,5 @@
 package com.artesaniaschigorodo.domain.models.user;
 
-import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +12,17 @@ import lombok.NoArgsConstructor;
 public class SavedPaymentMethod {
     private Long id;
     private Long userId;
-    private com.artesaniaschigorodo.domain.models.enums.PaymentMethod cardType;
     private String cardNumber;
     private String cardHolderName;
     private String expiryDate;
+    private String cardType;
     private String cvv;
     private boolean isDefault;
-    private String lastFourDigits;
+
+    public String getLastFourDigits() {
+        if (cardNumber != null && cardNumber.length() >= 4) {
+            return cardNumber.substring(cardNumber.length() - 4);
+        }
+        return "****";
+    }
 }

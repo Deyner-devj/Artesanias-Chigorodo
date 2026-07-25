@@ -1,6 +1,5 @@
 package com.artesaniaschigorodo.domain.models.order;
 
-import com.artesaniaschigorodo.domain.models.enums.ShippingMethod;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +15,5 @@ public class ShippingDetails {
     private String city;
     private String address;
     private String postalCode;
-    private ShippingMethod shippingMethod;
+    private String shippingMethod;
 }
-

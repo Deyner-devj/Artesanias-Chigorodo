@@ -8,8 +8,6 @@ import com.artesaniaschigorodo.domain.models.order.ShippingDetails;
 import com.artesaniaschigorodo.domain.models.payment.PaymentDetails;
 import com.artesaniaschigorodo.domain.models.product.Product;
 import com.artesaniaschigorodo.domain.models.enums.OrderStatus;
-import com.artesaniaschigorodo.domain.models.enums.PaymentMethod;
-import com.artesaniaschigorodo.domain.models.enums.ShippingMethod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +44,12 @@ public class OrderMapper {
             entity.setCity(sd.getCity());
             entity.setAddress(sd.getAddress());
             entity.setPostalCode(sd.getPostalCode());
-            entity.setShippingMethod(sd.getShippingMethod() != null ? sd.getShippingMethod().name() : null);
+            entity.setShippingMethod(sd.getShippingMethod());
         }
 
         if (domain.getPaymentDetails() != null) {
             PaymentDetails pd = domain.getPaymentDetails();
-            entity.setPaymentMethod(pd.getPaymentMethod() != null ? pd.getPaymentMethod().name() : null);
+            entity.setPaymentMethod(pd.getPaymentMethod());
             entity.setPaymentTransactionId(pd.getTransactionId());
             entity.setPaymentStatus(pd.getStatus());
         }
@@ -75,11 +73,11 @@ public class OrderMapper {
                 .city(entity.getCity())
                 .address(entity.getAddress())
                 .postalCode(entity.getPostalCode())
-                .shippingMethod(entity.getShippingMethod() != null ? ShippingMethod.valueOf(entity.getShippingMethod()) : null)
+                .shippingMethod(entity.getShippingMethod())
                 .build();
 
         PaymentDetails payment = PaymentDetails.builder()
-                .paymentMethod(entity.getPaymentMethod() != null ? PaymentMethod.valueOf(entity.getPaymentMethod()) : null)
+                .paymentMethod(entity.getPaymentMethod())
                 .transactionId(entity.getPaymentTransactionId())
                 .status(entity.getPaymentStatus())
                 .build();

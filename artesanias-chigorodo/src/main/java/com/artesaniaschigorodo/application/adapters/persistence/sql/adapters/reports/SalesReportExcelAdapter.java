@@ -2,6 +2,7 @@ package com.artesaniaschigorodo.application.adapters.persistence.sql.adapters.re
 
 import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.OrderRepository;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.repositories.ProductRepository;
+import com.artesaniaschigorodo.domain.models.category.Category;
 import com.artesaniaschigorodo.domain.models.user.User;
 import com.artesaniaschigorodo.domain.ports.out.SalesReportPort;
 import lombok.RequiredArgsConstructor;
@@ -122,7 +123,7 @@ public class SalesReportExcelAdapter implements SalesReportPort {
                     productInfo.put("unitsSold", entry.getValue());
                     productRepository.findById(entry.getKey()).ifPresent(product -> {
                         productInfo.put("productName", product.getName());
-                        productInfo.put("category", product.getCategory() != null ? product.getCategory().name() : null);
+                        productInfo.put("category", product.getCategory() != null ? product.getCategory().getName() : null);
                         productInfo.put("price", product.getPrice());
                     });
                     return productInfo;

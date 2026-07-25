@@ -13,11 +13,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        String[] originsArray = allowedOrigins.split(",");
+        for (int i = 0; i < originsArray.length; i++) {
+            originsArray[i] = originsArray[i].trim();
+        }
         registry.addMapping("/**")
-                .allowedOrigins(allowedOrigins.split(","))
+                .allowedOrigins(originsArray)
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .exposedHeaders("Authorization")
+                .exposedHeaders("Authorization", "Content-Disposition")
                 .allowCredentials(true)
                 .maxAge(3600);
     }

@@ -56,6 +56,6 @@ public class FavoriteController {
     private ProductResponse toResponse(Product p) {
         return ProductResponse.builder().id(p.getId()).name(p.getName()).description(p.getDescription()).price(p.getPrice())
                 .sellerId(p.getSellerId()).sellerName(p.getSellerName()).rating(p.getRating()).reviewsCount(p.getReviewsCount())
-                .imageUrls(p.getImageUrls()).colors(p.getColors()).category(p.getCategory() == null ? null : p.getCategory().name()).stock(p.getStock()).build();
+                .imageUrls(p.getImageUrls()).colors(p.getColors()).category(p.getCategory()).stock(p.getStock()).build();
     }
 }

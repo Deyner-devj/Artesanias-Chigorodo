@@ -36,12 +36,6 @@ public class SavedPaymentMethodUseCase {
         validateUserExists(userId);
         paymentMethod.setUserId(userId);
         
-        // Extraer los últimos 4 dígitos
-        if (paymentMethod.getCardNumber() != null && paymentMethod.getCardNumber().length() >= 4) {
-            paymentMethod.setLastFourDigits(paymentMethod.getCardNumber().substring(
-                    paymentMethod.getCardNumber().length() - 4));
-        }
-        
         // Si es el primer método de pago, marcarlo como predeterminado
         if (paymentMethodPort.findByUserId(userId).isEmpty()) {
             paymentMethod.setDefault(true);
@@ -60,12 +54,6 @@ public class SavedPaymentMethodUseCase {
         existing.setCardNumber(updatedPaymentMethod.getCardNumber());
         existing.setCardHolderName(updatedPaymentMethod.getCardHolderName());
         existing.setExpiryDate(updatedPaymentMethod.getExpiryDate());
-        
-        // Actualizar últimos 4 dígitos
-        if (updatedPaymentMethod.getCardNumber() != null && updatedPaymentMethod.getCardNumber().length() >= 4) {
-            existing.setLastFourDigits(updatedPaymentMethod.getCardNumber().substring(
-                    updatedPaymentMethod.getCardNumber().length() - 4));
-        }
         
         // No guardar CVV
         existing.setCvv(null);

@@ -12,12 +12,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentResponse {
-
-	private String orderNumber;
-	private String paymentMethod;
-	private String transactionId;
-	private String status;
-	private Double amount;
-	private String userEmail;
-	private LocalDateTime processedAt;
+    private Long id;
+    private String orderNumber;
+    private Double amount;
+    private String paymentMethod;
+    private String transactionId;
+    private String status;
+    private LocalDateTime processedAt;
 }

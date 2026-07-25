@@ -43,8 +43,7 @@ public class AuthUseCase implements AuthPort {
         if (user.getRole() == Role.VENDOR) {
             if (user.getSpecialty() == null || user.getSpecialty().isBlank()) {
                 throw new com.artesaniaschigorodo.domain.exceptions.BusinessException(
-                    "La especialidad es obligatoria para registrar un artesano.",
-                    org.springframework.http.HttpStatus.BAD_REQUEST.value()
+                    "La especialidad es obligatoria para registrar un artesano."
                 );
             }
             ArtisanProfile profile = ArtisanProfile.builder()

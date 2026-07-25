@@ -72,14 +72,15 @@ public class OrderUseCase implements OrderPort {
         // Calculate shipping cost based on method
         double shippingCost = 0.0;
         if (order.getShippingDetails() != null && order.getShippingDetails().getShippingMethod() != null) {
-            switch (order.getShippingDetails().getShippingMethod()) {
-                case EXPRESS:
+            String shippingMethod = order.getShippingDetails().getShippingMethod().toUpperCase();
+            switch (shippingMethod) {
+                case "EXPRESS":
                     shippingCost = 25000.0;
                     break;
-                case STANDARD:
+                case "STANDARD":
                     shippingCost = 15000.0;
                     break;
-                case PICKUP:
+                case "PICKUP":
                 default:
                     shippingCost = 0.0;
                     break;
