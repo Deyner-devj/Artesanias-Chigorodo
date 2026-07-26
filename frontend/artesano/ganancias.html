@@ -61,6 +61,7 @@
           >Ganancias Netas Disponibles</span
         >
         <h1
+          class="aa-ganancias-monto"
           style="
             font-size: 2.5rem;
             font-weight: 800;
@@ -68,7 +69,7 @@
             margin: 0.5rem 0;
           "
         >
-          $1.240.500
+          $0
         </h1>
         <div style="display: flex; align-items: center; gap: 6px">
           <span
@@ -152,77 +153,8 @@
       </div>
 
       <!-- Lista de Desembolsos -->
-      <div style="display: flex; flex-direction: column; gap: 1rem">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid #f1f5f9;
-          "
-        >
-          <div>
-            <h4
-              style="
-                font-size: 0.9rem;
-                font-weight: 700;
-                color: #0f172a;
-                margin: 0;
-              "
-            >
-              Transferencia Recibida
-            </h4>
-            <p style="font-size: 0.75rem; color: #64748b; margin: 2px 0 0 0">
-              Ahorros Bancolombia (Julio 3)
-            </p>
-          </div>
-          <span
-            style="
-              color: #10b981;
-              font-weight: 800;
-              background: #ecfdf5;
-              padding: 4px 8px;
-              border-radius: 6px;
-              font-size: 0.85rem;
-            "
-            >$980.000 ✓</span
-          >
-        </div>
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <div>
-            <h4
-              style="
-                font-size: 0.9rem;
-                font-weight: 700;
-                color: #0f172a;
-                margin: 0;
-              "
-            >
-              Transferencia Recibida
-            </h4>
-            <p style="font-size: 0.75rem; color: #64748b; margin: 2px 0 0 0">
-              Ahorros Bancolombia (Junio 26)
-            </p>
-          </div>
-          <span
-            style="
-              color: #10b981;
-              font-weight: 800;
-              background: #ecfdf5;
-              padding: 4px 8px;
-              border-radius: 6px;
-              font-size: 0.85rem;
-            "
-            >$1.420.000 ✓</span
-          >
-        </div>
+      <div id="payouts-history" style="display: flex; flex-direction: column; gap: 1rem">
+        <p style="color: #64748b; font-size: 0.9rem; text-align: center; padding: 1rem;">Cargando historial de desembolsos...</p>
       </div>
     </div>
   </div>
@@ -231,39 +163,8 @@
 <!-- Carga de Chart.js desde CDN (si no se ha cargado arriba) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const ctxPayouts = document.getElementById("payoutsChart").getContext("2d");
-  new Chart(ctxPayouts, {
-    type: "bar",
-    data: {
-      labels: ["Jun 26", "Jul 03"], // Fechas de desembolso
-      datasets: [
-        {
-          label: "Desembolsado ($)",
-          data: [1420000, 980000], // Valores
-          backgroundColor: "#3b82f6",
-          borderRadius: 6,
-          barThickness: 35,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          grid: { color: "#f1f5f9" },
-          ticks: {
-            callback: (value) => "$" + value / 1000 + "k",
-          },
-        },
-        x: {
-          grid: { display: false },
-        },
-      },
-    },
-  });
+  // Inicializar el módulo de ganancias cuando el DOM esté listo
+  if (window.GananciasJS) {
+    GananciasJS.init();
+  }
 </script>

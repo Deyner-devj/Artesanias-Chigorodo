@@ -24,14 +24,8 @@
   </p>
 
   <form
-    onsubmit="
-      event.preventDefault();
-      showModernToast(
-        '¡Los cambios han sido guardados correctamente!',
-        'success',
-      );
-      loadView('productos');
-    "
+    id="edit-product-form"
+    onsubmit="event.preventDefault()"
   >
     <p class="aa-section-title">Información general</p>
 
@@ -39,113 +33,140 @@
       <label class="aa-label">Nombre del Producto</label>
       <input
         type="text"
-        class="aa-input"
-        value="Mochila Wayuu Colores de Urabá"
+        class="aa-input aa-input-0"
+        name="aa-input-0"
+        placeholder="Ej. Mochila artesanal, Jarrón de barro, etc."
         required
       />
     </div>
 
     <div class="aa-form-group">
-      <label class="aa-label">Descripción del Producto</label>
-      <textarea class="aa-textarea" required>
-Mochila tejida a mano con hilo de algodón mercerizado, inspirada en los kanaas tradicionales Wayuu. Cada pieza toma aproximadamente 15 días de elaboración.</textarea
-      >
+      <label class="aa-label">Descripcion del Producto</label>
+      <textarea
+        class="aa-textarea aa-textarea-0"
+        name="aa-textarea-0"
+        placeholder="Describe la historia, tecnica y materiales de la artesania..."
+        required
+      ></textarea>
       <span class="aa-hint"
-        >Cuenta la historia y la técnica: esto es lo primero que leen tus
+        >Cuenta la historia y la tecnica: esto es lo primero que leen tus
         clientes.</span
       >
     </div>
 
     <div class="aa-form-grid-2">
       <div>
-        <label class="aa-label">Categoría</label>
-        <select class="aa-select">
-          <option selected>Tejidos</option>
-          <option>Alfarería y Barro</option>
-          <option>Ebanistería y Madera</option>
-          <option>Joyería Artesanal</option>
-          <option>Accesorios</option>
-          <option>Hogar y Decoración</option>
+        <label class="aa-label">Categoria</label>
+        <select class="aa-select aa-select-0" name="aa-select-0">
+          <option value="" disabled selected>Selecciona una categoría</option>
+          <option value="TEJIDOS">Tejidos</option>
+          <option value="ALFARERIA_Y_BARRO">Alfareria y Barro</option>
+          <option value="EBANISTERIA_Y_MADERA">Ebanisteria y Madera</option>
+          <option value="JOYERIA_ARTESANAL">Joyeria Artesanal</option>
+          <option value="ACCESORIOS">Accesorios</option>
+          <option value="HOGAR_Y_DECORACION">Hogar y Decoracion</option>
         </select>
       </div>
       <div>
         <label class="aa-label">Precio Unitario (COP)</label>
-        <input type="number" class="aa-input" value="240000" min="0" required />
+        <input
+          type="number"
+          class="aa-input aa-input-2"
+          name="aa-input-2"
+          placeholder="240000"
+          min="0"
+          required
+        />
       </div>
     </div>
 
-    <p class="aa-section-title">Detalles de fabricación</p>
+    <p class="aa-section-title">Detalles de fabricacion</p>
 
     <div class="aa-form-grid-2">
       <div>
         <label class="aa-label">Material Principal</label>
         <input
           type="text"
-          class="aa-input"
-          value="Hilo de algodón mercerizado"
-          placeholder="Ej. Barro negro, palma de iraca..."
+          class="aa-input aa-input-3"
+          name="aa-input-3"
+          placeholder="Ej. Hilo de algodon mercerizado, barro negro..."
         />
       </div>
       <div>
-        <label class="aa-label">Técnica de Elaboración</label>
+        <label class="aa-label">Tecnica de Elaboracion</label>
         <input
           type="text"
-          class="aa-input"
-          value="Tejido en crochet Wayuu"
-          placeholder="Ej. Alfarería a mano, tallado..."
+          class="aa-input aa-input-4"
+          name="aa-input-4"
+          placeholder="Ej. Tejido en crochet Wayuu, alfareria a mano..."
         />
       </div>
     </div>
 
     <div class="aa-form-grid-2">
       <div>
-        <label class="aa-label">Tiempo de Elaboración (días)</label>
-        <input type="number" class="aa-input" value="15" min="1" />
+        <label class="aa-label">Tiempo de Elaboracion (dias)</label>
+        <input type="number" class="aa-input aa-input-5" name="aa-input-5" placeholder="15" min="1" />
       </div>
       <div>
         <label class="aa-label">Dimensiones (Alto x Ancho x Fondo cm)</label>
-        <input type="text" class="aa-input" value="40 x 35 x 15" />
+        <input type="text" class="aa-input aa-input-6" name="aa-input-6" placeholder="40 x 35 x 15" />
       </div>
     </div>
 
     <div class="aa-form-grid-2">
       <div>
-        <label class="aa-label">Peso para Envío (kg)</label>
-        <input type="number" class="aa-input" value="0.6" step="0.1" min="0" />
+        <label class="aa-label">Peso para Envio (kg)</label>
+        <input
+          type="number"
+          class="aa-input aa-input-8"
+          name="aa-input-8"
+          placeholder="0.6"
+          step="0.1"
+          min="0"
+        />
       </div>
       <div>
-        <label class="aa-label">Código Interno / SKU</label>
-        <input type="text" class="aa-input" value="MWY-URB-004" />
+        <label class="aa-label">Codigo Interno / SKU</label>
+        <input type="text" class="aa-input aa-input-9" name="aa-input-9" placeholder="Ej. MWY-URB-004" />
       </div>
     </div>
 
-    <p class="aa-section-title">Inventario y publicación</p>
+    <p class="aa-section-title">Inventario y publicacion</p>
 
     <div class="aa-form-grid-2">
       <div>
         <label class="aa-label">Stock Disponible</label>
-        <input type="number" class="aa-input" value="12" min="0" required />
+        <input
+          type="number"
+          class="aa-input aa-input-7"
+          name="aa-input-7"
+          placeholder="12"
+          min="0"
+          required
+        />
       </div>
       <div>
-        <label class="aa-label">Estado de Publicación</label>
-        <select class="aa-select">
-          <option selected>Visible en Catálogo</option>
-          <option>Oculto / Borrador</option>
-          <option>Agotado temporalmente</option>
+        <label class="aa-label">Estado de Publicacion</label>
+        <select class="aa-select aa-select-1" name="aa-select-1">
+          <option value="true" selected>Visible en Catalogo</option>
+          <option value="false">Oculto / Borrador</option>
+          <option value="false">Agotado temporalmente</option>
         </select>
       </div>
     </div>
 
     <div class="aa-form-group">
-      <label class="aa-label">Etiquetas de Búsqueda</label>
+      <label class="aa-label">Etiquetas de Busqueda</label>
       <input
         type="text"
-        class="aa-input"
-        value="mochila, wayuu, tejido, guajira, colores"
-        placeholder="Separadas por comas"
+        class="aa-input aa-input-10"
+        name="aa-input-10"
+        placeholder="mochila, wayuu, tejido, guajira, colores"
       />
       <span class="aa-hint"
-        >Ayudan a que tu pieza aparezca en más búsquedas del catálogo.</span
+        >Ayudan a que tu pieza aparezca en mas busquedas del catalogo. Separadas
+        por comas.</span
       >
     </div>
 
@@ -155,7 +176,8 @@ Mochila tejida a mano con hilo de algodón mercerizado, inspirada en los kanaas 
         type="text"
         class="aa-input"
         id="edit-product-image-url"
-        value="../img/producto-mochila-wayuu-1.png"
+        name="edit-product-image-url"
+        placeholder="URL de la imagen o deja vacío para subir desde archivo"
         oninput="
           const p = document.getElementById('edit-product-image-preview');
           if (p) p.src = this.value;
@@ -164,9 +186,10 @@ Mochila tejida a mano con hilo de algodón mercerizado, inspirada en los kanaas 
       <img
         id="edit-product-image-preview"
         class="aa-image-preview"
-        src="../img/producto-mochila-wayuu-1.png"
+        src=""
         alt="Vista previa del producto"
-        onerror="this.style.opacity = 0.3"
+        style="display: none;"
+        onerror="this.style.display = 'none'"
       />
     </div>
 

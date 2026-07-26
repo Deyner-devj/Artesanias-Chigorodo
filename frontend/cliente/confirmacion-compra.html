@@ -222,6 +222,7 @@
       async function renderInvoice() {
         const container = document.getElementById("invoice-details-container");
         const apiOrderNumber = sessionStorage.getItem("checkout_order_number");
+        
         if (apiOrderNumber && window.API) {
           try {
             const order = await window.API.orders.getByOrderNumber(apiOrderNumber);
@@ -233,118 +234,8 @@
             return;
           }
         }
-        container.innerHTML = '<p>No hay una orden para mostrar.</p>';
-        return;
-        const orderNum = sessionStorage.getItem("checkout_order_number");
-        const info = JSON.parse(
-          sessionStorage.getItem("checkout_info") || "{}",
-        );
-        const shippingCost = parseInt(
-          sessionStorage.getItem("checkout_shipping_cost") || "15000",
-        );
-        const discount = parseInt(
-          sessionStorage.getItem("checkout_discount") || "0",
-        );
-
-        // Load from orders history to get items purchased
-        const historyStr = localStorage.getItem("orders_history");
-        let latestOrder = null;
-        if (historyStr) {
-          try {
-            const history = JSON.parse(historyStr);
-            if (history.length > 0) {
-              latestOrder = history[0];
-            }
-          } catch (e) {}
-        }
-
-        const displayOrderNum =
-          orderNum ||
-          (latestOrder ? latestOrder.id.replace("#", "") : "AC-2024-000000");
-        const displayDate = new Date().toLocaleDateString("es-CO", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-        const displayName = info.name || (latestOrder?.user?.fullName || "");
-        const displayAddress = info.address
-          ? `${info.address}, ${info.city}`
-          : latestOrder
-            ? `${latestOrder.address}, ${latestOrder.city}`
-            : "";
-
-        let subtotal = 0;
-        let itemsHtml = "";
-        if (latestOrder && latestOrder.items) {
-          latestOrder.items.forEach((item) => {
-            subtotal += item.price * item.qty;
-            itemsHtml += `
-            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.25rem;">
-              <span>${item.name} (x${item.qty})</span>
-              <span>${safeFormatCOP(item.price * item.qty)}</span>
-            </div>
-          `;
-          });
-        }
-
-        const grandTotal = Math.max(0, subtotal - discount) + shippingCost;
-
-        container.innerHTML = `
-        <h3>Resumen del pedido</h3>
-        <div class="invoice-details-grid" style="margin-bottom: 1.5rem;">
-          <div class="detail-col">
-            <span>Número de orden:</span>
-            <strong style="color: var(--primary); font-size: 1.1rem;">#${displayOrderNum}</strong>
-          </div>
-          <div class="detail-col">
-            <span>Fecha:</span>
-            <strong>${displayDate}</strong>
-          </div>
-          <div class="detail-col">
-            <span>Cliente:</span>
-            <strong>${displayName}</strong>
-          </div>
-          <div class="detail-col">
-            <span>Dirección de envío:</span>
-            <strong>${displayAddress}</strong>
-          </div>
-        </div>
-
-        <div class="invoice-divider"></div>
         
-        <div style="margin-bottom: 1rem;">
-          <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-dark);">Artículos comprados:</h4>
-          ${itemsHtml}
-        </div>
-
-        <div class="invoice-divider"></div>
-
-        <div class="invoice-total-summary">
-          <div style="display: flex; justify-content: space-between; width: 100%; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem;">
-            <span>Subtotal:</span>
-            <span>${safeFormatCOP(subtotal)}</span>
-          </div>
-          ${
-            discount > 0
-              ? `
-            <div style="display: flex; justify-content: space-between; width: 100%; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--primary);">
-              <span>Descuento:</span>
-              <span>-${safeFormatCOP(discount)}</span>
-            </div>
-          `
-              : ""
-          }
-          <div style="display: flex; justify-content: space-between; width: 100%; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem;">
-            <span>Envío:</span>
-            <span>${shippingCost === 0 ? "Gratis" : safeFormatCOP(shippingCost)}</span>
-          </div>
-          <div class="invoice-divider" style="margin: 0.75rem 0; width: 100%;"></div>
-          <div style="display: flex; justify-content: space-between; width: 100%; font-weight: 800; font-size: 1.35rem;">
-            <span>Total:</span>
-            <span style="color: var(--primary);">${safeFormatCOP(grandTotal)}</span>
-          </div>
-        </div>
-      `;
+        container.innerHTML = '<p>No hay una orden para mostrar.</p>';
       }
     </script>
     <script src="../js/cliente/checkout.js"></script>

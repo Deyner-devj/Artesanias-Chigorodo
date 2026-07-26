@@ -56,16 +56,19 @@ async function loadProfileData() {
     const profileData = artisanProfile || profile;
     
     // Llenar campo de nombre de marca/artesano
-    const brandNameInput = inputs[0]; // Primer input es el nombre de marca
+    const brandNameInput = inputs[0] || document.getElementById('perfil-brand-name');
     if (brandNameInput) {
-      brandNameInput.value = profileData.fullName || profileData.name || 'Asociación Artesanal Chigorodó';
+      brandNameInput.value = profileData.fullName || profileData.name || '';
     }
 
     // Llenar biografía
-    const bioTextarea = form.querySelector('textarea');
+    const bioTextarea = form.querySelector('textarea') || document.getElementById('perfil-bio');
     if (bioTextarea) {
-      bioTextarea.value = artisanProfile?.bio || profile.bio || 'Somos tejedores dedicados a salvaguardar y expandir el patrimonio cultural de las mochilas tejidas tradicionales en Chigorodó.';
+      bioTextarea.value = artisanProfile?.bio || profile.bio || '';
     }
+    
+    // Actualizar la vista previa
+    updatePreview();
 
   } catch (error) {
     console.error('Error al cargar datos del perfil:', error);
@@ -132,5 +135,25 @@ async function handleProfileUpdate(event) {
   }
 }
 
+function updatePreview() {
+  // Actualizar la vista previa con los datos del formulario
+  const brandNameInput = document.getElementById('perfil-brand-name');
+  const bioTextarea = document.getElementById('perfil-bio');
+  
+  const previewName = document.getElementById('perfil-name');
+  const previewLocation = document.getElementById('perfil-location');
+  const previewInitials = document.getElementById('perfil-initials');
+  
+  if (brandNameInput && previewName) {
+    previewName.textContent = brandNameInput.value || 'Cargando...';
+  }
+  
+  if (previewInitials) {
+    const name = brandNameInput?.value || '';
+    const initials = name.split(' ').map(w => w.charAt(0).toUpperCase()).slice(0, 2).join('');
+    previewInitials.textContent = initials || 'AC';
+  }
+}
+
 // Exponer el módulo
-window.PerfilArtesanoJS = { init };
+window.PerfilArtesanoJS = { init, updatePreview };

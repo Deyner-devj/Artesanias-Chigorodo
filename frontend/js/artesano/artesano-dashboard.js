@@ -520,26 +520,9 @@ function setupViewEventListeners(viewName) {
   }
 
   if (viewName === "agregar-producto") {
-    const btnPublish = [...document.querySelectorAll("button")].find((el) =>
-      el.textContent.includes("Publicar en Tienda"),
-    );
     const btnCancel = [...document.querySelectorAll("button")].find((el) =>
       el.textContent.includes("Cancelar"),
     );
-
-    if (btnPublish) {
-      btnPublish.addEventListener("click", (e) => {
-        e.preventDefault();
-        showCraftSuccess(
-          "Obra publicada con éxito",
-          "La pieza ya está disponible para todo el público de la tienda.",
-          2200,
-          () => {
-            loadView("productos");
-          },
-        );
-      });
-    }
 
     if (btnCancel) {
       btnCancel.addEventListener("click", (e) => {

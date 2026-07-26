@@ -23,14 +23,8 @@
   </p>
 
   <form
-    onsubmit="
-      event.preventDefault();
-      showModernToast(
-        'Artesania guardada en el catalogo exitosamente!',
-        'success',
-      );
-      loadView('productos');
-    "
+    id="add-product-form"
+    onsubmit="event.preventDefault()"
   >
     <p class="aa-section-title">Informacion general</p>
 
@@ -38,8 +32,9 @@
       <label class="aa-label">Nombre del Producto</label>
       <input
         type="text"
-        class="aa-input"
-        placeholder="Ej. Mochila Wayuu Colores de Uraba"
+        class="aa-input aa-input-0"
+        name="aa-input-0"
+        placeholder="Ej. Mochila artesanal, Jarrón de barro, etc."
         required
       />
     </div>
@@ -47,7 +42,8 @@
     <div class="aa-form-group">
       <label class="aa-label">Descripcion del Producto</label>
       <textarea
-        class="aa-textarea"
+        class="aa-textarea aa-textarea-0"
+        name="aa-textarea-0"
         placeholder="Describe la historia, tecnica y materiales de la artesania..."
         required
       ></textarea>
@@ -60,20 +56,22 @@
     <div class="aa-form-grid-2">
       <div>
         <label class="aa-label">Categoria</label>
-        <select class="aa-select">
-          <option>Tejidos</option>
-          <option>Alfareria y Barro</option>
-          <option>Ebanisteria y Madera</option>
-          <option>Joyeria Artesanal</option>
-          <option>Accesorios</option>
-          <option>Hogar y Decoracion</option>
+        <select class="aa-select aa-select-0" name="aa-select-0">
+          <option value="" disabled selected>Selecciona una categoría</option>
+          <option value="TEJIDOS">Tejidos</option>
+          <option value="ALFARERIA_Y_BARRO">Alfareria y Barro</option>
+          <option value="EBANISTERIA_Y_MADERA">Ebanisteria y Madera</option>
+          <option value="JOYERIA_ARTESANAL">Joyeria Artesanal</option>
+          <option value="ACCESORIOS">Accesorios</option>
+          <option value="HOGAR_Y_DECORACION">Hogar y Decoracion</option>
         </select>
       </div>
       <div>
         <label class="aa-label">Precio Unitario (COP)</label>
         <input
           type="number"
-          class="aa-input"
+          class="aa-input aa-input-2"
+          name="aa-input-2"
           placeholder="240000"
           min="0"
           required
@@ -88,7 +86,8 @@
         <label class="aa-label">Material Principal</label>
         <input
           type="text"
-          class="aa-input"
+          class="aa-input aa-input-3"
+          name="aa-input-3"
           placeholder="Ej. Hilo de algodon mercerizado, barro negro..."
         />
       </div>
@@ -96,7 +95,8 @@
         <label class="aa-label">Tecnica de Elaboracion</label>
         <input
           type="text"
-          class="aa-input"
+          class="aa-input aa-input-4"
+          name="aa-input-4"
           placeholder="Ej. Tejido en crochet Wayuu, alfareria a mano..."
         />
       </div>
@@ -105,11 +105,11 @@
     <div class="aa-form-grid-2">
       <div>
         <label class="aa-label">Tiempo de Elaboracion (dias)</label>
-        <input type="number" class="aa-input" placeholder="15" min="1" />
+        <input type="number" class="aa-input aa-input-5" name="aa-input-5" placeholder="15" min="1" />
       </div>
       <div>
         <label class="aa-label">Dimensiones (Alto x Ancho x Fondo cm)</label>
-        <input type="text" class="aa-input" placeholder="40 x 35 x 15" />
+        <input type="text" class="aa-input aa-input-6" name="aa-input-6" placeholder="40 x 35 x 15" />
       </div>
     </div>
 
@@ -118,7 +118,8 @@
         <label class="aa-label">Peso para Envio (kg)</label>
         <input
           type="number"
-          class="aa-input"
+          class="aa-input aa-input-8"
+          name="aa-input-8"
           placeholder="0.6"
           step="0.1"
           min="0"
@@ -126,7 +127,7 @@
       </div>
       <div>
         <label class="aa-label">Codigo Interno / SKU</label>
-        <input type="text" class="aa-input" placeholder="Ej. MWY-URB-004" />
+        <input type="text" class="aa-input aa-input-9" name="aa-input-9" placeholder="Ej. MWY-URB-004" />
       </div>
     </div>
 
@@ -137,7 +138,8 @@
         <label class="aa-label">Stock Disponible</label>
         <input
           type="number"
-          class="aa-input"
+          class="aa-input aa-input-7"
+          name="aa-input-7"
           placeholder="12"
           min="0"
           required
@@ -145,10 +147,10 @@
       </div>
       <div>
         <label class="aa-label">Estado de Publicacion</label>
-        <select class="aa-select">
-          <option selected>Visible en Catalogo</option>
-          <option>Oculto / Borrador</option>
-          <option>Agotado temporalmente</option>
+        <select class="aa-select aa-select-1" name="aa-select-1">
+          <option value="true" selected>Visible en Catalogo</option>
+          <option value="false">Oculto / Borrador</option>
+          <option value="false">Agotado temporalmente</option>
         </select>
       </div>
     </div>
@@ -157,7 +159,8 @@
       <label class="aa-label">Etiquetas de Busqueda</label>
       <input
         type="text"
-        class="aa-input"
+        class="aa-input aa-input-10"
+        name="aa-input-10"
         placeholder="mochila, wayuu, tejido, guajira, colores"
       />
       <span class="aa-hint"
@@ -172,7 +175,8 @@
         type="text"
         class="aa-input"
         id="add-product-image-url"
-        placeholder="../img/producto-mochila-wayuu-1.png"
+        name="add-product-image-url"
+        placeholder="URL de la imagen o deja vacío para subir desde archivo"
         oninput="
           const p = document.getElementById('add-product-image-preview');
           if (p) p.src = this.value;
@@ -181,9 +185,10 @@
       <img
         id="add-product-image-preview"
         class="aa-image-preview"
-        src="../img/mochila_wayuu.png"
+        src=""
         alt="Vista previa del producto"
-        onerror="this.style.opacity = 0.3"
+        style="display: none;"
+        onerror="this.style.display = 'none'"
       />
     </div>
 

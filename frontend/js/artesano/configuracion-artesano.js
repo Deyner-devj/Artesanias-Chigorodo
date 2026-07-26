@@ -57,32 +57,32 @@ async function loadConfigurationData() {
       const fieldName = label?.textContent?.toLowerCase() || '';
       
       if (fieldName.includes('taller') || fieldName.includes('marca')) {
-        input.value = data.displayName || data.fullName || 'Tejidos del Sol';
+        input.value = data.displayName || data.fullName || '';
       } else if (fieldName.includes('responsable')) {
-        input.value = data.fullName || 'María Elena Epieyu';
+        input.value = data.fullName || '';
       } else if (fieldName.includes('especialidad')) {
         if (data.specialty) {
           const option = input.querySelector(`option[value="${data.specialty}"]`);
           if (option) option.selected = true;
         }
       } else if (fieldName.includes('ciudad') || fieldName.includes('región')) {
-        input.value = data.location || data.city || 'Alta Guajira, La Guajira';
+        input.value = data.location || data.city || '';
       } else if (fieldName.includes('historia')) {
-        input.value = data.bio || data.history || 'Comunidad de tejedoras de la Alta Guajira dedicada a preservar las técnicas ancestrales del tejido Wayuu.';
+        input.value = data.bio || data.history || '';
       } else if (fieldName.includes('correo') && fieldName.includes('alertas')) {
-        input.value = data.email || userProfile?.email || 'contacto@artesaniaschigorodo.com';
+        input.value = data.email || userProfile?.email || '';
       } else if (fieldName.includes('teléfono') || fieldName.includes('whatsapp')) {
-        input.value = data.phone || userProfile?.telephone || '+57 312 456 7890';
+        input.value = data.phone || userProfile?.telephone || '';
       } else if (fieldName.includes('documento') || fieldName.includes('nit')) {
         input.value = data.documentNumber || '';
       } else if (fieldName.includes('banco')) {
-        input.value = data.bank || 'Bancolombia';
+        input.value = data.bank || '';
       } else if (fieldName.includes('número de cuenta')) {
-        input.value = data.accountNumber || '***-****87-45';
+        input.value = data.accountNumber || '';
       } else if (fieldName.includes('tiempo') && fieldName.includes('despacho')) {
-        input.value = data.averageShippingTime || 3;
+        input.value = data.averageShippingTime || '';
       } else if (fieldName.includes('ciudad de origen')) {
-        input.value = data.shippingCity || 'Riohacha, La Guajira';
+        input.value = data.shippingCity || '';
       }
     });
 

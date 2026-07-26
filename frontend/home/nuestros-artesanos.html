@@ -96,9 +96,12 @@
               artisans = users.map((user) => ({
                 id: user.id,
                 name: user.fullName,
-                specialty: "Artesano registrado",
-                bio: "Conoce sus piezas y su trabajo en nuestra plataforma.",
-                productCount: 0,
+                specialty: user.specialty || "Artesano registrado",
+                bio: user.bio || "Conoce sus piezas y su trabajo en nuestra plataforma.",
+                productCount: user.productCount || 0,
+                rating: user.rating || null,
+                imageUrl: user.imageUrl || null,
+                city: user.city || null,
               }));
             }
           } catch (e) {
@@ -125,7 +128,7 @@
               style="
                 background-image:
                   linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
-                  url('${a.image || "../img/home/categoria-tejidos.png"}');
+                  url('${a.imageUrl || "../img/home/categoria-tejidos.png"}');
                 background-size: cover;
                 background-position: center;
               "
