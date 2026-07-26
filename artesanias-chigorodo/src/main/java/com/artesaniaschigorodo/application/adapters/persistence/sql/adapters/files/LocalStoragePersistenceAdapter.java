@@ -26,22 +26,21 @@ public class LocalStoragePersistenceAdapter implements ImageStoragePort {
 
     // Tamaño máximo de archivo: 5MB
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024;
-    
+
     // Tipos de imagen permitidos
     private static final List<String> ALLOWED_CONTENT_TYPES = List.of(
             "image/jpeg",
             "image/jpg",
             "image/png",
             "image/webp",
-            "image/gif"
-    );
+            "image/gif");
 
     public LocalStoragePersistenceAdapter(
             @Value("${app.upload.dir:uploads}") String uploadDir,
             @Value("${app.base-url:http://localhost:8080}") String baseUrl) throws IOException {
         this.uploadDir = Paths.get(uploadDir);
         this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
-        
+
         // Crear directorio de subida si no existe
         if (!Files.exists(this.uploadDir)) {
             Files.createDirectories(this.uploadDir);
@@ -51,16 +50,16 @@ public class LocalStoragePersistenceAdapter implements ImageStoragePort {
     @Override
     public String storeImage(MultipartFile file) throws IOException {
         validateImage(file);
-        
+
         // Generar nombre único para el archivo
         String filename = generateUniqueFilename(file.getOriginalFilename());
         Path targetPath = uploadDir.resolve(filename);
-        
+
         // Guardar el archivo
         file.transferTo(targetPath);
-        
+
         // Devolver URL pública
-        return baseUrl + "uploads/" + filename;
+        return "img/" + filename; // Ahora devuelve rutas relativas como "img/nombre.png"
     }
 
     @Override
@@ -92,6 +91,11 @@ public class LocalStoragePersistenceAdapter implements ImageStoragePort {
         // Validar extensión del archivo
         String originalFilename = file.getOriginalFilename();
         if (originalFilename != null) {
+            // Validar que el nombre no contenga paths relativos
+            if (originalFilename.contains("../") || originalFilename.contains("/") || originalFilename.contains("\\")) {
+                throw new IllegalArgumentException("Nombre de archivo inválido");
+            }
+            
             String extension = originalFilename.substring(originalFilename.lastIndexOf('.') + 1).toLowerCase();
             if (!List.of("jpeg", "jpg", "png", "webp", "gif").contains(extension)) {
                 throw new IllegalArgumentException("Extensión de archivo no permitida");
@@ -105,7 +109,7 @@ public class LocalStoragePersistenceAdapter implements ImageStoragePort {
             // Extraer el nombre del archivo de la URL
             String filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
             Path filePath = uploadDir.resolve(filename);
-            
+
             if (Files.exists(filePath)) {
                 Files.delete(filePath);
                 return true;
@@ -124,4 +128,3 @@ public class LocalStoragePersistenceAdapter implements ImageStoragePort {
         return UUID.randomUUID().toString() + extension;
     }
 }
-

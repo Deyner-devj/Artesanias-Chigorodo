@@ -61,11 +61,19 @@ async function loadTestimonios() {
   }
 }
 
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 function createTestimonioCard(review) {
   const rating = review.rating || 5;
   const stars = generateStars(rating);
-  const initial = review.userName ? review.userName.charAt(0).toUpperCase() : 'A';
-  const avatarBg = getAvatarColor(review.userName);
+  const userName = review.userName || 'Cliente Anónimo';
+  const initial = userName.charAt(0).toUpperCase();
+  const avatarBg = getAvatarColor(userName);
   
   return `
     <article class="testimonio-card">
@@ -73,15 +81,15 @@ function createTestimonioCard(review) {
         ${stars}
       </div>
       <blockquote class="testimonio-text">
-        "${review.comment || review.title || '¡Excelente producto! La calidad es increíble.'}"
+        "${escapeHtml(review.comment || review.title || '¡Excelente producto! La calidad es increíble.')}"
       </blockquote>
       <footer class="testimonio-author">
         <div class="testimonio-avatar" style="background-color: ${avatarBg}; color: var(--primary)">
           ${initial}
         </div>
         <div>
-          <strong>${review.userName || 'Cliente Anónimo'}</strong>
-          <p>${review.productName || 'Producto'} · Comprador verificado</p>
+          <strong>${escapeHtml(userName)}</strong>
+          <p>${escapeHtml(review.productName || 'Producto')} · Comprador verificado</p>
         </div>
       </footer>
     </article>
