@@ -12,6 +12,7 @@ public interface OrderPort {
     List<Order> findBySellerIdOrderByCreatedAtDesc(Long sellerId);
     List<Order> findBySellerIdAndStatusOrderByCreatedAtDesc(Long sellerId, String status);
     Order save(Order order);
+    List<Order> findAll();
 }
 
 

@@ -29,6 +29,9 @@ WORKDIR /app
 # Copiamos el ejecutable generado en la etapa anterior renombrándolo correctamente a app.jar
 COPY --from=builder /app/target/*.jar app.jar
 
+# Crear directorio de uploads para imágenes
+RUN mkdir -p /app/uploads
+
 # Exponemos el puerto de Spring Boot
 EXPOSE 8080
 

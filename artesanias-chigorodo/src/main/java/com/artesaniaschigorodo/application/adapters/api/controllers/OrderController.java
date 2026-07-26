@@ -105,7 +105,14 @@ public class OrderController {
     private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new ForbiddenOperationException("Debe iniciar sesión para realizar esta operación.");
+            // Permitir usuarios anónimos para crear orden desde carrito
+            return User.builder()
+                    .id(null)
+                    .email("ANONYMOUS_" + java.util.UUID.randomUUID().toString())
+                    .fullName("Invitado")
+                    .role(com.artesaniaschigorodo.domain.models.enums.Role.CLIENT)
+                    .status(com.artesaniaschigorodo.domain.models.enums.UserStatus.ACTIVE)
+                    .build();
         }
         String email = authentication.getName();
         return userPersistencePort.findByEmail(email)

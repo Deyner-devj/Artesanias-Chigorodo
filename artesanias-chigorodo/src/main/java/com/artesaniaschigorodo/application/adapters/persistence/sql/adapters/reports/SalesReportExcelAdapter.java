@@ -123,7 +123,7 @@ public class SalesReportExcelAdapter implements SalesReportPort {
                     productInfo.put("unitsSold", entry.getValue());
                     productRepository.findById(entry.getKey()).ifPresent(product -> {
                         productInfo.put("productName", product.getName());
-                        productInfo.put("category", product.getCategory() != null ? product.getCategory().getName() : null);
+                        productInfo.put("category", product.getCategory());
                         productInfo.put("price", product.getPrice());
                     });
                     return productInfo;

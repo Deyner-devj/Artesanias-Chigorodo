@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,21 +22,27 @@ public class ManageCartUseCase {
     private final ProductPort productPersistencePort;
     private final CartPort cartPersistencePort;
 
+    // Cambia el método getCart
     public Cart getCart(User currentUser) {
-        Cart cart = cartPersistencePort.findByUserEmail(currentUser.getEmail().toLowerCase())
+        // ✅ Si es usuario anónimo, usa su email único
+        String userEmail = currentUser != null ? currentUser.getEmail().toLowerCase()
+                : "ANONYMOUS_" + UUID.randomUUID().toString();
+        Cart cart = cartPersistencePort.findByUserEmail(userEmail)
                 .orElseGet(() -> Cart.builder()
-                        .userEmail(currentUser.getEmail().toLowerCase())
+                        .userEmail(userEmail)
                         .items(new ArrayList<>())
                         .build());
         recalculate(cart);
         return cart;
     }
 
+    // Cambia el método addItem
     public Cart addItem(User currentUser, Long productId, Integer quantity) {
-        Cart cart = getCart(currentUser);
+        Cart cart = getCart(currentUser); // ✅ Ya maneja usuarios anónimos
         Product product = productPersistencePort.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("El producto no existe."));
-        new com.artesaniaschigorodo.domain.services.ValidateProductAvailability().validate(product, quantity != null ? quantity : 0);
+        new com.artesaniaschigorodo.domain.services.ValidateProductAvailability().validate(product,
+                quantity != null ? quantity : 0);
         CartItem existing = findItem(cart, productId);
         if (existing == null) {
             CartItem newItem = CartItem.builder()
@@ -53,6 +60,9 @@ public class ManageCartUseCase {
         recalculate(cart);
         return cartPersistencePort.save(cart);
     }
+
+    // Los demás métodos (decreaseItem, removeItem, clearCart) ya usan getCart(),
+    // así que automáticamente manejan usuarios anónimos
 
     public Cart decreaseItem(User currentUser, Long productId) {
         Cart cart = getCart(currentUser);

@@ -80,15 +80,16 @@ public class GetArtisanDashboardUseCase {
 					continue;
 				}
 				Long productId = item.getProduct().getId();
-				DashboardResponse.ProductSalesAccumulator accumulator = productSales.computeIfAbsent(productId, ignored -> {
-					Product product = findProductById(products, productId);
-					return DashboardResponse.ProductSalesAccumulator.builder()
-							.productId(productId)
-							.productName(product != null ? product.getName() : item.getProduct().getName())
-							.quantitySold(0)
-							.revenue(0.0)
-							.build();
-				});
+				DashboardResponse.ProductSalesAccumulator accumulator = productSales.computeIfAbsent(productId,
+						ignored -> {
+							Product product = findProductById(products, productId);
+							return DashboardResponse.ProductSalesAccumulator.builder()
+									.productId(productId)
+									.productName(product != null ? product.getName() : item.getProduct().getName())
+									.quantitySold(0)
+									.revenue(0.0)
+									.build();
+						});
 				int quantity = item.getQuantity() != null ? item.getQuantity() : 0;
 				double subtotal = item.getSubtotal() != null ? item.getSubtotal() : 0.0;
 				accumulator.setQuantitySold(accumulator.getQuantitySold() + quantity);
@@ -130,14 +131,15 @@ public class GetArtisanDashboardUseCase {
 		}
 		if (currentUser.getRole() == Role.VENDOR) {
 			return allProducts.stream()
-					.filter(product -> product.getSellerName() != null && product.getSellerName().equalsIgnoreCase(currentUser.getFullName()))
+					.filter(product -> product.getSellerName() != null
+							&& product.getSellerName().equalsIgnoreCase(currentUser.getFullName()))
 					.collect(Collectors.toList());
 		}
 		return allProducts;
 	}
 
 	private List<Order> loadOrdersForUser(User currentUser) {
-		List<Order> allOrders = orderPersistencePort.findByUserId(null);
+		List<Order> allOrders = orderPersistencePort.findAll();
 		if (currentUser == null || currentUser.getRole() == Role.ADMIN) {
 			return allOrders;
 		}

@@ -2,6 +2,8 @@ package com.artesaniaschigorodo.application.adapters.persistence.sql.mappers;
 
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.OrderEntity;
 import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.OrderItemEntity;
+import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.ProductEntity;
+import com.artesaniaschigorodo.application.adapters.persistence.sql.entities.UserEntity;
 import com.artesaniaschigorodo.domain.models.order.Order;
 import com.artesaniaschigorodo.domain.models.order.OrderItem;
 import com.artesaniaschigorodo.domain.models.order.ShippingDetails;
@@ -100,9 +102,17 @@ public class OrderMapper {
     private static OrderItemEntity toItemEntity(OrderItem item) {
         if (item == null) return null;
         return OrderItemEntity.builder()
-                .productId(item.getProduct().getId())
+                .product(ProductEntity.builder()
+                        .id(item.getProduct().getId())
+                        .name(item.getProduct().getName())
+                        .sellerId(item.getProduct().getSellerId())
+                        .sellerName(item.getProduct().getSellerName())
+                        .price(item.getProduct().getPrice())
+                        .build())
                 .productName(item.getProduct().getName())
-                .sellerId(item.getProduct().getSellerId())
+                .seller(UserEntity.builder()
+                        .id(item.getProduct().getSellerId())
+                        .build())
                 .sellerName(item.getProduct().getSellerName())
                 .quantity(item.getQuantity())
                 .unitPrice(item.getUnitPrice())
@@ -114,9 +124,9 @@ public class OrderMapper {
         if (entity == null) return null;
         return OrderItem.builder()
                 .product(Product.builder()
-                        .id(entity.getProductId())
+                        .id(entity.getProduct().getId())
                         .name(entity.getProductName())
-                        .sellerId(entity.getSellerId())
+                        .sellerId(entity.getSeller().getId())
                         .sellerName(entity.getSellerName())
                         .price(entity.getUnitPrice())
                         .build())

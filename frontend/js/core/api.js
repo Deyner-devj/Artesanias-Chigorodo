@@ -165,8 +165,8 @@ const products = {
 
   async uploadImage(productId, imageFile) {
     const formData = new FormData();
-    formData.append("image", imageFile);
-    return apiFetch(`/api/products/${productId}/images`, {
+    formData.append("file", imageFile);
+    return apiFetch(`/api/products/${productId}/image`, {
       method: "POST",
       body: formData,
       headers: {},

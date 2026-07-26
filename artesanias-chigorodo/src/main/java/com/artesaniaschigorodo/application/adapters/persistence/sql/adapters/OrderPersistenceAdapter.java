@@ -66,6 +66,13 @@ public class OrderPersistenceAdapter implements OrderPort {
                 .map(OrderMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Order> findAll() {
+        return orderJpaRepository.findAll().stream()
+                .map(OrderMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }
 
 

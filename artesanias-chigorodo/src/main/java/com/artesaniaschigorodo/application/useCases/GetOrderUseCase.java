@@ -38,6 +38,6 @@ public class GetOrderUseCase implements GetOrderPort {
         if (currentUser.getRole() == Role.CLIENT) {
             return orderPersistencePort.findByUserId(currentUser.getId());
         }
-        return orderPersistencePort.findByUserId(null);
+        return orderPersistencePort.findAll();
     }
 }

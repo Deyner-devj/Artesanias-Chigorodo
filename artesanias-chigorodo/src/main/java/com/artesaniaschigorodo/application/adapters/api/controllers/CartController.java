@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,7 +27,7 @@ public class CartController {
 
 	private final ManageCartUseCase manageCartUseCase;
 	private final UserPort userPersistencePort;
-    private final com.artesaniaschigorodo.domain.ports.out.ProductPort productPort;
+	private final com.artesaniaschigorodo.domain.ports.out.ProductPort productPort;
 
 	@GetMapping
 	public ResponseEntity<CartResponse> getCart() {
@@ -35,7 +36,8 @@ public class CartController {
 
 	@PostMapping("/items")
 	public ResponseEntity<CartResponse> addItem(@Valid @RequestBody CartItemRequest request) {
-		return ResponseEntity.ok(mapToResponse(manageCartUseCase.addItem(getCurrentUser(), request.getProductId(), request.getQuantity())));
+		return ResponseEntity.ok(mapToResponse(
+				manageCartUseCase.addItem(getCurrentUser(), request.getProductId(), request.getQuantity())));
 	}
 
 	@PatchMapping("/items/{productId}/decrease")
@@ -56,7 +58,14 @@ public class CartController {
 	private User getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated()) {
-			throw new ForbiddenOperationException("Debe iniciar sesión para administrar el carrito.");
+			// ✅ NUEVO: Retorna un usuario anónimo con email único
+			return User.builder()
+					.id(null)
+					.email("ANONYMOUS_" + UUID.randomUUID().toString())
+					.fullName("Invitado")
+					.role(com.artesaniaschigorodo.domain.models.enums.Role.CLIENT)
+					.status(com.artesaniaschigorodo.domain.models.enums.UserStatus.ACTIVE)
+					.build();
 		}
 		return userPersistencePort.findByEmail(authentication.getName())
 				.orElseThrow(() -> new ResourceNotFoundException("Usuario actual no encontrado en el sistema."));
@@ -76,11 +85,14 @@ public class CartController {
 	}
 
 	private CartResponse.CartItemResponse mapToResponse(CartItem item) {
-		com.artesaniaschigorodo.domain.models.product.Product product = productPort.findById(item.getProduct().getId()).orElse(null);
+		com.artesaniaschigorodo.domain.models.product.Product product = productPort.findById(item.getProduct().getId())
+				.orElse(null);
 		return CartResponse.CartItemResponse.builder()
 				.productId(item.getProduct().getId())
 				.productName(item.getProduct().getName())
-				.imageUrl(product != null && product.getImageUrls() != null && !product.getImageUrls().isEmpty() ? product.getImageUrls().get(0) : null)
+				.imageUrl(product != null && product.getImageUrls() != null && !product.getImageUrls().isEmpty()
+						? product.getImageUrls().get(0)
+						: null)
 				.stock(product != null ? product.getStock() : 0)
 				.quantity(item.getQuantity())
 				.unitPrice(item.getUnitPrice())

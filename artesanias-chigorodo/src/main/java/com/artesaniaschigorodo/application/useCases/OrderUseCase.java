@@ -139,7 +139,7 @@ public class OrderUseCase implements OrderPort {
             return orderPersistencePort.findByUserId(currentUser.getId());
         }
         
-        List<Order> allOrders = orderPersistencePort.findByUserId(null);
+        List<Order> allOrders = orderPersistencePort.findAll();
         if (currentUser.getRole() == Role.VENDOR) {
             return allOrders.stream()
                     .filter(order -> order.getItems().stream()
@@ -194,6 +194,11 @@ public class OrderUseCase implements OrderPort {
             }
         }
         return savedOrder;
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return orderPersistencePort.findAll();
     }
 }
 
